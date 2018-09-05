@@ -1,0 +1,16 @@
+/**
+* 為了調整footer置底
+*/
+html, body {
+  height: 100vh;
+}
+
+#__nuxt, #__layout, #__layout > div {
+  height: 100vh;
+}
+
+.article-divider {
+  background-color: #1dc8cd;
+  width: 80px;
+  height: 2px;
+}
