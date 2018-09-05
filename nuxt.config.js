@@ -3,11 +3,7 @@ const glob = require('glob-all')
 const path = require('path')
 const webpack = require('webpack')
 
-const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
-  router: {
-    base: '/blog/'
-  }
-} : {}
+const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? { base: '/blog/' } : {}
 
 module.exports = {
   /*
