@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-12">
           <div class="comments">
-            <vue-disqus shortname="your_shortname_disqus"></vue-disqus>
+            <vue-disqus shortname="monkeybinbinblog"></vue-disqus>
           </div>
         </div>
       </div>
@@ -24,6 +24,8 @@
 <script>
 import AOS from 'aos'
 import axios from 'axios'
+import pathHelper from '../../helpers/path'
+
 export default {
   name: 'Article',
   data () {
@@ -40,7 +42,7 @@ export default {
   methods: {
     getArticleInfo: async function () {
       const articleId = this.id
-      await axios.get(`/posts/list.json`)
+      await axios.get(`${pathHelper.fixedApiPath()}posts/list.json`)
         .then(res => {
           const posts = res.data
           this.articleInfo = _.find(posts, function (o) { return o.id === articleId })
@@ -53,7 +55,7 @@ export default {
         })
     },
     getArticleContent: async function () {
-      await axios.get(`/posts/${this.id}/content.md`)
+      await axios.get(`${pathHelper.fixedApiPath()}posts/${this.id}/content.md`)
         .then(res => {
           this.mdContent = res.data
           // 載入codepen embed的js

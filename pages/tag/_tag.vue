@@ -19,6 +19,8 @@
 import AOS from 'aos'
 import axios from 'axios'
 import ArticleItem from '~/components/ArticleItem'
+import pathHelper from '../../helpers/path'
+
 export default {
   name: 'Tag',
   data () {
@@ -36,7 +38,8 @@ export default {
     }
   },
   async mounted () {
-    const posts = await axios.get('/posts/list.json').then(res => res.data).catch(() => [])
+    const tag = this.tagName
+    const posts = await axios.get(`${pathHelper.fixedApiPath()}posts/list.json`).then(res => res.data).catch(() => [])
     this.posts = _.filter(posts, function(o) { return o.tags && o.tags.includes(tag) })
   },
   updated: function () {

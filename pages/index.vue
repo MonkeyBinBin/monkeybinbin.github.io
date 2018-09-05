@@ -14,6 +14,7 @@
 import AOS from 'aos'
 import axios from 'axios'
 import ArticleItem from '~/components/ArticleItem'
+import pathHelper from '../helpers/path'
 export default {
   components: {
     ArticleItem
@@ -31,7 +32,7 @@ export default {
     }
   },
   async mounted () {
-    const posts = await axios.get('/posts/list.json').then(res => res.data).catch(() => [])
+    const posts = await axios.get(`${pathHelper.fixedApiPath()}posts/list.json`).then(res => res.data).catch(() => [])
     this.posts = posts
   },
   updated: function () {
