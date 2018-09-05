@@ -3,6 +3,12 @@ const glob = require('glob-all')
 const path = require('path')
 const webpack = require('webpack')
 
+const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
+  router: {
+    base: '/blog/'
+  }
+} : {}
+
 module.exports = {
   /*
   ** Headers of the page
@@ -19,6 +25,7 @@ module.exports = {
     ]
   },
   router: {
+    ...routerBase,
     // 換頁將網頁捲至最上方
     scrollBehavior: function (to, from, savedPosition) {
       return { x: 0, y: 0 }
