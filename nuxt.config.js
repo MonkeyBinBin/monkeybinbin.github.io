@@ -5,6 +5,7 @@ const webpack = require('webpack')
 const config = require('./config')
 
 const baseUrl = process.env.DEPLOY_ENV === 'GH_PAGES' ? '/blog/' : '/'
+const description = '使用 Nuxt.js、 Bootstrap 4 建立的blog。分享與紀錄一些程式開發的東西。'
 
 module.exports = {
   /*
@@ -17,7 +18,10 @@ module.exports = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' },
       { name: 'author', content: 'MonkeyBinBin' },
       { hid: 'keywords', name: 'keywords', content: config.keywords.join() },
-      { hid: 'description', name: 'description', content: '使用 Nuxt.js、 Bootstrap 4 建立的blog。分享與紀錄一些程式開發的東西。' }
+      { hid: 'description', name: 'description', content: description },
+      { hid: 'og:title', property: 'og:title', content: config.title },
+      { hid: 'og:image', property: 'og:image', content: 'https://monkeybinbin.github.io/blog/img/fb.png' },
+      { hid: 'og:description', property: 'og:description', content: description }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}favicon.ico` }
