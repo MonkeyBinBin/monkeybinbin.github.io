@@ -1,8 +1,8 @@
 <template>
   <header class="text-center" id="intro">
-    <a href="/" class="avatar">
+    <nuxt-link to="/" class="avatar">
       <img alt="MonkeyBinBin" :src="avatar" class="img-thumbnail rounded-circle">
-    </a>
+    </nuxt-link>
     <div class="intro-text">
       <h2 class="text-white">猴猴學語</h2>
     </div>

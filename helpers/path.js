@@ -1,5 +1,5 @@
 function fixedApiPath () {
-  return process.env.BASE_URL || '/'
+  return process.env.baseUrl || '/'
 }
 
 export default {
