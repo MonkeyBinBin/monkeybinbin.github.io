@@ -17,5 +17,10 @@ module.exports = {
     'vue'
   ],
   // add your custom rules here
-  rules: {}
+  rules: {},
+  globals: {
+    "$": true,
+    "moment": true,
+    "_": true,
+  }
 }

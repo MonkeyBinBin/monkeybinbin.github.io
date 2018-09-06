@@ -12,9 +12,9 @@
 
 <script>
 import AOS from 'aos'
-import axios from 'axios'
 import ArticleItem from '~/components/ArticleItem'
-import pathHelper from '../helpers/path'
+import api from '../services/api'
+
 export default {
   components: {
     ArticleItem
@@ -26,13 +26,15 @@ export default {
   },
   async asyncData ({ params }) {
     // server render
-    const posts = await import('~/static/posts/list.json')
-    return {
-      posts
+    if (process.server) {
+      const posts = await import('~/static/posts/list.json')
+      return {
+        posts
+      }
     }
   },
   async mounted () {
-    const posts = await axios.get(`${pathHelper.getBaseUrl()}posts/list.json`).then(res => res.data).catch(() => [])
+    const posts = await api.getArticles()
     this.posts = posts
   },
   updated: function () {

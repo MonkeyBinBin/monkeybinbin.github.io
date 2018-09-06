@@ -17,9 +17,8 @@
 
 <script>
 import AOS from 'aos'
-import axios from 'axios'
 import ArticleItem from '~/components/ArticleItem'
-import pathHelper from '../../helpers/path'
+import api from '../../services/api'
 
 export default {
   name: 'Tag',
@@ -29,18 +28,8 @@ export default {
       posts: []
     }
   },
-  async asyncData ({params}) {
-    const { tag } = params
-    // server render
-    const posts = await import('~/static/posts/list.json')
-    return {
-      posts: _.filter(posts, function(o) { return o.tags && o.tags.includes(tag) })
-    }
-  },
   async mounted () {
-    const tag = this.tagName
-    const posts = await axios.get(`${pathHelper.getBaseUrl()}posts/list.json`).then(res => res.data).catch(() => [])
-    this.posts = _.filter(posts, function(o) { return o.tags && o.tags.includes(tag) })
+    this.posts = await api.getArticlesWithTag(this.tagName)
   },
   updated: function () {
     this.$nextTick(function () {

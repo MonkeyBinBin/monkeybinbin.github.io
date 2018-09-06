@@ -2,6 +2,7 @@ const PurgecssPlugin = require('purgecss-webpack-plugin')
 const glob = require('glob-all')
 const path = require('path')
 const webpack = require('webpack')
+const config = require('./config')
 
 const baseUrl = process.env.DEPLOY_ENV === 'GH_PAGES' ? '/blog/' : '/'
 
@@ -10,11 +11,12 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: '猴猴學語',
+    title: config.title,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' },
-      { hid: 'author', name: 'author', content: 'MonkeyBinBin' },
+      { name: 'author', content: 'MonkeyBinBin' },
+      { hid: 'keywords', name: 'keywords', content: config.keywords.join() },
       { hid: 'description', name: 'description', content: '使用 Nuxt.js、 Bootstrap 4 建立的blog。分享與紀錄一些程式開發的東西。' }
     ],
     link: [
@@ -22,7 +24,9 @@ module.exports = {
     ]
   },
   env: {
-    baseUrl: baseUrl
+    baseUrl: baseUrl,
+    title: config.title,
+    keywords: config.keywords
   },
   router: {
     base: baseUrl,
@@ -98,16 +102,25 @@ module.exports = {
           })
         )
       }
+
+      config.plugins.push(
+        new webpack.ProvidePlugin({
+          '$': 'jquery',
+          '_': 'lodash',
+          'moment': 'moment'
+        })
+      )
+
+      // 增加text-loader載入md檔案(for server render)
+      config.module.rules.push(
+        {
+          test: /\.md$/,
+          loader: 'text-loader'
+        }
+      )
     },
     postcss: [
       require('autoprefixer')
-    ],
-    plugins: [
-      new webpack.ProvidePlugin({
-        '$': 'jquery',
-        '_': 'lodash',
-        'moment': 'moment'
-      })
     ]
   },
   generate: {

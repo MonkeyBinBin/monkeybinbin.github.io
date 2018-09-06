@@ -24,47 +24,57 @@
 
 <script>
 import AOS from 'aos'
-import axios from 'axios'
-import pathHelper from '../../helpers/path'
+import constant from '../../constant'
+import api from '../../services/api'
 
 export default {
   name: 'Article',
+  head () {
+    return {
+      title: this.title,
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: this.keywords.join() },
+        { hid: 'description', name: 'description', content: this.description }
+      ]
+    }
+  },
+  async asyncData (context) {
+    const { params } = context
+    const { id } = params
+    const posts = await import('~/static/posts/list.json')
+    const post = _.find(posts, function (o) { return o.id === id })
+    const mdContent = await import(`~/static/posts/${id}/content.md`)
+    const keywords = [...constant.keywords, ...post.tags]
+    return {
+      title: `${constant.title}-${post.title}`,
+      description: post.slug,
+      keywords,
+      articleInfo: post,
+      mdContent: process.server ? mdContent : ''
+    }
+  },
   data () {
     return {
       id: this.$route.params.id,
       errorMsg: '',
-      mdContent: '',
-      articleInfo: {}
+      articleInfo: {},
+      mdContent: ''
     }
   },
   mounted () {
-    this.getArticleInfo()
+    this.getArticleById()
   },
   methods: {
-    getArticleInfo: async function () {
-      const articleId = this.id
-      await axios.get(`${pathHelper.getBaseUrl()}posts/list.json`)
-        .then(res => {
-          const posts = res.data
-          this.articleInfo = _.find(posts, function (o) { return o.id === articleId })
-          if (this.articleInfo && this.articleInfo.id) {
-            this.getArticleContent()
-          }
-        })
-        .catch(() => {
-          this.errorMsg = '無法取得文章。'
-        })
-    },
-    getArticleContent: async function () {
-      await axios.get(`${pathHelper.getBaseUrl()}posts/${this.id}/content.md`)
-        .then(res => {
-          this.mdContent = res.data
-          // 載入codepen embed的js
+    getArticleById: async function () {
+      const [info, content] = await api.getArticleById(this.id)
+      if (info.data && content.data) {
+        this.articleInfo = info.data
+        this.mdContent = content.data
+        // 載入codepen embed的js
           $.getScript('//assets.codepen.io/assets/embed/ei.js')
-        })
-        .catch(() => {
-          this.errorMsg = '無法取得文章。'
-        })
+      } else {
+        this.errorMsg = info.message || content.message
+      }
     }
   },
   updated: function () {
@@ -77,7 +87,6 @@ export default {
 
 <style lang="scss" scoped>
 .md-content {
-
   & /deep/ img {
     max-width: 100%;
   }

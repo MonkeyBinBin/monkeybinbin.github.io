@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import highlightjs from 'highlight.js'
 import marked, { Renderer } from 'marked'
-import moment from 'moment'
 import pathHelper from '~/helpers/path'
 
 // Create your custom renderer.
