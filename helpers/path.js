@@ -1,7 +1,7 @@
-function fixedApiPath () {
+function getBaseUrl () {
   return process.env.baseUrl || '/'
 }
 
 export default {
-  fixedApiPath
+  getBaseUrl
 }

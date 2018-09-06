@@ -39,7 +39,7 @@ export default {
   },
   async mounted () {
     const tag = this.tagName
-    const posts = await axios.get(`${pathHelper.fixedApiPath()}posts/list.json`).then(res => res.data).catch(() => [])
+    const posts = await axios.get(`${pathHelper.getBaseUrl()}posts/list.json`).then(res => res.data).catch(() => [])
     this.posts = _.filter(posts, function(o) { return o.tags && o.tags.includes(tag) })
   },
   updated: function () {

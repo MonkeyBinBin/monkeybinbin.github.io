@@ -14,10 +14,11 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' },
+      { hid: 'author', name: 'author', content: 'MonkeyBinBin' },
       { hid: 'description', name: 'description', content: '使用 Nuxt.js、 Bootstrap 4 建立的blog。分享與紀錄一些程式開發的東西。' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}favicon.ico` }
     ]
   },
   env: {

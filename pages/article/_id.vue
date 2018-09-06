@@ -12,6 +12,7 @@
       </div>
       <div class="row">
         <div class="col-12">
+          <hr />
           <div class="comments">
             <vue-disqus shortname="monkeybinbinblog"></vue-disqus>
           </div>
@@ -42,7 +43,7 @@ export default {
   methods: {
     getArticleInfo: async function () {
       const articleId = this.id
-      await axios.get(`${pathHelper.fixedApiPath()}posts/list.json`)
+      await axios.get(`${pathHelper.getBaseUrl()}posts/list.json`)
         .then(res => {
           const posts = res.data
           this.articleInfo = _.find(posts, function (o) { return o.id === articleId })
@@ -55,7 +56,7 @@ export default {
         })
     },
     getArticleContent: async function () {
-      await axios.get(`${pathHelper.fixedApiPath()}posts/${this.id}/content.md`)
+      await axios.get(`${pathHelper.getBaseUrl()}posts/${this.id}/content.md`)
         .then(res => {
           this.mdContent = res.data
           // 載入codepen embed的js

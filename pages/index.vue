@@ -32,7 +32,7 @@ export default {
     }
   },
   async mounted () {
-    const posts = await axios.get(`${pathHelper.fixedApiPath()}posts/list.json`).then(res => res.data).catch(() => [])
+    const posts = await axios.get(`${pathHelper.getBaseUrl()}posts/list.json`).then(res => res.data).catch(() => [])
     this.posts = posts
   },
   updated: function () {
