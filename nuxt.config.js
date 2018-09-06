@@ -56,7 +56,7 @@ module.exports = {
   plugins: [
     '~/plugins/filters.js',
     '~/plugins/disqus.js',
-    '~/plugins/ga.js'
+    { src: '~/plugins/ga.js', ssr: false }
   ],
   /*
   ** Build configuration
