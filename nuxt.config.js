@@ -17,6 +17,7 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' },
       { name: 'author', content: 'MonkeyBinBin' },
+      { property: 'fb:app_id', content: config.fbId },
       { hid: 'keywords', name: 'keywords', content: config.keywords.join() },
       { hid: 'description', name: 'description', content: description },
       { hid: 'og:title', property: 'og:title', content: config.title },
