@@ -23,8 +23,8 @@ module.exports = {
       { hid: 'og:type', property: 'og:type', content: 'article' },
       { hid: 'og:url', property: 'og:url', content: path.join(config.domain, baseUrl) },
       { hid: 'og:image', property: 'og:image', content: path.join(config.domain, baseUrl, '/img/fb.png') },
-      { hid: 'og:image:width', property: 'og:image', content: '600' },
-      { hid: 'og:image:height', property: 'og:image', content: '600' },
+      { hid: 'og:image:width', property: 'og:image:width', content: '600' },
+      { hid: 'og:image:height', property: 'og:image:height', content: '600' },
       { hid: 'og:description', property: 'og:description', content: description }
     ],
     link: [
