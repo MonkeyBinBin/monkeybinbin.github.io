@@ -35,6 +35,7 @@ export default {
       meta: [
         { hid: 'keywords', name: 'keywords', content: this.keywords.join() },
         { hid: 'description', name: 'description', content: this.description },
+        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` },
         { hid: 'og:title', property: 'og:title', content: this.title },
         { hid: 'og:description', property: 'og:description', content: this.description }
       ]
@@ -48,6 +49,7 @@ export default {
     const mdContent = await import(`~/static/posts/${id}/content.md`)
     const keywords = [...constant.keywords, ...post.tags]
     return {
+      id,
       title: `${constant.title}-${post.title}`,
       description: post.slug,
       keywords,
