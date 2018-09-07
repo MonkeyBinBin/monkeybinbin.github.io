@@ -58,7 +58,7 @@ module.exports = {
     // 主要css樣式(customer)
     '~/assets/sass/main.scss',
     // 載入highlight.js樣式(可選擇不同theme)
-    'highlight.js/styles/mono-blue.css',
+    'highlight.js/styles/zenburn.css',
     // 載入aos樣式
     'aos/dist/aos.css'
   ],
@@ -70,7 +70,8 @@ module.exports = {
   plugins: [
     '~/plugins/filters.js',
     '~/plugins/disqus.js',
-    { src: '~/plugins/ga.js', ssr: false }
+    { src: '~/plugins/ga.js', ssr: false },
+    { src: '~/plugins/scrollspy.js', ssr: false }
   ],
   /*
   ** Build configuration

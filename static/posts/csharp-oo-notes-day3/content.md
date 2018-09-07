@@ -2,18 +2,19 @@
 關鍵字 this 用來定義索引子  
 不需要以整數值來索引,可以自行決定如何定義特定的查詢機制  
 可以多載  
-sample code：Xamarin.Android Listview使用的Adapter
-``` cs
+sample code：Xamarin.Android Listview使用的Adapter  
+``` c
 public class ParkAdapter: BaseAdapter<ClassA>
 {
-  private List<ClassA> _classA;
-  public override ClassA this [int index] {
-    get {
-      return this._classA.ElementAt (index);
+    private List<ClassA> _classA;
+    public override ClassA this [int index]
+    {
+        get {
+            return this._classA.ElementAt (index);
+        }
     }
-  }
 }
-```
+```  
 索引子應用 Read Only Collection  
 sample code
 ``` cs

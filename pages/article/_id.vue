@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <div class="container aos-init" data-aos="fade-left" :key="0" v-if="articleInfo && articleInfo.id">
+    <div class="container aos-init" data-aos="fade-left" :key="0" v-if="!errorMsg">
       <div class="row">
         <div class="col-12">
           <p class="text-black-50 small mb-0" v-if="articleInfo && articleInfo.createDate">{{articleInfo.createDate|parseDatetime}}</p>
@@ -73,7 +73,8 @@ export default {
       description: post && post.slug,
       keywords,
       articleInfo: post || {},
-      mdContent: mdContent
+      mdContent: mdContent,
+      errorMsg: process.server && !mdContent ? 'Page Not found!' : ''
     }
   },
   data () {
