@@ -30,11 +30,13 @@ import api from '../../services/api'
 export default {
   name: 'Article',
   head () {
+    
     return {
       title: this.title,
       meta: [
         { hid: 'keywords', name: 'keywords', content: this.keywords.join() },
-        { hid: 'description', name: 'description', content: this.description }
+        { hid: 'description', name: 'description', content: this.description },
+        { hid: 'og:description', property: 'og:description', content: this.description }
       ]
     }
   },
