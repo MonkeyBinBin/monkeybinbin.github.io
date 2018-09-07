@@ -20,6 +20,8 @@ module.exports = {
       { hid: 'keywords', name: 'keywords', content: config.keywords.join() },
       { hid: 'description', name: 'description', content: description },
       { hid: 'og:title', property: 'og:title', content: config.title },
+      { hid: 'og:type', property: 'og:type', content: 'article' },
+      { hid: 'og:url', property: 'og:url', content: 'https://monkeybinbin.github.io/blog/' },
       { hid: 'og:image', property: 'og:image', content: 'https://monkeybinbin.github.io/blog/img/fb.png' },
       { hid: 'og:image:width', property: 'og:image', content: '600' },
       { hid: 'og:image:height', property: 'og:image', content: '600' },
