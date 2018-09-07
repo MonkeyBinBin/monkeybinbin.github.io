@@ -103,6 +103,11 @@ export default {
         this.errorMsg = info.message || content.message
       }
     }
+  },
+  updated () {
+    this.$nextTick(function () {
+      AOS.init()
+    })
   }
 }
 </script>
