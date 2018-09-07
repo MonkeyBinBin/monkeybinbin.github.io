@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <div class="container aos-init" data-aos="fade-left">
+    <div class="container aos-init" data-aos="fade-left" :key="0" v-if="articleInfo && articleInfo.id">
       <div class="row">
         <div class="col-12">
           <p class="text-black-50 small mb-0" v-if="articleInfo && articleInfo.createDate">{{articleInfo.createDate|parseDatetime}}</p>
@@ -19,6 +19,15 @@
         </div>
       </div>
     </div>
+    <div class="container aos-init" data-aos="fade-left" :key="1" v-else>
+      <div class="row">
+        <div class="col-12 text-center">
+          <h1 class="not-found-title">404</h1>
+          <p class="text-black-50">Oops, the page you're looking for doesn't exist.</p>
+          <nuxt-link to="/" class="btn btn-dark">回首頁</nuxt-link>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -30,31 +39,41 @@ import api from '../../services/api'
 export default {
   name: 'Article',
   head () {
-    return {
+    const _head = {
       title: this.title,
       meta: [
         { hid: 'keywords', name: 'keywords', content: this.keywords.join() },
         { hid: 'description', name: 'description', content: this.description },
         { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` },
-        { hid: 'og:title', property: 'og:title', content: this.title },
-        { hid: 'og:description', property: 'og:description', content: this.description }
+        { hid: 'og:title', property: 'og:title', content: this.title }
       ]
     }
+    if (this.description) {
+      _head.meta.push({ hid: 'og:description', property: 'og:description', content: this.description })
+    }
+    return _head
   },
   async asyncData (context) {
     const { params } = context
     const { id } = params
     const posts = await import('~/static/posts/list.json')
     const post = _.find(posts, function (o) { return o.id === id })
-    const mdContent = await import(`~/static/posts/${id}/content.md`)
-    const keywords = [...constant.keywords, ...post.tags]
+    const keywords = [...constant.keywords]
+    if (post) {
+      keywords.push(post.tags)
+    }
+
+    let mdContent = ''
+    if (post && process.server) {
+      mdContent = await import(`~/static/posts/${id}/content.md`)
+    }
     return {
       id,
-      title: `${constant.title}-${post.title}`,
-      description: post.slug,
+      title: `${constant.title}-${post ? post.title : 'Page Not found!'}`,
+      description: post && post.slug,
       keywords,
-      articleInfo: post,
-      mdContent: process.server ? mdContent : ''
+      articleInfo: post || {},
+      mdContent: mdContent
     }
   },
   data () {
@@ -67,6 +86,10 @@ export default {
   },
   mounted () {
     this.getArticleById()
+
+    this.$nextTick(function () {
+      AOS.init()
+    })
   },
   methods: {
     getArticleById: async function () {
@@ -75,16 +98,11 @@ export default {
         this.articleInfo = info.data
         this.mdContent = content.data
         // 載入codepen embed的js
-          $.getScript('//assets.codepen.io/assets/embed/ei.js')
+        $.getScript('//assets.codepen.io/assets/embed/ei.js')
       } else {
         this.errorMsg = info.message || content.message
       }
     }
-  },
-  updated: function () {
-    this.$nextTick(function () {
-      AOS.init()
-    })
   }
 }
 </script>
@@ -94,5 +112,9 @@ export default {
   & /deep/ img {
     max-width: 100%;
   }
+}
+.not-found-title {
+  font-size: 200px;
+  color: #1dc8cd;
 }
 </style>
