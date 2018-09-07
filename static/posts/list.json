@@ -1,9 +1,30 @@
 [
   {
-    "id": "hello-world",
-    "title": "(title) Hello World!!",
-    "slug": "(slug) Hello world slug",
-    "tags": ["demo", "demo1", "demo2"],
-    "createDate": "2018-09-03"
+    "id": "jenkins-set-npm-script-task",
+    "title": "安裝nodejs設定執行npm script任務",
+    "slug": "記錄如何在Jenkins建立透過node js與npm,執行webpack進行程式碼打包",
+    "tags": ["Jenkins"],
+    "createDate": "2017-05-25"
+  },
+  {
+    "id": "csharp-oo-notes-day1",
+    "title": "物件導向實作課程筆記 Day 1",
+    "slug": "記錄去上\"物件導向實作課程\"的筆記，一共3天。本篇為第1天課程的筆記",
+    "tags": ["CSharp"],
+    "createDate": "2017-06-10"
+  },
+  {
+    "id": "csharp-oo-notes-day2",
+    "title": "物件導向實作課程筆記 Day 2",
+    "slug": "記錄去上\"物件導向實作課程\"的筆記，一共3天。本篇為第2天課程的筆記",
+    "tags": ["CSharp"],
+    "createDate": "2017-06-17"
+  },
+  {
+    "id": "csharp-oo-notes-day3",
+    "title": "物件導向實作課程筆記 Day 3",
+    "slug": "記錄去上\"物件導向實作課程\"的筆記，一共3天。本篇為第3天課程的筆記",
+    "tags": ["CSharp"],
+    "createDate": "2017-06-24"
   }
 ]
