@@ -26,5 +26,12 @@
     "slug": "記錄去上\"物件導向實作課程\"的筆記，一共3天。本篇為第3天課程的筆記",
     "tags": ["CSharp"],
     "createDate": "2017-06-24"
+  },
+  {
+    "id": "set-sass-dev-environment",
+    "title": "建立Sass開發與轉譯產出CSS環境配置",
+    "slug": "Sass是一種CSS的開發工具，提供便利的寫法，讓CSS的開發變得簡單可維護，建立個人的CSS函式庫。本篇文章主要介紹如何利用npm建立一個Sass開發(live reload)與產出CSS檔案。並且說明如何將compass載入使用，但是由於compass目前已沒有在維護，如果可以建議不要再使用，此處介紹的目的是因為可能過去有使用compass的習慣或需要，也是可以將compass整合進專案內",
+    "tags": ["Sass", "compass"],
+    "createDate": "2018-09-08"
   }
 ]

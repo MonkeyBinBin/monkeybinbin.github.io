@@ -13,6 +13,7 @@ renderer.code = (code, language) => {
   // Render the highlighted code with `hljs` class.
   return `<pre><code class="hljs ${language}">${highlighted}</code></pre>`
 }
+renderer.link = ( href, title, text ) => `<a target="_blank" href="${ href }" title="${ title }">${ text }</a>`;
 
 // Set the renderer to marked.
 marked.setOptions({ renderer, baseUrl: pathHelper.getBaseUrl() })
