@@ -16,6 +16,7 @@
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
+    "@nuxtjs/sitemap": "^0.1.1",
     "aos": "^3.0.0-beta.5",
     "autoprefixer": "^9.1.3",
     "axios": "^0.18.0",

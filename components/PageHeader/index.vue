@@ -34,7 +34,7 @@ export default {
   position: relative;
 }
 
-#intro .intro-text {
+#intro /deep/ .intro-text {
   padding-top: 20px;
   text-align: center;
   vertical-align: top;

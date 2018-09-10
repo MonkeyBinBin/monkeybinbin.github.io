@@ -7,6 +7,8 @@ const config = require('./config')
 const baseUrl = process.env.DEPLOY_ENV === 'GH_PAGES' ? '/blog/' : '/'
 const description = '使用 Nuxt.js、 Bootstrap 4 建立的blog。分享與紀錄一些程式開發的東西。'
 
+const posts = require('./static/posts/list.json')
+
 module.exports = {
   /*
   ** Headers of the page
@@ -65,8 +67,32 @@ module.exports = {
   modules: [
     // 'bootstrap-vue/nuxt'
     // have custom bootstrap CSS,需設定css載入
-    ['bootstrap-vue/nuxt', { css: false }]
+    ['bootstrap-vue/nuxt', { css: false }],
+    '@nuxtjs/sitemap'
   ],
+  sitemap: {
+    path: '/sitemap.xml', // sitemap名稱，不用改
+    hostname: process.env.DEPLOY_ENV === 'GH_PAGES' ? `${config.domain}${baseUrl}` : 'http://localhost:3000/', // 網址
+    cacheTime: 1000 * 60 * 15, // 站點路由更新頻率，只在 generate: false有用
+    gzip: true, // 生成 .xml.gz 檔的 sitemap
+    generate: true, // 允許使用 nuxt generate 生成
+    // 排除不要的頁面路由
+    exclude: [
+      '/tag'
+    ],
+    // 靜態頁面路徑
+    routes: (callback) => {
+      const routes = posts.map(post => {
+        return {
+          url: '/article/' + post.id,
+          changefreq: 'daily',
+          priority: 0.8,
+          lastmodISO: '2017-06-30T13:30:00.000Z'
+        }
+      })
+      callback(null, routes)
+    }
+  },
   plugins: [
     '~/plugins/filters.js',
     '~/plugins/disqus.js',
@@ -137,8 +163,7 @@ module.exports = {
   generate: {
     fallback: true,
     routes: () => {
-      let data = require('./static/posts/list.json')
-      return data.map((post) => {
+      return posts.map(post => {
         return {
           route: `/article/${post.id}`,
           payload: post
