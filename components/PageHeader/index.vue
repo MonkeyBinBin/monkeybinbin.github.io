@@ -51,4 +51,3 @@ export default {
   max-width: 7.5rem;
 }
 </style>
-

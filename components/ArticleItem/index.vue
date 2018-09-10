@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name:'ArticleItem',
+  name: 'ArticleItem',
   props: {
     post: {
       type: Object,

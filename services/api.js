@@ -21,19 +21,19 @@ export default {
   },
   getArticlesWithTag: (tag) => {
     return axios.get(`${pathHelper.getBaseUrl()}posts/list.json?d=${dayCacheHash}`)
-    .then(res => {
+      .then(res => {
       // 依建立日期由大至小排列
-      return _.orderBy(_.filter(res.data, function(o) { return o.tags && o.tags.includes(tag) }),
-        [
-          function (o) {
-            return moment(o.createDate, 'YYYY-MM-DD')
-          }
-        ],
-        [
-          'desc'
-        ])
-    })
-    .catch(() => [])
+        return _.orderBy(_.filter(res.data, function (o) { return o.tags && o.tags.includes(tag) }),
+          [
+            function (o) {
+              return moment(o.createDate, 'YYYY-MM-DD')
+            }
+          ],
+          [
+            'desc'
+          ])
+      })
+      .catch(() => [])
   },
   getArticleById: (id) => {
     const _info = axios.get(`${pathHelper.getBaseUrl()}posts/list.json?d=${dayCacheHash}`)
