@@ -27,7 +27,7 @@ SCSS是一種接近CSS的語法，像這樣：
 }
 ```
 推薦使用SCSS語法，因為他更接近CSS語法容易閱讀與入門。
-**附註：Sass的檔名如果在最前面加上"_"就不會被轉譯工具輸出成CSS檔案(例如：_base.scss)**
+**附註：Sass的檔名如果在最前面加上"\_"就不會被轉譯工具輸出成CSS檔案(例如：\_base.scss)**
 
 ![compass logo](articleImages/set-sass-dev-environment/_02.png)
 
