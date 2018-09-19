@@ -1,0 +1,4 @@
+$primary-color: #1dc8cd;
+$secondary-color: lighten(saturate($primary-color, 25), 50);
+$marked-primary-color: #c91414;
+$marked-secondary-color: lighten(saturate($marked-primary-color, 25), 50);

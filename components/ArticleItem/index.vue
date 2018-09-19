@@ -34,11 +34,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary-color: #1dc8cd;
-$secondary-color: lighten(saturate($primary-color, 25), 50);
-$marked-primary-color: #c91414;
-$marked-secondary-color: lighten(saturate($marked-primary-color, 25), 50);
-
 .article-container {
   margin-bottom: 50px;
 }
@@ -56,6 +51,7 @@ $marked-secondary-color: lighten(saturate($marked-primary-color, 25), 50);
   &::before {
     content: '#';
   }
+  @include hyperlink_underline_animation($primary-color);
 }
 .article-create-date {
   &::after{
@@ -67,9 +63,14 @@ $marked-secondary-color: lighten(saturate($marked-primary-color, 25), 50);
 .more {
   color: $primary-color;
   text-transform: uppercase;
+  &:hover {
+    text-decoration: none;
+  }
+  @include hyperlink_underline_animation($primary-color);
 }
 .tags /deep/ .marked {
   color: $marked-primary-color;
   background-color: $marked-secondary-color;
+  @include hyperlink_underline_animation($marked-primary-color);
 }
 </style>

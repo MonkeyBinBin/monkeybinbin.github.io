@@ -16,6 +16,7 @@
     "deploy": "del-cli -f 'static/sitemap.xml' 'static/sitemap.xml.gz' && push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
+    "@nuxtjs/google-tag-manager": "^2.0.0",
     "@nuxtjs/sitemap": "^0.1.1",
     "aos": "^3.0.0-beta.5",
     "autoprefixer": "^9.1.3",
@@ -29,6 +30,7 @@
     "moment": "^2.22.2",
     "node-sass": "^4.9.3",
     "nuxt": "^1.0.0",
+    "nuxt-sass-resources-loader": "^2.0.5",
     "purgecss-webpack-plugin": "^1.2.1",
     "sass-loader": "^7.1.0",
     "vue-disqus": "^3.0.4",

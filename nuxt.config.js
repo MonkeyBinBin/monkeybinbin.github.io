@@ -68,7 +68,14 @@ module.exports = {
     // 'bootstrap-vue/nuxt'
     // have custom bootstrap CSS,需設定css載入
     ['bootstrap-vue/nuxt', { css: false }],
-    '@nuxtjs/sitemap'
+    '@nuxtjs/sitemap',
+    // global 載入sass的資源(variables、functions、mixins…)
+    ['nuxt-sass-resources-loader', [
+      path.resolve(__dirname, 'assets/sass/helpers/_variables.scss'),
+      path.resolve(__dirname, 'assets/sass/helpers/_functions.scss'),
+      path.resolve(__dirname, 'assets/sass/helpers/_mixins.scss')
+    ]],
+    ['@nuxtjs/google-tag-manager', { id: 'GTM-N24F89P' }]
   ],
   sitemap: {
     path: '/sitemap.xml', // sitemap名稱，不用改
