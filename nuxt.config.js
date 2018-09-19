@@ -103,6 +103,7 @@ module.exports = {
   plugins: [
     '~/plugins/filters.js',
     '~/plugins/disqus.js',
+    // 改用google tag manager, ga設定在上面, 觸發事件需設為"History Change(記錄變更)"
     // { src: '~/plugins/ga.js', ssr: false },
     { src: '~/plugins/scrollspy.js', ssr: false }
   ],
