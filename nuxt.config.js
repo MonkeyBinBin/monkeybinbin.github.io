@@ -103,7 +103,7 @@ module.exports = {
   plugins: [
     '~/plugins/filters.js',
     '~/plugins/disqus.js',
-    { src: '~/plugins/ga.js', ssr: false },
+    // { src: '~/plugins/ga.js', ssr: false },
     { src: '~/plugins/scrollspy.js', ssr: false }
   ],
   /*
