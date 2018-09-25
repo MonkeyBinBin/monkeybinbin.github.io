@@ -33,5 +33,12 @@
     "slug": "Sass是一種CSS的開發工具，提供便利的寫法，讓CSS的開發變得簡單可維護，建立個人的CSS函式庫。本篇文章主要介紹如何利用npm建立一個Sass開發(live reload)與產出CSS檔案。並且說明如何將compass載入使用，但是由於compass目前已沒有在維護，如果可以建議不要再使用，此處介紹的目的是因為可能過去有使用compass的習慣或需要，也是可以將compass整合進專案內",
     "tags": ["Sass", "compass"],
     "createDate": "2018-09-08"
+  },
+  {
+    "id": "mac-gs-compress-pdf",
+    "title": "Mac OS利用Automator搭配Ghostscript壓縮PDF",
+    "slug": "Mac作業系統提供一個自動化的應用程式Automator，可以將一系列動作組合成一個工作流程。搭配Ghostscript來進行pdf檔案的壓縮，設定完成後不需要再記住複雜的指令。又可免費壓縮pdf檔案。",
+    "tags": ["Automator", "Ghostscript", "PDF"],
+    "createDate": "2018-09-25"
   }
 ]
