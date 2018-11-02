@@ -94,7 +94,7 @@ module.exports = {
           url: '/article/' + post.id,
           changefreq: 'daily',
           priority: 0.8,
-          lastmodISO: '2017-06-30T13:30:00.000Z'
+          lastmodISO: post.createDate
         }
       })
       callback(null, routes)

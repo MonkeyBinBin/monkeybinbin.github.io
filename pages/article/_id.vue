@@ -69,7 +69,7 @@ export default {
     }
     return {
       id,
-      title: `${constant.title} - ${post ? post.title : 'Page Not found!'}`,
+      title: `${post ? post.title : 'Page Not found!'} - ${constant.title}`,
       description: post && post.slug,
       keywords,
       articleInfo: post || {},
