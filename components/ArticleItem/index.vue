@@ -5,7 +5,7 @@
       <nuxt-link v-for="tag in post.tags" :key="tag" :to="'/tag/'+tag" :class="['small', markedTag && tag === markedTag && 'marked']">{{ tag }}</nuxt-link>
     </div>
     <h2>
-      {{ post.title }}
+      <nuxt-link :to="'/article/'+post.id">{{ post.title }}</nuxt-link>
     </h2>
     <hr class="article-divider my-4 mx-0">
     <p class="text-black-50 ml-4" v-if="post.slug">{{post.slug}}</p>
@@ -72,5 +72,10 @@ export default {
   color: $marked-primary-color;
   background-color: $marked-secondary-color;
   @include hyperlink_underline_animation($marked-primary-color);
+}
+.article-container /deep/ h2 /deep/ a {
+  color: black;
+  text-decoration: none;
+  @include hyperlink_underline_animation(black);
 }
 </style>
