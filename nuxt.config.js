@@ -164,19 +164,7 @@ module.exports = {
         }
       )
     },
-    extractCSS: true,
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          styles: {
-            name: 'styles',
-            test: /\.(css|vue)$/,
-            chunks: 'all',
-            enforce: true
-          }
-        }
-      }
-    },
+    extractCSS: { allChunks: true },
     postcss: [
       require('autoprefixer')
     ]
