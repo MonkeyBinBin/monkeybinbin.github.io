@@ -60,7 +60,7 @@ module.exports = {
     // 載入highlight.js樣式(可選擇不同theme)
     'highlight.js/styles/zenburn.css',
     // 載入aos樣式
-    'aos/dist/aos.css',
+    'aos/src/sass/aos.scss',
     // 主要css樣式(customer)
     '~/assets/sass/main.scss'
   ],
@@ -143,7 +143,7 @@ module.exports = {
               'code',
               'blockquote'
             ],
-            whitelistPatterns: [/\bhljs\S*/]
+            whitelistPatterns: [/\bhljs\S*/, /\baos\S*/]
           })
         )
       }
@@ -164,6 +164,7 @@ module.exports = {
         }
       )
     },
+    extractCSS: { allChunks: true },
     postcss: [
       require('autoprefixer')
     ]
