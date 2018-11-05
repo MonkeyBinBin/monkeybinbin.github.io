@@ -57,12 +57,12 @@ module.exports = {
   css: [
     // 載入bootstrap
     'bootstrap/scss/bootstrap.scss',
-    // 主要css樣式(customer)
-    '~/assets/sass/main.scss',
     // 載入highlight.js樣式(可選擇不同theme)
     'highlight.js/styles/zenburn.css',
     // 載入aos樣式
-    'aos/dist/aos.css'
+    'aos/dist/aos.css',
+    // 主要css樣式(customer)
+    '~/assets/sass/main.scss'
   ],
   modules: [
     // 'bootstrap-vue/nuxt'
@@ -167,9 +167,7 @@ module.exports = {
     postcss: [
       require('autoprefixer')
     ],
-    extractCSS: {
-      allChunks: true
-    }
+    extractCSS: true
   },
   generate: {
     fallback: true,
