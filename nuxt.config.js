@@ -164,7 +164,6 @@ module.exports = {
         }
       )
     },
-    extractCSS: { allChunks: true },
     postcss: [
       require('autoprefixer')
     ]
