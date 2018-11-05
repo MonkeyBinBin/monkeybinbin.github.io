@@ -73,7 +73,7 @@ export default {
   background-color: $marked-secondary-color;
   @include hyperlink_underline_animation($marked-primary-color);
 }
-.article-container /deep/ h2 /deep/ a {
+.article-container /deep/ h2 a {
   color: black;
   text-decoration: none;
   @include hyperlink_underline_animation(black);

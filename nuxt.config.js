@@ -165,7 +165,7 @@ module.exports = {
       )
     },
     postcss: [
-      require('autoprefixer')
+      // require('autoprefixer')
     ],
     extractCSS: true
   },
