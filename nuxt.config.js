@@ -169,12 +169,7 @@ module.exports = {
       require('autoprefixer')
     ],
     // 增加打包檔案解析的設定
-    analyze: {
-      analyzerMode: 'server',
-      analyzerHost: '0.0.0.0',
-      analyzerPort: '9999',
-      openAnalyzer: true
-    }
+    analyze: process.env.DEPLOY_ENV !== 'GH_PAGES'
   },
   generate: {
     fallback: true,
