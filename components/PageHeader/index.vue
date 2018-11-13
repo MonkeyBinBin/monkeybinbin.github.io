@@ -1,9 +1,9 @@
 <template>
-  <header class="text-center" id="intro">
-    <nuxt-link to="/" class="avatar">
+  <header class="intro text-center">
+    <nuxt-link to="/" class="intro__avatar">
       <img alt="MonkeyBinBin" :src="avatar" class="img-thumbnail rounded-circle">
     </nuxt-link>
-    <div class="intro-text">
+    <div class="intro__text">
       <h2 class="text-white">猴猴學語</h2>
     </div>
     <page-nav />
@@ -27,27 +27,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#intro {
+.intro {
   width: 100%;
   height: 350px;
   background: linear-gradient(45deg, #1de099, #1dc8cd);
   position: relative;
 }
 
-#intro /deep/ .intro-text {
+.intro__text {
   padding-top: 20px;
   text-align: center;
   vertical-align: top;
 }
 
-.avatar {
+.intro__avatar {
   display: inline-block;
   margin-top: 50px;
   line-height: 0;
   padding: 0.25rem;
-}
-
-.avatar img {
-  max-width: 7.5rem;
+  img {
+    max-width: 7.5rem;
+  }
 }
 </style>

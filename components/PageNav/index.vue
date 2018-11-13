@@ -1,18 +1,18 @@
 <template>
-  <nav>
-    <ul>
-      <li>
-        <nuxt-link to="/">HOME</nuxt-link>
+  <nav class="menu">
+    <ul class="menu__container">
+      <li class="menu__item">
+        <nuxt-link class="menu__link" to="/">HOME</nuxt-link>
       </li>
-      <li>
-        <nuxt-link to="/about">ABOUT</nuxt-link>
+      <li class="menu__item">
+        <nuxt-link class="menu__link" to="/about">ABOUT</nuxt-link>
       </li>
     </ul>
   </nav>
 </template>
 
 <style lang="scss" scoped>
-nav {
+.menu {
   max-width: 960px;
   mask-image: linear-gradient(
     90deg,
@@ -25,7 +25,7 @@ nav {
   padding: 20px 0;
 }
 
-nav ul {
+.menu__container {
   padding: 0;
   margin: 0;
   text-align: center;
@@ -40,11 +40,11 @@ nav ul {
     inset 0 0 1px rgba(255, 255, 255, 0.6);
 }
 
-nav ul li {
+.menu__item {
   display: inline-block;
 }
 
-nav ul li a {
+.menu__link {
   padding: 18px;
   font-family: "Open Sans";
   text-transform: uppercase;
@@ -54,7 +54,7 @@ nav ul li a {
   display: block;
 }
 
-nav ul li a:hover {
+.menu__link:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1),
     inset 0 0 1px rgba(255, 255, 255, 0.6);
   background: rgba(255, 255, 255, 0.1);

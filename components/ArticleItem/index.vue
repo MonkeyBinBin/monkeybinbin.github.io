@@ -51,7 +51,7 @@ export default {
   &::before {
     content: '#';
   }
-  @include hyperlink_underline_animation($primary-color);
+  @include link-animation($primary-color);
 }
 .article-create-date {
   &::after{
@@ -66,16 +66,16 @@ export default {
   &:hover {
     text-decoration: none;
   }
-  @include hyperlink_underline_animation($primary-color);
+  @include link-animation($primary-color);
 }
 .tags /deep/ .marked {
   color: $marked-primary-color;
   background-color: $marked-secondary-color;
-  @include hyperlink_underline_animation($marked-primary-color);
+  @include link-animation($marked-primary-color);
 }
 .article-container /deep/ h2 a {
   color: black;
   text-decoration: none;
-  @include hyperlink_underline_animation(black);
+  @include link-animation(black);
 }
 </style>

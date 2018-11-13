@@ -1,5 +1,5 @@
 <template>
-  <footer id="footer">
+  <footer class="footer">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-12 text-center">
@@ -17,14 +17,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#footer {
+.footer {
   background: #fff;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
   color: rgb(146, 146, 146);
   font-size: 14px;
 }
 
-#footer .row {
+.footer .row {
   height: 80px;
 }
 </style>
