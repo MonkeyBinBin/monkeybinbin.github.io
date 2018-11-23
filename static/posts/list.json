@@ -1,8 +1,8 @@
 [
   {
     "id": "jenkins-set-npm-script-task",
-    "title": "安裝nodejs設定執行npm script任務",
-    "slug": "記錄如何在Jenkins建立透過node js與npm,執行webpack進行程式碼打包",
+    "title": "安裝 nodejs 設定執行 npm script 任務",
+    "slug": "記錄如何在 Jenkins 建立透過 node js 與 npm ,執行 webpack 進行程式碼打包",
     "tags": ["Jenkins"],
     "createDate": "2017-05-25"
   },
@@ -29,16 +29,23 @@
   },
   {
     "id": "set-sass-dev-environment",
-    "title": "建立Sass開發與轉譯產出CSS環境配置",
-    "slug": "Sass是一種CSS的開發工具，提供便利的寫法，讓CSS的開發變得簡單可維護，建立個人的CSS函式庫。本篇文章主要介紹如何利用npm建立一個Sass開發(live reload)與產出CSS檔案。並且說明如何將compass載入使用，但是由於compass目前已沒有在維護，如果可以建議不要再使用，此處介紹的目的是因為可能過去有使用compass的習慣或需要，也是可以將compass整合進專案內",
+    "title": "建立 Sass 開發與轉譯產出 CSS 環境配置",
+    "slug": "Sass 是一種 CSS 的開發工具，提供便利的寫法，讓 CSS 的開發變得簡單可維護，建立個人的 CSS 函式庫。本篇文章主要介紹如何利用 npm 建立一個 Sass 開發( live reload )與產出 CSS 檔案。並且說明如何將 compass 載入使用，但是由於 compass 目前已沒有在維護，如果可以建議不要再使用，此處介紹的目的是因為可能過去有使用 compass 的習慣或需要，也是可以將 compass 整合進專案內",
     "tags": ["Sass", "compass"],
     "createDate": "2018-09-08"
   },
   {
     "id": "mac-gs-compress-pdf",
-    "title": "Mac OS利用Automator搭配Ghostscript壓縮PDF",
-    "slug": "Mac作業系統提供一個自動化的應用程式Automator，可以將一系列動作組合成一個工作流程。搭配Ghostscript來進行pdf檔案的壓縮，設定完成後不需要再記住複雜的指令。又可免費壓縮pdf檔案。",
+    "title": "Mac OS 利用 Automator 搭配 Ghostscript 壓縮 PDF",
+    "slug": "Mac 作業系統提供一個自動化的應用程式 Automator ，可以將一系列動作組合成一個工作流程。搭配 Ghostscript 來進行 pdf 檔案的壓縮，設定完成後不需要再記住複雜的指令。又可免費壓縮 pdf 檔案。",
     "tags": ["Automator", "Ghostscript", "PDF"],
     "createDate": "2018-09-25"
+  },
+  {
+    "id": "mac-reform-itermapp",
+    "title": "Mac 端終機大改造， iTerm2 + Oh my zsh 好看也好用",
+    "slug": "Mac 內建的端終機一向都是黑底白字，讓人覺得很無趣，不夠酷炫。為了讓工作的心情更加愉快，必需要有一個好看好用的介面。改用 iTerm2 並且搭配 Oh my zsh 就可以讓你平常使用的終端機大變身。此篇文章用來紀錄本猴的開發環境設定，以後萬一不幸電腦重灌還可以回的去。同時也可以讓大家參考。",
+    "tags": ["iTerm2", "Oh my zsh"],
+    "createDate": "2018-11-22"
   }
 ]
