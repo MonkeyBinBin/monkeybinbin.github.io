@@ -45,7 +45,7 @@ code ~/.zshrc
 ```
 
 2. 將 ZSH_THEME="robbyrussell" 的 robbyrussell 改為想要的 theme 名稱，設定完成儲存檔案  
-內建的 theme 可以參考 https://github.com/robbyrussell/oh-my-zsh/wiki/themes  
+內建的 theme 可以參考 [Link](https://github.com/robbyrussell/oh-my-zsh/wiki/themes)  
 
 3. 套用 ~/.zshrc 設定，需執行以下指令才會生效
 ``` javascript
@@ -74,8 +74,8 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 ```
 
 4. 修改 ~/.zshrc 增加 prompt 設定(項目以空格區隔)  
-powerlevel9k 提供的prompt設定參考 https://github.com/bhilburn/powerlevel9k#prompt-customization  
-其他使用者提供的設定/截圖參考 https://github.com/bhilburn/powerlevel9k/wiki/Show-Off-Your-Config  
+powerlevel9k 提供的prompt設定參考 [Link](https://github.com/bhilburn/powerlevel9k#prompt-customization)  
+其他使用者提供的設定/截圖參考 [Link](https://github.com/bhilburn/powerlevel9k/wiki/Show-Off-Your-Config)  
 目前我使用的設定如下
 ``` shell
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon dir vcs)
@@ -83,7 +83,7 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status ip time node_version)
 ``` 
 
 5. 修改 ~/.zshrc 增加字型設定，設定完成儲存檔案  
-字型設定/說明：https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#option-4-install-nerd-fonts  
+字型設定/說明 [Link](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#option-4-install-nerd-fonts)  
 (請注意選擇不同的字型設定，需安裝該字型並將 iTerm2 之字型設定為該字型才會正常顯示)  
 目前我使用的設定如下  
 ``` shell
@@ -98,7 +98,7 @@ source ~/.zshrc
 #### 安裝 nerd-fonts
 [nerd-fonts github page](https://github.com/ryanoasis/nerd-fonts)  
 
-透過 Homebrew 安裝字型 https://github.com/ryanoasis/nerd-fonts#option-4-homebrew-fonts  
+透過 Homebrew 安裝字型說明 [Link](https://github.com/ryanoasis/nerd-fonts#option-4-homebrew-fonts)  
 (font-hack-nerd-font 可替換為想要的字型名稱)  
 ``` shell
 brew tap caskroom/fonts
@@ -120,7 +120,7 @@ Preferences > Profiles > Text > Change Font
 **開啟font.app > 選擇該字體 > 選擇自動解決版本問題**  
 
 #### oh my zsh plugin 安裝與設定
-Plugins 設定/說明：https://github.com/robbyrussell/oh-my-zsh/wiki/Plugins  
+Plugins 設定/說明 [Link](https://github.com/robbyrussell/oh-my-zsh/wiki/Plugins)  
 可依據需要安裝想要的plugin  
 預設安裝的 plugins 資料夾位置在 ~/.oh-my-zsh/plugins  
 透過下列指令可查詢目前預設可使用的 plugins  
@@ -160,5 +160,16 @@ source ~/.zshrc
 **zsh-syntax-highlighting plugin**  
 輸入指令時，即時顯示高亮效果，可用指令與不可用的指令會有不同顏色標示  
 ![zsh-syntax-highlighting plugin](articleImages/mac-reform-itermapp/_08.gif)  
+
+#### iTerm 快速鍵設定
+* 刪除整行輸入的指令  
+> 自行定義快速鍵(目前使用 command + delete )，並將 Action 設定為 Send Hex Codes : **0x15**  
+* 刪除輸入指令的一個單字  
+> 自行定義快速鍵(目前使用 option + delete )，並將 Action 設定為 Send Hex Codes : **0x17**  
+
+![hot keys setting](articleImages/mac-reform-itermapp/_09.jpg)  
+
+效果展示  
+![hot keys demo](articleImages/mac-reform-itermapp/_10.gif)
 
 後續如果有什麼好用的東西再補充，暫時先這樣。  
