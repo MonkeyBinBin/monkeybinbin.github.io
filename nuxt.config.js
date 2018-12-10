@@ -8,7 +8,7 @@ const baseUrl = '/'
 const description = '使用 Nuxt.js、 Bootstrap 4 建立的blog。分享與紀錄一些程式開發的東西。'
 
 const posts = require('./static/posts/list.json')
-
+console.log('process.env => ', process.env)
 module.exports = {
   /*
   ** Headers of the page
@@ -79,7 +79,7 @@ module.exports = {
   ],
   sitemap: {
     path: '/sitemap.xml', // sitemap名稱，不用改
-    hostname: process.env.DEPLOY_ENV === 'GH_PAGES' ? `${config.domain}${baseUrl}` : 'http://localhost:3000/', // 網址
+    hostname: process.env.DEPLOY_ENV === 'production' ? `${config.domain}` : 'http://localhost:3000/', // 網址
     cacheTime: 1000 * 60 * 15, // 站點路由更新頻率，只在 generate: false有用
     gzip: true, // 生成 .xml.gz 檔的 sitemap
     generate: true, // 允許使用 nuxt generate 生成
@@ -169,7 +169,7 @@ module.exports = {
       require('autoprefixer')
     ],
     // 增加打包檔案解析的設定
-    analyze: process.env.DEPLOY_ENV !== 'GH_PAGES'
+    analyze: false
   },
   generate: {
     fallback: true,
