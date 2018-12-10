@@ -11,8 +11,6 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
-    "build:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt build",
-    "generate:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt generate",
     "deploy": "del-cli -f 'static/sitemap.xml' 'static/sitemap.xml.gz' && push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {

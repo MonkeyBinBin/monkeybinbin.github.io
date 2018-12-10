@@ -4,7 +4,7 @@ const path = require('path')
 const webpack = require('webpack')
 const config = require('./config')
 
-const baseUrl = process.env.DEPLOY_ENV === 'GH_PAGES' ? '/blog/' : '/'
+const baseUrl = '/'
 const description = '使用 Nuxt.js、 Bootstrap 4 建立的blog。分享與紀錄一些程式開發的東西。'
 
 const posts = require('./static/posts/list.json')
@@ -25,7 +25,7 @@ module.exports = {
       { hid: 'og:title', property: 'og:title', content: config.title },
       { hid: 'og:type', property: 'og:type', content: 'article' },
       { hid: 'og:url', property: 'og:url', content: `${config.domain}${baseUrl}` },
-      { hid: 'og:image', property: 'og:image', content: `${config.domain}${path.join(baseUrl, '/img/fb.jpg')}` },
+      { hid: 'og:image', property: 'og:image', content: `${path.join(config.domain, baseUrl, '/img/fb.jpg')}` },
       { hid: 'og:image:width', property: 'og:image:width', content: '474' },
       { hid: 'og:image:height', property: 'og:image:height', content: '474' },
       { hid: 'og:description', property: 'og:description', content: description }
