@@ -8,7 +8,6 @@ const baseUrl = '/'
 const description = '使用 Nuxt.js、 Bootstrap 4 建立的blog。分享與紀錄一些程式開發的東西。'
 
 const posts = require('./static/posts/list.json')
-console.log('process.env => ', process.env)
 module.exports = {
   /*
   ** Headers of the page
