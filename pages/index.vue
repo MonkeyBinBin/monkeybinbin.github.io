@@ -1,7 +1,12 @@
 <template>
   <section class="section">
     <div class="container">
-      <div :class="isAosInit ? 'row justify-content-center aos-init' : 'row justify-content-center'" :data-aos="isAosInit ? 'fade-left' : undefined" v-for="(post, key) in posts" :key="key">
+      <div
+        :class="isAosInit ? 'row justify-content-center aos-init' : 'row justify-content-center'"
+        :data-aos="isAosInit ? 'fade-left' : undefined"
+        v-for="(post, key) in posts"
+        :key="key"
+      >
         <div class="col-sm-10 col-md-8">
           <article-item :post="post" />
         </div>
@@ -31,7 +36,15 @@ export default {
     if (process.server) {
       const posts = await import('~/static/posts/list.json')
       resultData = {
-        posts
+        posts: _.orderBy(posts,
+          [
+            function (o) {
+              return moment(o.createDate, 'YYYY-MM-DD')
+            }
+          ],
+          [
+            'desc'
+          ])
       }
     } else {
       resultData = {}
