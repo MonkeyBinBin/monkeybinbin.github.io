@@ -30,8 +30,7 @@ export default {
   },
   async mounted () {
     this.posts = await api.getArticlesWithTag(this.tagName)
-  },
-  updated: function () {
+
     this.$nextTick(function () {
       AOS.init()
     })

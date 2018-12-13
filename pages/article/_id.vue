@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <div class="container aos-init" data-aos="fade-left" :key="0" v-if="!errorMsg">
+    <div :class="isAosInit ? 'container aos-init' : 'container'" :data-aos="isAosInit ? 'fade-left' : undefined" :key="0" v-if="!errorMsg">
       <div class="row">
         <div class="col-12">
           <p class="text-black-50 small mb-0" v-if="articleInfo && articleInfo.createDate">{{articleInfo.createDate|parseDatetime}}</p>
@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div class="container aos-init" data-aos="fade-left" :key="1" v-else>
+    <div :class="isAosInit ? 'container aos-init' : 'container'" :data-aos="isAosInit ? 'fade-left' : undefined" :key="1" v-else>
       <div class="row">
         <div class="col-12 text-center">
           <h1 class="not-found-title">404</h1>
@@ -39,42 +39,53 @@ import api from '../../services/api'
 export default {
   name: 'Article',
   head () {
-    const _head = {
-      title: this.title,
-      meta: [
-        { hid: 'keywords', name: 'keywords', content: this.keywords.join() },
-        { hid: 'description', name: 'description', content: this.description },
-        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` },
-        { hid: 'og:title', property: 'og:title', content: this.title }
-      ]
+    if (process.server) {
+      const _head = {
+        title: this.title,
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: this.keywords.join() },
+          { hid: 'description', name: 'description', content: this.description },
+          { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` },
+          { hid: 'og:title', property: 'og:title', content: this.title }
+        ]
+      }
+      if (this.description) {
+        _head.meta.push({ hid: 'og:description', property: 'og:description', content: this.description })
+      }
+      return _head
     }
-    if (this.description) {
-      _head.meta.push({ hid: 'og:description', property: 'og:description', content: this.description })
-    }
-    return _head
   },
   async asyncData (context) {
-    const { params } = context
-    const { id } = params
-    const posts = await import('~/static/posts/list.json')
-    const post = _.find(posts, function (o) { return o.id === id })
-    const keywords = [...constant.keywords]
-    if (post) {
-      keywords.push(post.tags)
-    }
+    let resultData
+    if (process.server) {
+      const { params } = context
+      const { id } = params
+      const posts = await import('~/static/posts/list.json')
+      let post = _.find(posts, function (o) { return o.id === id })
+      const keywords = [...constant.keywords]
+      if (post) {
+        keywords.push(post.tags)
+      }
 
-    let mdContent = ''
-    if (post && process.server) {
-      mdContent = await import(`~/static/posts/${id}/content.md`)
+      let mdContent = ''
+      if (post) {
+        mdContent = await import(`~/static/posts/${id}/content.md`)
+      }
+      resultData = {
+        id,
+        title: `${post ? post.title : 'Page Not found!'} - ${constant.title}`,
+        description: post && post.slug,
+        keywords,
+        articleInfo: post || {},
+        mdContent: mdContent,
+        errorMsg: !mdContent ? 'Page Not found!' : ''
+      }
+    } else {
+      resultData = {}
     }
     return {
-      id,
-      title: `${post ? post.title : 'Page Not found!'} - ${constant.title}`,
-      description: post && post.slug,
-      keywords,
-      articleInfo: post || {},
-      mdContent: mdContent,
-      errorMsg: process.server && !mdContent ? 'Page Not found!' : ''
+      ...resultData,
+      isAosInit: !process.server
     }
   },
   data () {
@@ -82,7 +93,8 @@ export default {
       id: this.$route.params.id,
       errorMsg: '',
       articleInfo: {},
-      mdContent: ''
+      mdContent: '',
+      isAosInit: true
     }
   },
   mounted () {
@@ -104,11 +116,6 @@ export default {
         this.errorMsg = info.message || content.message
       }
     }
-  },
-  updated () {
-    this.$nextTick(function () {
-      AOS.init()
-    })
   }
 }
 </script>

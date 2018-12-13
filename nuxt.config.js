@@ -54,21 +54,16 @@ module.exports = {
     color: '#3B8070',
     height: '4px'
   },
-  css: (() => {
-    let _cssFiles = [
-      // 載入bootstrap
-      'bootstrap/scss/bootstrap.scss',
-      // 載入highlight.js樣式(可選擇不同theme)
-      'highlight.js/styles/zenburn.css',
-      // 主要css樣式(customer)
-      '~/assets/sass/main.scss'
-    ]
-    // 非 server render 時才要套用aos樣式
-    if (process.isClient) {
-      _cssFiles.push('aos/src/sass/aos.scss')
-    }
-    return _cssFiles
-  })(),
+  css: [
+    // 載入bootstrap
+    'bootstrap/scss/bootstrap.scss',
+    // 載入highlight.js樣式(可選擇不同theme)
+    'highlight.js/styles/zenburn.css',
+    // 載入aos樣式
+    'aos/src/sass/aos.scss',
+    // 主要css樣式(customer)
+    '~/assets/sass/main.scss'
+  ],
   modules: [
     // 'bootstrap-vue/nuxt'
     // have custom bootstrap CSS,需設定css載入

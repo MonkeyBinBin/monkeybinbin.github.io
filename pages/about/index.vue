@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-      <div class="container aos-init" data-aos="fade-left">
+      <div :class="isAosInit ? 'container aos-init' : 'container'" :data-aos="isAosInit ? 'fade-left' : undefined">
         <div class="row justify-content-center">
           <div class="col-sm-10 col-md-6">
             <div class="section-header">
@@ -26,6 +26,17 @@ export default {
     this.$nextTick(function () {
       AOS.init()
     })
+  },
+  data () {
+    return {
+      isAosInit: true
+    }
+  },
+  async asyncData ({ params }) {
+    // server render
+    return {
+      isAosInit: !process.server
+    }
   }
 }
 </script>
