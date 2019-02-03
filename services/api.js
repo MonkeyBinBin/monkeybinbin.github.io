@@ -17,7 +17,7 @@ export default {
             'desc'
           ])
       })
-      .catch(() => [])
+      .catch(() => Promise.resolve([]))
   },
   getArticlesWithTag: (tag) => {
     return axios.get(`${pathHelper.getBaseUrl()}posts/list.json?d=${dayCacheHash}`)
@@ -33,7 +33,7 @@ export default {
             'desc'
           ])
       })
-      .catch(() => [])
+      .catch(() => Promise.resolve([]))
   },
   getArticleById: (id) => {
     const _info = axios.get(`${pathHelper.getBaseUrl()}posts/list.json?d=${dayCacheHash}`)
@@ -47,14 +47,14 @@ export default {
         }
       })
       .catch(() => {
-        return { message: 'Page Not found!' }
+        return Promise.resolve({ message: 'Page Not found!' })
       })
     const _content = axios.get(`${pathHelper.getBaseUrl()}posts/${id}/content.md`)
       .then(res => {
         return { data: res.data }
       })
       .catch(() => {
-        return { message: 'Page Not found!' }
+        return Promise.resolve({ message: 'Page Not found!' })
       })
     return axios.all([_info, _content])
   }

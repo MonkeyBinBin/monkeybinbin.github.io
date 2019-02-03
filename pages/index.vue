@@ -34,7 +34,7 @@ export default {
     // server render
     let resultData
     if (process.server) {
-      const posts = await import('~/static/posts/list.json')
+      const posts = (await import('~/static/posts/list.json')).default
       resultData = {
         posts: _.orderBy(posts,
           [

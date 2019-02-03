@@ -60,7 +60,7 @@ export default {
     if (process.server) {
       const { params } = context
       const { id } = params
-      const posts = await import('~/static/posts/list.json')
+      const posts = (await import('~/static/posts/list.json')).default
       let post = _.find(posts, function (o) { return o.id === id })
       const keywords = [...constant.keywords]
       if (post) {
@@ -69,7 +69,7 @@ export default {
 
       let mdContent = ''
       if (post) {
-        mdContent = await import(`~/static/posts/${id}/content.md`)
+        mdContent = (await import(`~/static/posts/${id}/content.md`)).default
       }
       resultData = {
         id,
