@@ -28,28 +28,14 @@ export default {
       content_type: process.env.CTF_BLOG_POST_TYPE_ID,
       'fields.id': id
     })
-      .then(res => head(res.items).fields)
+      .then(res => {
+        const data = head(res.items)
+        if (data) {
+          return data.fields
+        } else {
+          return { message: 'Page Not found!' }
+        }
+      })
       .catch(() => Promise.resolve({ message: 'Page Not found!' }))
-    // const _info = axios.get(`${pathHelper.getBaseUrl()}posts/list.json?d=${dayCacheHash}`)
-    //   .then(res => {
-    //     const posts = res.data
-    //     const article = _.find(posts, function (o) { return o.id === id })
-    //     if (article && article.id) {
-    //       return { data: article }
-    //     } else {
-    //       return { message: 'Page Not found!' }
-    //     }
-    //   })
-    //   .catch(() => {
-    //     return Promise.resolve({ message: 'Page Not found!' })
-    //   })
-    // const _content = axios.get(`${pathHelper.getBaseUrl()}posts/${id}/content.md`)
-    //   .then(res => {
-    //     return { data: res.data }
-    //   })
-    //   .catch(() => {
-    //     return Promise.resolve({ message: 'Page Not found!' })
-    //   })
-    // return axios.all([_info, _content])
   }
 }

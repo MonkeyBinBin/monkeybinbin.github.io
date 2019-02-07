@@ -40,10 +40,9 @@ export default {
   name: 'Article',
   head () {
     const _head = {
-      title: this.post.title,
+      title: this.errorMsg || this.post.title,
       meta: [
-        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` },
-        { hid: 'og:title', property: 'og:title', content: this.post.title }
+        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` }
       ]
     }
     if (this.post && this.post.tags) {
@@ -52,6 +51,9 @@ export default {
     if (this.post && this.post.slug) {
       _head.meta.push({ hid: 'description', property: 'description', content: this.post.slug })
       _head.meta.push({ hid: 'og:description', property: 'og:description', content: this.post.slug })
+    }
+    if (this.post && this.post.title) {
+      _head.meta.push({ hid: 'og:title', property: 'og:title', content: this.post.title })
     }
     return _head
   },
@@ -63,7 +65,7 @@ export default {
     ]).then(([post]) => {
       // return data that should be available
       // in the template
-      if (post) {
+      if (post && !post.message) {
         return {
           post,
           isAosInit: !process.server
@@ -71,12 +73,12 @@ export default {
       } else {
         return {
           id,
-          title: `${post ? post.title : 'Page Not found!'} - ${constant.title}`,
+          title: post.message,
           post: {},
-          errorMsg: 'Page Not found!'
+          errorMsg: post.message
         }
       }
-    }).catch(console.error)
+    })
   },
   data () {
     return {
@@ -96,7 +98,7 @@ export default {
   methods: {
     getArticleById: async function () {
       const post = await api.getArticleById(this.id)
-      if (post) {
+      if (post && !post.message) {
         this.post = post
         // 載入codepen embed的js
         $.getScript('//assets.codepen.io/assets/embed/ei.js')
