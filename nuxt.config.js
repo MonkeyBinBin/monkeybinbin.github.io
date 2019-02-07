@@ -3,11 +3,27 @@ const glob = require('glob-all')
 const path = require('path')
 const webpack = require('webpack')
 const config = require('./config')
+const map = require('lodash/map')
 
 const baseUrl = '/'
 const description = '使用 Nuxt.js、 Bootstrap 4 建立的blog。分享與紀錄一些程式開發的東西。'
 
-const posts = require('./static/posts/list.json')
+const contentful = require('contentful')
+const client = contentful.createClient(
+  {
+    space: config.CTF_SPACE_ID,
+    accessToken: config.CTF_CDA_ACCESS_TOKEN
+  }
+)
+const getArticles = () => {
+  return client.getEntries({
+    content_type: config.CTF_BLOG_POST_TYPE_ID,
+    select: 'fields.id,fields.createDate,fields.title,fields.slug,fields.tags',
+    order: '-fields.createDate'
+  })
+    .then(res => map(res.items, item => item.fields))
+    .catch(() => Promise.resolve([]))
+}
 
 module.exports = {
   /*
@@ -38,7 +54,10 @@ module.exports = {
     baseUrl: baseUrl,
     title: config.title,
     keywords: config.keywords,
-    domain: config.domain
+    domain: config.domain,
+    CTF_SPACE_ID: config.CTF_SPACE_ID,
+    CTF_CDA_ACCESS_TOKEN: config.CTF_CDA_ACCESS_TOKEN,
+    CTF_BLOG_POST_TYPE_ID: config.CTF_BLOG_POST_TYPE_ID
   },
   router: {
     base: baseUrl,
@@ -69,14 +88,18 @@ module.exports = {
     // have custom bootstrap CSS,需設定css載入
     ['bootstrap-vue/nuxt', { css: false }],
     '@nuxtjs/sitemap',
+    ['@nuxtjs/google-tag-manager', { id: 'GTM-N24F89P' }],
+    // global 載入sass的資源(variables、functions、mixins…)使用的套件相關設定在 styleResources
+    '@nuxtjs/style-resources'
+  ],
+  styleResources: {
     // global 載入sass的資源(variables、functions、mixins…)
-    ['nuxt-sass-resources-loader', [
+    scss: [
       path.resolve(__dirname, 'assets/sass/helpers/_variables.scss'),
       path.resolve(__dirname, 'assets/sass/helpers/_functions.scss'),
       path.resolve(__dirname, 'assets/sass/helpers/_mixins.scss')
-    ]],
-    ['@nuxtjs/google-tag-manager', { id: 'GTM-N24F89P' }]
-  ],
+    ]
+  },
   sitemap: {
     path: '/sitemap.xml', // sitemap名稱，不用改
     hostname: process.env.DEPLOY_ENV === 'production' ? `${config.domain}` : 'http://localhost:3000/', // 網址
@@ -88,7 +111,8 @@ module.exports = {
       '/tag'
     ],
     // 靜態頁面路徑
-    routes: (callback) => {
+    routes: async (callback) => {
+      const posts = await getArticles()
       const routes = posts.map(post => {
         return {
           url: '/article/' + post.id,
@@ -168,11 +192,26 @@ module.exports = {
       require('autoprefixer')
     ],
     // 增加打包檔案解析的設定
-    analyze: false
+    analyze: false,
+    extractCSS: process.env.DEPLOY_ENV === 'production',
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          styles: {
+            name: 'styles',
+            test: /\.(css|vue)$/,
+            chunks: 'all',
+            enforce: true
+          }
+        }
+      }
+    }
+    // extractCSS: { allChunks: process.env.DEPLOY_ENV === 'production' }
   },
   generate: {
     fallback: true,
-    routes: () => {
+    routes: async () => {
+      const posts = await getArticles()
       return posts.map(post => {
         return {
           route: `/article/${post.id}`,

@@ -30,29 +30,18 @@ export default {
       isAosInit: true
     }
   },
-  async asyncData ({ params }) {
-    // server render
-    let resultData
-    if (process.server) {
-      const posts = (await import('~/static/posts/list.json')).default
-      resultData = {
-        posts: _.orderBy(posts,
-          [
-            function (o) {
-              return moment(o.createDate, 'YYYY-MM-DD')
-            }
-          ],
-          [
-            'desc'
-          ])
+  asyncData () {
+    return Promise.all([
+      // fetch all blog posts sorted by creation date
+      api.getArticles()
+    ]).then(([posts]) => {
+      // return data that should be available
+      // in the template
+      return {
+        posts,
+        isAosInit: !process.server
       }
-    } else {
-      resultData = {}
-    }
-    return {
-      ...resultData,
-      isAosInit: !process.server
-    }
+    }).catch(console.error)
   },
   async mounted () {
     const posts = await api.getArticles()

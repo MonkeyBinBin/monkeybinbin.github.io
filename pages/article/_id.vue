@@ -3,11 +3,11 @@
     <div :class="isAosInit ? 'container aos-init' : 'container'" :data-aos="isAosInit ? 'fade-left' : undefined" :key="0" v-if="!errorMsg">
       <div class="row">
         <div class="col-12">
-          <p class="text-black-50 small mb-0" v-if="articleInfo && articleInfo.createDate">{{articleInfo.createDate|parseDatetime}}</p>
-          <h2>{{articleInfo.title}}</h2>
-          <p class="text-black-50 ml-4 my-0" v-if="articleInfo && articleInfo.slug">{{articleInfo.slug}}</p>
+          <p class="text-black-50 small mb-0" v-if="post && post.createDate">{{post.createDate|parseDatetime}}</p>
+          <h2>{{post.title}}</h2>
+          <p class="text-black-50 ml-4 my-0" v-if="post && post.slug">{{post.slug}}</p>
           <hr class="article-divider my-4 mx-0">
-          <div class="md-content" v-html="$options.filters.parseMd(mdContent)" />
+          <div v-if="post && post.articleContent" class="md-content" v-html="$options.filters.parseMd(post.articleContent)" />
         </div>
       </div>
       <div class="row">
@@ -39,61 +39,50 @@ import api from '../../services/api'
 export default {
   name: 'Article',
   head () {
-    if (process.server) {
-      const _head = {
-        title: this.title,
-        meta: [
-          { hid: 'keywords', name: 'keywords', content: this.keywords.join() },
-          { hid: 'description', name: 'description', content: this.description },
-          { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` },
-          { hid: 'og:title', property: 'og:title', content: this.title }
-        ]
-      }
-      if (this.description) {
-        _head.meta.push({ hid: 'og:description', property: 'og:description', content: this.description })
-      }
-      return _head
+    const _head = {
+      title: this.post.title,
+      meta: [
+        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` },
+        { hid: 'og:title', property: 'og:title', content: this.post.title }
+      ]
     }
+    if (this.post && this.post.tags) {
+      _head.meta.push({ hid: 'keywords', name: 'keywords', content: this.post.tags.join() })
+    }
+    if (this.post && this.post.slug) {
+      _head.meta.push({ hid: 'description', property: 'description', content: this.post.slug })
+      _head.meta.push({ hid: 'og:description', property: 'og:description', content: this.post.slug })
+    }
+    return _head
   },
   async asyncData (context) {
-    let resultData
-    if (process.server) {
-      const { params } = context
-      const { id } = params
-      const posts = (await import('~/static/posts/list.json')).default
-      let post = _.find(posts, function (o) { return o.id === id })
-      const keywords = [...constant.keywords]
+    const { params } = context
+    const { id } = params
+    return Promise.all([
+      api.getArticleById(id)
+    ]).then(([post]) => {
+      // return data that should be available
+      // in the template
       if (post) {
-        keywords.push(post.tags)
+        return {
+          post,
+          isAosInit: !process.server
+        }
+      } else {
+        return {
+          id,
+          title: `${post ? post.title : 'Page Not found!'} - ${constant.title}`,
+          post: {},
+          errorMsg: 'Page Not found!'
+        }
       }
-
-      let mdContent = ''
-      if (post) {
-        mdContent = (await import(`~/static/posts/${id}/content.md`)).default
-      }
-      resultData = {
-        id,
-        title: `${post ? post.title : 'Page Not found!'} - ${constant.title}`,
-        description: post && post.slug,
-        keywords,
-        articleInfo: post || {},
-        mdContent: mdContent,
-        errorMsg: !mdContent ? 'Page Not found!' : ''
-      }
-    } else {
-      resultData = {}
-    }
-    return {
-      ...resultData,
-      isAosInit: !process.server
-    }
+    }).catch(console.error)
   },
   data () {
     return {
       id: this.$route.params.id,
       errorMsg: '',
-      articleInfo: {},
-      mdContent: '',
+      post: {},
       isAosInit: true
     }
   },
@@ -106,14 +95,13 @@ export default {
   },
   methods: {
     getArticleById: async function () {
-      const [info, content] = await api.getArticleById(this.id)
-      if (info.data && content.data) {
-        this.articleInfo = info.data
-        this.mdContent = content.data
+      const post = await api.getArticleById(this.id)
+      if (post) {
+        this.post = post
         // 載入codepen embed的js
         $.getScript('//assets.codepen.io/assets/embed/ei.js')
       } else {
-        this.errorMsg = info.message || content.message
+        this.errorMsg = post.message
       }
     }
   }
