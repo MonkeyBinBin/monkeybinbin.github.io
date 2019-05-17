@@ -4,7 +4,7 @@
       <img alt="MonkeyBinBin" :src="avatar" class="img-thumbnail rounded-circle">
     </nuxt-link>
     <div class="intro__text">
-      <h2 class="text-white">猴猴學語</h2>
+      <h2 class="text-white">{{title}}</h2>
     </div>
     <page-nav />
   </header>
@@ -13,10 +13,12 @@
 <script>
 import avatar from '~/assets/img/avatar.jpg'
 import PageNav from '~/components/PageNav'
+import constant from '~/constant'
 export default {
   name: 'PageHeader',
   data () {
     return {
+      title: constant.title,
       avatar
     }
   },
@@ -45,8 +47,18 @@ export default {
   margin-top: 50px;
   line-height: 0;
   padding: 0.25rem;
+  position: relative;
   img {
     max-width: 7.5rem;
+  }
+
+  &::before {
+    content: 'MonkeyBINBIN';
+    position: absolute;
+    right: -70%;
+    bottom: 20px;
+    color: #fff;
+    font-weight: bolder;
   }
 }
 </style>

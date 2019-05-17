@@ -18,7 +18,7 @@
 <script>
 import AOS from 'aos'
 import ArticleItem from '~/components/ArticleItem'
-import api from '../../services/api'
+import api from '~/services/api'
 
 export default {
   name: 'Tag',

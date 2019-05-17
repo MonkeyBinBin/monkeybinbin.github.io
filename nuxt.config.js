@@ -206,7 +206,6 @@ module.exports = {
         }
       }
     }
-    // extractCSS: { allChunks: process.env.DEPLOY_ENV === 'production' }
   },
   generate: {
     fallback: true,

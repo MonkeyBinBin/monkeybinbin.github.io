@@ -9,8 +9,25 @@ html, body {
   height: 100vh;
 }
 
-.article-divider {
-  background-color: $primary-color;
-  width: 80px;
-  height: 2px;
+.article {
+  margin-bottom: 50px;
+
+  &__slug {
+    text-indent: 1em;
+  }
+
+  &__date {
+    font-weight: bolder;
+    &::after {
+      content: "\B7";
+      padding-right: 0.5em;
+      padding-left: 0.5em;
+    }
+  }
+
+  &__divider {
+    background-color: $primary-color;
+    width: 80px;
+    height: 2px;
+  }
 }
