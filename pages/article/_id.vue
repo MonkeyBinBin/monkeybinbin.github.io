@@ -14,7 +14,7 @@
         <div class="col-12">
           <hr />
           <div class="comments">
-            <vue-disqus shortname="monkeybinbinblog"></vue-disqus>
+            <vue-disqus shortname="monkeybinbinblog" :identifier="id" :url="`https://monkeybinbin.github.io/article/${id}`"></vue-disqus>
           </div>
         </div>
       </div>

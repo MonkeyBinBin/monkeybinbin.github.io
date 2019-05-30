@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-scroll-spy="{data: 'scrollPos'}" :class="!isShowGoTopButton&&'top'">
     <page-header/>
     <div class="container">
       <nuxt/>
@@ -12,7 +12,6 @@
 <script>
 import PageHeader from '~/components/PageHeader'
 import PageFooter from '~/components/PageFooter'
-const offsetTopShowGoTopButton = 350
 export default {
   components: {
     PageHeader,
@@ -20,26 +19,20 @@ export default {
   },
   data () {
     return {
-      isShowGoTopButton: false
+      scrollPos: 0
     }
   },
-  mounted () {
-    document.addEventListener('scroll', this.handleScroll)
-    // 設定初始值
-    this.isShowGoTopButton = window.scrollY >= offsetTopShowGoTopButton
-  },
-  beforeDestroy () {
-    document.removeEventListener('scroll', this.handleScroll)
-  },
   methods: {
-    handleScroll: function (e) {
-      this.isShowGoTopButton = window.scrollY >= offsetTopShowGoTopButton
-    },
     goTop: function () {
       // window.scrollTo(0, 0)
 
       // with animation
       $('html,body').animate({ scrollTop: 0 }, 500)
+    }
+  },
+  computed: {
+    isShowGoTopButton: function () {
+      return this.scrollPos > 0
     }
   }
 }
@@ -47,6 +40,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  // 100vh - header height(350px) - footer height(80px)
   min-height: calc(100vh - 430px);
   padding-top: 30px;
   padding-bottom: 30px;
