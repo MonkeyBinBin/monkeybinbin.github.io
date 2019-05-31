@@ -7,16 +7,24 @@
       <span
         class="small text-secondary article__date"
         v-if="post.createDate"
-      >{{post.createDate|parseDatetime}}</span>
+      >
+        <font-awesome-icon :icon="['fas', 'calendar-alt']" />
+        {{post.createDate|parseDatetime}}
+      </span>
       <nuxt-link
         v-for="tag in post.tags"
         :key="tag"
         :to="'/tag/'+tag"
         :class="['small', markedTag && tag === markedTag && 'marked']"
-      >{{ tag }}</nuxt-link>
+      >
+        <font-awesome-icon :icon="['fas', 'tag']" />
+        {{ tag }}
+      </nuxt-link>
     </div>
     <h2>
-      <nuxt-link :to="'/article/'+post.id">{{ post.title }}</nuxt-link>
+      <nuxt-link :to="'/article/'+post.id">
+        {{ post.title }}
+      </nuxt-link>
     </h2>
     <hr class="article__divider my-4 mx-0">
     <p
@@ -61,9 +69,6 @@ export default {
   }
   &:hover {
     text-decoration: none;
-  }
-  &::before {
-    content: "#";
   }
   @include link-animation($primary-color);
 }

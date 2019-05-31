@@ -76,6 +76,7 @@ module.exports = {
   css: [
     // 載入bootstrap
     'bootstrap/scss/bootstrap.scss',
+    'bootstrap-vue/dist/bootstrap-vue.css',
     // 載入highlight.js樣式(可選擇不同theme)
     'highlight.js/styles/zenburn.css',
     // 載入aos樣式
@@ -84,13 +85,19 @@ module.exports = {
     '~/assets/sass/main.scss'
   ],
   modules: [
-    // 'bootstrap-vue/nuxt'
-    // have custom bootstrap CSS,需設定css載入
-    ['bootstrap-vue/nuxt', { css: false }],
     '@nuxtjs/sitemap',
     ['@nuxtjs/google-tag-manager', { id: 'GTM-N24F89P' }],
     // global 載入sass的資源(variables、functions、mixins…)使用的套件相關設定在 styleResources
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    ['nuxt-fontawesome', {
+      component: 'fa',
+      imports: [
+        {
+          set: '@fortawesome/free-solid-svg-icons',
+          icons: ['fas']
+        }
+      ]
+    }]
   ],
   styleResources: {
     // global 載入sass的資源(variables、functions、mixins…)
@@ -125,11 +132,13 @@ module.exports = {
     }
   },
   plugins: [
+    '~/plugins/bootstrap-vue.js',
     '~/plugins/filters.js',
     '~/plugins/disqus.js',
     // 改用google tag manager, ga設定在上面, 觸發事件需設為"History Change(記錄變更)"
-    // { src: '~/plugins/ga.js', ssr: false },
-    { src: '~/plugins/scrollspy.js', ssr: false }
+    // { src: '~/plugins/ga.js', mode: 'client' },
+    { src: '~/plugins/scrollspy.js', mode: 'client' },
+    '~/plugins/font-awesome.js'
   ],
   /*
   ** Build configuration
@@ -188,9 +197,14 @@ module.exports = {
         }
       )
     },
-    postcss: [
-      require('autoprefixer')
-    ],
+    postcss: {
+      plugins: {},
+      preset: {
+        autoprefixer: {
+          grid: true
+        }
+      }
+    },
     // 增加打包檔案解析的設定
     analyze: false,
     extractCSS: process.env.DEPLOY_ENV === 'production',

@@ -1,6 +1,6 @@
 module.exports = {
-  title: '被程式設計的猴子彬',
-  keywords: ['被程式設計的猴子彬', 'Nuxt.js', 'Bootstrap 4', 'MonkeyBinBin', 'blog'],
+  title: '被程式設計的猴子',
+  keywords: ['被程式設計的猴子', 'Nuxt.js', 'Bootstrap 4', 'MonkeyBinBin', 'blog'],
   domain: 'https://monkeybinbin.github.io',
   fbId: '1816214708495848',
   CTF_BLOG_POST_TYPE_ID: 'post',

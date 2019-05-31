@@ -3,7 +3,10 @@
     <div :class="isAosInit ? 'container aos-init' : 'container'" :data-aos="isAosInit ? 'fade-left' : undefined" :key="0" v-if="!errorMsg">
       <div class="row">
         <div class="col-12 article">
-          <p class="article__date text-black-50 small mb-0" v-if="post && post.createDate">{{post.createDate|parseDatetime}}</p>
+          <p class="article__date text-black-50 small mb-0" v-if="post && post.createDate">
+            <font-awesome-icon :icon="['fas', 'calendar-alt']" />
+            {{post.createDate|parseDatetime}}
+          </p>
           <h2>{{post.title}}</h2>
           <p class="article__slug text-black-50 ml-4 my-0" v-if="post && post.slug">{{post.slug}}</p>
           <hr class="article__divider my-4 mx-0">

@@ -3,9 +3,11 @@
     <page-header/>
     <div class="container">
       <nuxt/>
+      <button type="button" :class="['btn scrolltop-button', isShowGoTopButton && 'active']" @click="goTop">
+        <font-awesome-icon :icon="['fas', 'arrow-up']" />
+      </button>
     </div>
     <page-footer/>
-    <button type="button" :class="['btn scrolltop-button', isShowGoTopButton && 'active']" @click="goTop">↑</button>
   </div>
 </template>
 
