@@ -75,6 +75,7 @@ module.exports = {
     height: '4px'
   },
   css: [
+    '@fortawesome/fontawesome-svg-core/styles.css',
     // 載入bootstrap
     'bootstrap/scss/bootstrap.scss',
     'bootstrap-vue/dist/bootstrap-vue.css',
@@ -157,30 +158,30 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-      if (!isDev) {
-        // Remove unused CSS using purgecss. See https://github.com/FullHuman/purgecss
-        // for more information about purgecss.
-        config.plugins.push(
-          new PurgecssPlugin({
-            // Specify the locations of any files you want to scan for class names.
-            paths: glob.sync([
-              path.join(__dirname, './pages/**/*.vue'),
-              path.join(__dirname, './layouts/**/*.vue'),
-              path.join(__dirname, './components/**/*.vue')
-            ]),
-            whitelist: [
-              'html',
-              'body',
-              'ul',
-              'ol',
-              'pre',
-              'code',
-              'blockquote'
-            ],
-            whitelistPatterns: [/\bhljs\S*/, /\baos\S*/]
-          })
-        )
-      }
+      // if (!isDev) {
+      //   // Remove unused CSS using purgecss. See https://github.com/FullHuman/purgecss
+      //   // for more information about purgecss.
+      //   config.plugins.push(
+      //     new PurgecssPlugin({
+      //       // Specify the locations of any files you want to scan for class names.
+      //       paths: glob.sync([
+      //         path.join(__dirname, './pages/**/*.vue'),
+      //         path.join(__dirname, './layouts/**/*.vue'),
+      //         path.join(__dirname, './components/**/*.vue')
+      //       ]),
+      //       whitelist: [
+      //         'html',
+      //         'body',
+      //         'ul',
+      //         'ol',
+      //         'pre',
+      //         'code',
+      //         'blockquote'
+      //       ],
+      //       whitelistPatterns: [/\bhljs\S*/, /\baos\S*/]
+      //     })
+      //   )
+      // }
 
       config.plugins.push(
         new webpack.ProvidePlugin({
