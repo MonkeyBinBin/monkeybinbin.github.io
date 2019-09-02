@@ -1,5 +1,3 @@
-const PurgecssPlugin = require('purgecss-webpack-plugin')
-const glob = require('glob-all')
 const path = require('path')
 const webpack = require('webpack')
 const config = require('./config')
@@ -175,12 +173,7 @@ module.exports = {
         }
       )
     },
-    postcss: {
-      plugins: {},
-      preset: {
-        autoprefixer: {}
-      }
-    },
+    postcss: {},
     // 增加打包檔案解析的設定
     analyze: false,
     extractCSS: process.env.DEPLOY_ENV === 'production',
