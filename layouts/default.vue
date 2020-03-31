@@ -1,5 +1,5 @@
 <template>
-  <div v-scroll-spy="{data: 'scrollPos'}" :class="!isShowGoTopButton&&'top'">
+  <div v-scroll-spy="{data: 'scrollPos'}" :class="!isShowGoTopButton && 'top'">
     <page-header/>
     <div class="container">
       <nuxt/>
@@ -57,7 +57,7 @@ export default {
   transition: opacity 0.5s;
   font-weight: bolder;
   color: white;
-  background-color: #1dc8cd;
+  background-color: $primary-color;
 }
 .scrolltop-button.active {
   opacity: .8;

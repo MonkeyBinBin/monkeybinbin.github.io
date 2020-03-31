@@ -32,7 +32,7 @@ export default {
 .intro {
   width: 100%;
   height: 350px;
-  background: linear-gradient(45deg, #1de099, #1dc8cd);
+  background: linear-gradient(45deg, $tertiary-color, $primary-color);
   position: relative;
 }
 

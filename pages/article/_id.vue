@@ -1,33 +1,90 @@
 <template>
   <section class="section">
-    <div :class="isAosInit ? 'container aos-init' : 'container'" :data-aos="isAosInit ? 'fade-left' : undefined" :key="0" v-if="!errorMsg">
+    <div
+      :class="isAosInit ? 'container aos-init' : 'container'"
+      :data-aos="isAosInit ? 'fade-left' : undefined"
+      :key="0"
+      v-if="!errorMsg"
+    >
       <div class="row">
         <div class="col-12 article">
-          <p class="article__date text-black-50 small mb-0" v-if="post && post.createDate">
+          <p
+            class="article__date text-black-50 small mb-0"
+            v-if="post && post.createDate"
+          >
             <font-awesome-icon :icon="['fas', 'calendar-alt']" />
             {{post.createDate|parseDatetime}}
           </p>
           <h2>{{post.title}}</h2>
-          <p class="article__slug text-black-50 ml-4 my-0" v-if="post && post.slug">{{post.slug}}</p>
+          <p
+            class="article__slug text-black-50 ml-4 my-0"
+            v-if="post && post.slug"
+          >{{post.slug}}</p>
           <hr class="article__divider my-4 mx-0">
-          <div v-if="post && post.articleContent" class="md-content" v-html="$options.filters.parseMd(post.articleContent)" />
+          <div
+            v-if="post && post.articleContent"
+            class="md-content"
+            v-html="$options.filters.parseMd(post.articleContent)"
+          />
         </div>
       </div>
       <div class="row">
+        <div class="col-6">
+          <nuxt-link
+            v-if="!!prevPost"
+            :to="'/article/'+prevPost.id"
+            class="other_article_link"
+          >
+            <div class="d-flex justify-content-start align-items-center">
+              <font-awesome-icon
+                class="fa-2x mr-1"
+                :icon="['fas', 'arrow-alt-circle-left']"
+              />
+              <span>{{prevPost.title}}</span>
+            </div>
+          </nuxt-link>
+        </div>
+        <div class="col-6">
+          <nuxt-link
+            v-if="!!nextPost"
+            :to="'/article/'+nextPost.id"
+            class="other_article_link"
+          >
+            <div class="d-flex justify-content-end align-items-center">
+              <span class="text-right">{{nextPost.title}}</span>
+              <font-awesome-icon
+                class="fa-2x ml-1"
+                :icon="['fas', 'arrow-alt-circle-right']"
+              />
+            </div>
+          </nuxt-link>
+        </div>
         <div class="col-12">
           <hr />
           <div class="comments">
-            <vue-disqus shortname="monkeybinbinblog" :identifier="id" :url="`https://monkeybinbin.github.io/article/${id}`"></vue-disqus>
+            <vue-disqus
+              shortname="monkeybinbinblog"
+              :identifier="id"
+              :url="`https://monkeybinbin.github.io/article/${id}`"
+            ></vue-disqus>
           </div>
         </div>
       </div>
     </div>
-    <div :class="isAosInit ? 'container aos-init' : 'container'" :data-aos="isAosInit ? 'fade-left' : undefined" :key="1" v-else>
+    <div
+      :class="isAosInit ? 'container aos-init' : 'container'"
+      :data-aos="isAosInit ? 'fade-left' : undefined"
+      :key="1"
+      v-else
+    >
       <div class="row">
         <div class="col-12 text-center">
           <h1 class="not-found-title">404</h1>
           <p class="text-black-50">Oops, the page you're looking for doesn't exist.</p>
-          <nuxt-link to="/" class="btn btn-dark">回首頁</nuxt-link>
+          <nuxt-link
+            to="/"
+            class="btn btn-dark"
+          >回首頁</nuxt-link>
         </div>
       </div>
     </div>
@@ -65,13 +122,16 @@ export default {
     const { id } = params
     return Promise.all([
       api.getArticleById(id)
-    ]).then(([post]) => {
+    ]).then(async ([post]) => {
       // return data that should be available
       // in the template
       if (post && !post.message) {
+        const [prevPost, nextPost] = await api.getPrevAndNextArticleById(post.id, post.createDate)
         return {
           post,
-          isAosInit: !process.server
+          isAosInit: !process.server,
+          prevPost,
+          nextPost
         }
       } else {
         return {
@@ -88,7 +148,9 @@ export default {
       id: this.$route.params.id,
       errorMsg: '',
       post: {},
-      isAosInit: true
+      isAosInit: true,
+      prevPost: undefined,
+      nextPost: undefined
     }
   },
   mounted () {
@@ -103,6 +165,9 @@ export default {
       const post = await api.getArticleById(this.id)
       if (post && !post.message) {
         this.post = post
+        const [prevPost, nextPost] = await api.getPrevAndNextArticleById(post.id, post.createDate)
+        this.prevPost = prevPost
+        this.nextPost = nextPost
         // 載入codepen embed的js
         $.getScript('//assets.codepen.io/assets/embed/ei.js')
       } else {
@@ -121,9 +186,12 @@ export default {
 }
 .not-found-title {
   font-size: 200px;
-  color: #1dc8cd;
+  color: $primary-color;
 }
 .article__date::after {
-  content: '';
+  content: "";
+}
+.other_article_link {
+  color: $primary-color;
 }
 </style>

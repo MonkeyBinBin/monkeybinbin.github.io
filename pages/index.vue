@@ -19,6 +19,7 @@
 import AOS from 'aos'
 import ArticleItem from '~/components/ArticleItem'
 import api from '~/services/api'
+import constant from '~/constant'
 
 export default {
   components: {
@@ -27,13 +28,14 @@ export default {
   data () {
     return {
       posts: [],
-      isAosInit: true
+      isAosInit: true,
+      limit: constant.articleListMaxLimit
     }
   },
   asyncData () {
     return Promise.all([
       // fetch all blog posts sorted by creation date
-      api.getArticles()
+      api.getArticles(constant.articleListMaxLimit)
     ]).then(([posts]) => {
       // return data that should be available
       // in the template
@@ -44,7 +46,7 @@ export default {
     }).catch(console.error)
   },
   async mounted () {
-    const posts = await api.getArticles()
+    const posts = await api.getArticles(this.limit)
     this.posts = posts
 
     this.$nextTick(function () {

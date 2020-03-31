@@ -5,6 +5,9 @@
         <nuxt-link class="menu__link" to="/">HOME</nuxt-link>
       </li>
       <li class="menu__item">
+        <nuxt-link class="menu__link" to="/archieve">Archieve</nuxt-link>
+      </li>
+      <li class="menu__item">
         <nuxt-link class="menu__link" to="/about">ABOUT</nuxt-link>
       </li>
     </ul>

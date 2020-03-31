@@ -1,15 +1,22 @@
 import filter from 'lodash/filter'
 import map from 'lodash/map'
 import head from 'lodash/head'
+import constant from '~/constant'
 import contentful from '~/plugins/contentful.js'
 const client = contentful.createClient()
 
-const getArticles = () => {
-  return client.getEntries({
+const getArticles = (limit) => {
+  const queryOptions = {
     content_type: process.env.CTF_BLOG_POST_TYPE_ID,
     select: 'fields.id,fields.createDate,fields.title,fields.slug,fields.tags',
     order: '-fields.createDate'
-  })
+  }
+
+  if (limit && !isNaN(limit)) {
+    queryOptions.limit = limit
+  }
+
+  return client.getEntries(queryOptions)
     .then(res => map(res.items, item => item.fields))
     .catch(() => Promise.resolve([]))
 }
@@ -37,5 +44,47 @@ export default {
         }
       })
       .catch(() => Promise.resolve({ message: 'Page Not found!' }))
+  },
+  getArticlesGroupByYearMonth: () => {
+    return client.getEntries({
+      content_type: process.env.CTF_BLOG_POST_TYPE_ID,
+      select: 'fields.id,fields.createDate,fields.title',
+      order: '-fields.createDate'
+    })
+      .then(res => {
+        return res.items.reduce((prevValue, currentValue) => {
+          const tmpCreateDate = new Date(currentValue.fields.createDate)
+          const key = `${tmpCreateDate.getFullYear()} ${constant.months[tmpCreateDate.getMonth()]}`
+          if (key in prevValue) {
+            prevValue[key].push(currentValue.fields)
+          } else {
+            prevValue[key] = [currentValue.fields]
+          }
+          return prevValue
+        }, {})
+      })
+  },
+  getPrevAndNextArticleById: (id, createDate) => {
+    const commonData = {
+      content_type: process.env.CTF_BLOG_POST_TYPE_ID,
+      select: 'fields.id,fields.createDate,fields.title',
+      limit: 1,
+      'fields.id[ne]': id
+    }
+    const prevArticle = client.getEntries({
+      ...commonData,
+      'fields.createDate[lt]': createDate,
+      order: '-fields.createDate'
+    })
+      .then(res => head(map(res.items, item => item.fields)))
+      .catch(() => Promise.resolve(null))
+    const nextArticle = client.getEntries({
+      ...commonData,
+      'fields.createDate[gt]': createDate,
+      order: 'fields.createDate'
+    })
+      .then(res => head(map(res.items, item => item.fields)))
+      .catch(() => Promise.resolve(null))
+    return Promise.all([prevArticle, nextArticle])
   }
 }
