@@ -5,7 +5,7 @@
         <nuxt-link class="menu__link" to="/">HOME</nuxt-link>
       </li>
       <li class="menu__item">
-        <nuxt-link class="menu__link" to="/archieve">Archieve</nuxt-link>
+        <nuxt-link class="menu__link" to="/archives">ARCHIVES</nuxt-link>
       </li>
       <li class="menu__item">
         <nuxt-link class="menu__link" to="/about">ABOUT</nuxt-link>
