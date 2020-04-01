@@ -28,27 +28,20 @@ export default {
   data () {
     return {
       posts: [],
-      isAosInit: true,
-      limit: constant.articleListMaxLimit
+      isAosInit: true
     }
   },
   asyncData () {
     return Promise.all([
-      // fetch all blog posts sorted by creation date
       api.getArticles(constant.articleListMaxLimit)
     ]).then(([posts]) => {
-      // return data that should be available
-      // in the template
       return {
         posts,
         isAosInit: !process.server
       }
     }).catch(console.error)
   },
-  async mounted () {
-    const posts = await api.getArticles(this.limit)
-    this.posts = posts
-
+  mounted () {
     this.$nextTick(function () {
       AOS.init()
     })

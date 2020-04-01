@@ -128,6 +128,7 @@ export default {
       if (post && !post.message) {
         const [prevPost, nextPost] = await api.getPrevAndNextArticleById(post.id, post.createDate)
         return {
+          id,
           post,
           isAosInit: !process.server,
           prevPost,
@@ -136,8 +137,8 @@ export default {
       } else {
         return {
           id,
-          title: post.message,
           post: {},
+          isAosInit: !process.server,
           errorMsg: post.message
         }
       }
@@ -145,7 +146,7 @@ export default {
   },
   data () {
     return {
-      id: this.$route.params.id,
+      id: '',
       errorMsg: '',
       post: {},
       isAosInit: true,
@@ -154,26 +155,12 @@ export default {
     }
   },
   mounted () {
-    this.getArticleById()
+    // 載入codepen embed的js
+    $.getScript('//assets.codepen.io/assets/embed/ei.js')
 
     this.$nextTick(function () {
       AOS.init()
     })
-  },
-  methods: {
-    getArticleById: async function () {
-      const post = await api.getArticleById(this.id)
-      if (post && !post.message) {
-        this.post = post
-        const [prevPost, nextPost] = await api.getPrevAndNextArticleById(post.id, post.createDate)
-        this.prevPost = prevPost
-        this.nextPost = nextPost
-        // 載入codepen embed的js
-        $.getScript('//assets.codepen.io/assets/embed/ei.js')
-      } else {
-        this.errorMsg = post.message
-      }
-    }
   }
 }
 </script>

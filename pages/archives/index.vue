@@ -46,10 +46,8 @@ import AOS from 'aos'
 import api from '~/services/api'
 
 export default {
-  async mounted () {
-    const posts = await api.getArticlesGroupByYearMonth()
-    this.posts = posts
-
+  name: 'Archives',
+  mounted () {
     this.$nextTick(function () {
       AOS.init()
     })

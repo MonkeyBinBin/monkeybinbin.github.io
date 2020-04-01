@@ -1,14 +1,25 @@
 <template>
   <section class="section">
     <div class="container">
-      <div class="row justify-content-center aos-init" data-aos="fade-left">
+      <div
+        class="row justify-content-center aos-init"
+        data-aos="fade-left"
+      >
         <div class="col-sm-10 col-md-8">
           <h1 class="mb-5">Posts tagged with "{{tagName}}"</h1>
         </div>
       </div>
-      <div class="row justify-content-center aos-init" data-aos="fade-left" v-for="(post, key) in posts" :key="key">
+      <div
+        class="row justify-content-center aos-init"
+        data-aos="fade-left"
+        v-for="(post, key) in posts"
+        :key="key"
+      >
         <div class="col-sm-10 col-md-8">
-          <article-item :post="post" :marked-tag="tagName" />
+          <article-item
+            :post="post"
+            :marked-tag="tagName"
+          />
         </div>
       </div>
     </div>
@@ -24,13 +35,23 @@ export default {
   name: 'Tag',
   data () {
     return {
-      tagName: this.$route.params.tag,
-      posts: []
+      tagName: '',
+      posts: [],
+      isAosInit: true
     }
   },
-  async mounted () {
-    this.posts = await api.getArticlesWithTag(this.tagName)
-
+  asyncData ({ params }) {
+    return Promise.all([
+      api.getArticlesWithTag(params.tag)
+    ]).then(([posts]) => {
+      return {
+        tagName: params.tag,
+        posts,
+        isAosInit: !process.server
+      }
+    }).catch(console.error)
+  },
+  mounted () {
     this.$nextTick(function () {
       AOS.init()
     })

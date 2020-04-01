@@ -21,6 +21,7 @@
 <script>
 import AOS from 'aos'
 export default {
+  name: 'About',
   mounted () {
     this.$nextTick(function () {
       AOS.init()
