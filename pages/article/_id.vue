@@ -103,6 +103,9 @@ export default {
       title: this.errorMsg || this.post.title,
       meta: [
         { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` }
+      ],
+      script: [
+        { src: '//assets.codepen.io/assets/embed/ei.js' }
       ]
     }
     if (this.post && this.post.tags) {
@@ -155,9 +158,6 @@ export default {
     }
   },
   mounted () {
-    // 載入codepen embed的js
-    $.getScript('//assets.codepen.io/assets/embed/ei.js')
-
     this.$nextTick(function () {
       AOS.init()
     })
