@@ -14,3 +14,6 @@ deploy:
   target_branch: master
   on:
     branch: develop
+branches:
+  only:
+    - develop
