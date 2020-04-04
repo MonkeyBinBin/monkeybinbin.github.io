@@ -17,3 +17,6 @@ deploy:
 branches:
   only:
     - develop
+notifications:
+  email:
+    - thisisbinbin@gmail.com
