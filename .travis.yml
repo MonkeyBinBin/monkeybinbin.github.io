@@ -19,4 +19,6 @@ branches:
     - develop
 notifications:
   email:
-    - thisisbinbin@gmail.com
+    recipients:
+      - thisisbinbin@gmail.com
+    on_success: always
