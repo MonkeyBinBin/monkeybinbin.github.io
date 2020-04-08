@@ -5,7 +5,7 @@
   "author": "MonkeyBinBin <thisisbinbin@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "DEPLOY_ENV=development nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "DEPLOY_ENV=production nuxt generate",
@@ -51,7 +51,6 @@
     "node-sass": "^4.11.0",
     "purgecss-webpack-plugin": "^1.4.0",
     "push-dir": "^0.4.1",
-    "sass-loader": "^7.1.0",
-    "text-loader": "0.0.1"
+    "sass-loader": "^7.1.0"
   }
 }

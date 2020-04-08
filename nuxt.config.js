@@ -135,8 +135,6 @@ module.exports = {
     '~/plugins/bootstrap-vue.js',
     '~/plugins/filters.js',
     '~/plugins/disqus.js',
-    // 改用google tag manager, ga設定在上面, 觸發事件需設為"History Change(記錄變更)"
-    // { src: '~/plugins/ga.js', mode: 'client' },
     { src: '~/plugins/scrollspy.js', mode: 'client' },
     '~/plugins/font-awesome.js'
   ],
@@ -164,30 +162,12 @@ module.exports = {
           'moment': 'moment'
         })
       )
-
-      // 增加text-loader載入md檔案(for server render)
-      config.module.rules.push(
-        {
-          test: /\.md$/,
-          loader: 'text-loader'
-        }
-      )
     },
-    postcss: {},
     // 增加打包檔案解析的設定
     analyze: false,
-    extractCSS: process.env.DEPLOY_ENV === 'production',
+    extractCSS: true,
     optimization: {
-      splitChunks: {
-        cacheGroups: {
-          styles: {
-            name: 'styles',
-            test: /\.(css|vue)$/,
-            chunks: 'all',
-            enforce: true
-          }
-        }
-      }
+      minimize: process.env.DEPLOY_ENV === 'production'
     }
   },
   generate: {
