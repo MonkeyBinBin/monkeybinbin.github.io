@@ -175,10 +175,7 @@ module.exports = {
     routes: async () => {
       const posts = await getArticles()
       return posts.map(post => {
-        return {
-          route: `/article/${post.id}`,
-          payload: post
-        }
+        return `/article/${post.id}`
       })
     }
   }
