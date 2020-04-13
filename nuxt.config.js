@@ -165,7 +165,7 @@ module.exports = {
     },
     // 增加打包檔案解析的設定
     analyze: false,
-    extractCSS: true,
+    extractCSS: process.env.DEPLOY_ENV === 'production',
     optimization: {
       minimize: process.env.DEPLOY_ENV === 'production'
     }

@@ -31,7 +31,7 @@
               class="archieve-list__article"
             >
               <nuxt-link :to="'/article/'+post.id">
-                <span class="archieve-list__date">[{{post.createDate}}]</span><span>{{post.title}}</span>
+                <span>{{post.title}}</span><span class="archieve-list__date"> [ {{post.createDate}} ]</span>
               </nuxt-link>
             </div>
           </div>
@@ -88,7 +88,7 @@ export default {
     }
   }
   &__date {
-    padding-right: 10px;
+    font-size: small;
   }
 }
 </style>
