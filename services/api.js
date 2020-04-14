@@ -33,7 +33,8 @@ export default {
   getArticleById: (id) => {
     return client.getEntries({
       content_type: process.env.CTF_BLOG_POST_TYPE_ID,
-      'fields.id': id
+      'fields.id': id,
+      limit: 1
     })
       .then(res => {
         const data = head(res.items)

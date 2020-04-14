@@ -40,6 +40,9 @@ export default {
       isAosInit: true
     }
   },
+  validate ({ params }) {
+    return !!params.tag
+  },
   asyncData ({ params }) {
     return Promise.all([
       api.getArticlesWithTag(params.tag)
