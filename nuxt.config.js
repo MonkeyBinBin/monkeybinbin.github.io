@@ -156,6 +156,7 @@ module.exports = {
       }
 
       config.plugins.push(
+        new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /(en|zh-tw)$/),
         new webpack.ProvidePlugin({
           '$': 'jquery',
           '_': 'lodash',
