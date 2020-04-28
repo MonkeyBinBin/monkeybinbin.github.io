@@ -2,8 +2,8 @@
   <section class="section">
     <div class="container">
       <div
-        :class="isAosInit ? 'row justify-content-center aos-init' : 'row justify-content-center'"
-        :data-aos="isAosInit ? 'fade-left' : undefined"
+        class="row justify-content-center aos-init"
+        data-aos="fade-left"
         v-for="(post, key) in posts"
         :key="key"
       >
@@ -27,8 +27,7 @@ export default {
   },
   data () {
     return {
-      posts: [],
-      isAosInit: true
+      posts: []
     }
   },
   asyncData () {
@@ -36,8 +35,7 @@ export default {
       api.getArticles(constant.articleListMaxLimit)
     ]).then(([posts]) => {
       return {
-        posts,
-        isAosInit: !process.server
+        posts
       }
     }).catch(console.error)
   },

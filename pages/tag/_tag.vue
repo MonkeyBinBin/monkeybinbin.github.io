@@ -36,8 +36,7 @@ export default {
   data () {
     return {
       tagName: '',
-      posts: [],
-      isAosInit: true
+      posts: []
     }
   },
   validate ({ params }) {
@@ -49,8 +48,7 @@ export default {
     ]).then(([posts]) => {
       return {
         tagName: params.tag,
-        posts,
-        isAosInit: !process.server
+        posts
       }
     }).catch(console.error)
   },

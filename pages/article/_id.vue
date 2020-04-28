@@ -1,8 +1,8 @@
 <template>
   <section class="section">
     <div
-      :class="isAosInit ? 'container aos-init' : 'container'"
-      :data-aos="isAosInit ? 'fade-left' : undefined"
+      class="container aos-init"
+      data-aos="fade-left"
       :key="0"
       v-if="!errorMsg"
     >
@@ -72,8 +72,8 @@
       </div>
     </div>
     <div
-      :class="isAosInit ? 'container aos-init' : 'container'"
-      :data-aos="isAosInit ? 'fade-left' : undefined"
+      class="container aos-init"
+      data-aos="fade-left"
       :key="1"
       v-else
     >
@@ -133,7 +133,6 @@ export default {
         return {
           id,
           post,
-          isAosInit: !process.server,
           prevPost,
           nextPost
         }
@@ -141,7 +140,6 @@ export default {
         return {
           id,
           post: {},
-          isAosInit: !process.server,
           errorMsg: post.message
         }
       }
@@ -152,7 +150,6 @@ export default {
       id: '',
       errorMsg: '',
       post: {},
-      isAosInit: true,
       prevPost: undefined,
       nextPost: undefined
     }
@@ -170,10 +167,6 @@ export default {
   & /deep/ img {
     max-width: 100%;
   }
-}
-.not-found-title {
-  font-size: 200px;
-  color: $primary-color;
 }
 .article__date::after {
   content: "";

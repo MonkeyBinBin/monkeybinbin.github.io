@@ -38,3 +38,8 @@ html, body {
 .page-enter, .page-leave-active {
   opacity: 0;
 }
+
+.not-found-title {
+  font-size: 200px;
+  color: $primary-color;
+}

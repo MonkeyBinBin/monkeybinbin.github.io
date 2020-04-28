@@ -1,8 +1,8 @@
 <template>
   <section class="section">
     <div
-      :class="isAosInit ? 'container aos-init' : 'container'"
-      :data-aos="isAosInit ? 'fade-left' : undefined"
+      class="container aos-init"
+      data-aos="fade-left"
     >
       <div class="row justify-content-center">
         <div class="col-sm-10 col-md-8">
@@ -54,8 +54,7 @@ export default {
   },
   data () {
     return {
-      posts: [],
-      isAosInit: true
+      posts: []
     }
   },
   async asyncData ({ params }) {
@@ -63,8 +62,7 @@ export default {
       api.getArticlesGroupByYearMonth()
     ]).then(([posts]) => {
       return {
-        posts,
-        isAosInit: !process.server
+        posts
       }
     }).catch(console.error)
   }
