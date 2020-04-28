@@ -3,8 +3,6 @@
     <div
       class="container aos-init"
       data-aos="fade-left"
-      :key="0"
-      v-if="!errorMsg"
     >
       <div class="row">
         <div class="col-12 article">
@@ -71,23 +69,6 @@
         </div>
       </div>
     </div>
-    <div
-      class="container aos-init"
-      data-aos="fade-left"
-      :key="1"
-      v-else
-    >
-      <div class="row">
-        <div class="col-12 text-center">
-          <h1 class="not-found-title">404</h1>
-          <p class="text-black-50">Oops, the page you're looking for doesn't exist.</p>
-          <nuxt-link
-            to="/"
-            class="btn btn-dark"
-          >回首頁</nuxt-link>
-        </div>
-      </div>
-    </div>
   </section>
 </template>
 
@@ -100,7 +81,7 @@ export default {
   name: 'Article',
   head () {
     const _head = {
-      title: this.errorMsg || this.post.title,
+      title: this.post.title,
       meta: [
         { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` }
       ],
@@ -121,7 +102,7 @@ export default {
     return _head
   },
   async asyncData (context) {
-    const { params } = context
+    const { params, error } = context
     const { id } = params
     return Promise.all([
       api.getArticleById(id)
@@ -137,18 +118,13 @@ export default {
           nextPost
         }
       } else {
-        return {
-          id,
-          post: {},
-          errorMsg: post.message
-        }
+        error({ statusCode: 404, message: post.message })
       }
     })
   },
   data () {
     return {
       id: '',
-      errorMsg: '',
       post: {},
       prevPost: undefined,
       nextPost: undefined
