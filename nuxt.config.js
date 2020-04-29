@@ -135,7 +135,6 @@ module.exports = {
     '~/plugins/bootstrap-vue.js',
     '~/plugins/filters.js',
     '~/plugins/disqus.js',
-    { src: '~/plugins/scrollspy.js', mode: 'client' },
     '~/plugins/font-awesome.js'
   ],
   /*

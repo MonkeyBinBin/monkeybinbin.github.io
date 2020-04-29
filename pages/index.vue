@@ -22,6 +22,7 @@ import api from '~/services/api'
 import constant from '~/constant'
 
 export default {
+  name: 'Pages',
   components: {
     ArticleItem
   },

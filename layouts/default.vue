@@ -1,5 +1,5 @@
 <template>
-  <div v-scroll-spy="{data: 'scrollPos'}" :class="!isShowGoTopButton && 'top'">
+  <div :class="!isShowGoTopButton && 'top'">
     <page-header/>
     <div class="container">
       <nuxt/>
@@ -21,21 +21,27 @@ export default {
   },
   data () {
     return {
-      scrollPos: 0
+      scrollPos: process.client ? window.scrollY : 0
     }
   },
   methods: {
     goTop: function () {
-      // window.scrollTo(0, 0)
-
-      // with animation
       $('html,body').animate({ scrollTop: 0 }, 500)
+    },
+    handleScroll: function () {
+      this.scrollPos = window.scrollY
     }
   },
   computed: {
     isShowGoTopButton: function () {
       return this.scrollPos > 0
     }
+  },
+  beforeMount () {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>
