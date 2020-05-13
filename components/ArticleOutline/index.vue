@@ -31,7 +31,7 @@
       class="article__slug text-black-50 ml-4"
       v-if="post.slug"
     >{{post.slug}}</p>
-    <div class="text-right">
+    <div class="text-right" v-if="isShowMore">
       <nuxt-link
         :to="'/article/'+post.id"
         class="more"
@@ -44,7 +44,7 @@
 
 <script>
 export default {
-  name: 'ArticleItem',
+  name: 'ArticleOutline',
   props: {
     post: {
       type: Object,
@@ -53,12 +53,38 @@ export default {
     markedTag: {
       type: String,
       default: ''
+    },
+    isShowMore: {
+      type: Boolean,
+      default: true
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.article {
+  margin-bottom: 50px;
+
+  &__slug {
+    text-indent: 1em;
+  }
+
+  &__date {
+    font-weight: bolder;
+    &::after {
+      content: "\B7";
+      padding-right: 0.5em;
+      padding-left: 0.5em;
+    }
+  }
+
+  &__divider {
+    background-color: $primary-color;
+    width: 80px;
+    height: 2px;
+  }
+}
 .tags /deep/ a {
   color: $primary-color;
   background-color: $secondary-color;

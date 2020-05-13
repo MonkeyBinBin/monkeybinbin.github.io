@@ -5,20 +5,8 @@
       data-aos="fade-left"
     >
       <div class="row">
-        <div class="col-12 article">
-          <p
-            class="article__date text-black-50 small mb-0"
-            v-if="post && post.createDate"
-          >
-            <font-awesome-icon :icon="['fas', 'calendar-alt']" />
-            {{post.createDate|parseDatetime}}
-          </p>
-          <h2>{{post.title}}</h2>
-          <p
-            class="article__slug text-black-50 ml-4 my-0"
-            v-if="post && post.slug"
-          >{{post.slug}}</p>
-          <hr class="article__divider my-4 mx-0">
+        <div class="col-12">
+          <article-outline :post="post" :is-show-more="false" />
           <div
             v-if="post && post.articleContent"
             class="md-content"
@@ -76,9 +64,13 @@
 import AOS from 'aos'
 import constant from '~/constant'
 import api from '~/services/api'
+import ArticleOutline from '~/components/ArticleOutline'
 
 export default {
   name: 'Article',
+  components: {
+    ArticleOutline
+  },
   head () {
     const _head = {
       title: this.post.title,

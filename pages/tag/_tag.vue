@@ -16,7 +16,7 @@
         :key="key"
       >
         <div class="col-sm-10 col-md-8">
-          <article-item
+          <article-outline
             :post="post"
             :marked-tag="tagName"
           />
@@ -28,7 +28,7 @@
 
 <script>
 import AOS from 'aos'
-import ArticleItem from '~/components/ArticleItem'
+import ArticleOutline from '~/components/ArticleOutline'
 import api from '~/services/api'
 
 export default {
@@ -58,7 +58,7 @@ export default {
     })
   },
   components: {
-    ArticleItem
+    ArticleOutline
   }
 }
 </script>

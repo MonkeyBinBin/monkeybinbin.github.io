@@ -59,11 +59,7 @@ module.exports = {
     CTF_BLOG_POST_TYPE_ID: config.CTF_BLOG_POST_TYPE_ID
   },
   router: {
-    base: baseUrl,
-    // 換頁將網頁捲至最上方
-    scrollBehavior: function (to, from, savedPosition) {
-      return { x: 0, y: 0 }
-    }
+    base: baseUrl
   },
   /*
   ** Customize the progress bar color
