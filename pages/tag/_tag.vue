@@ -1,17 +1,16 @@
 <template>
   <section class="section">
-    <div class="container">
-      <div
-        class="row justify-content-center aos-init"
-        data-aos="fade-left"
-      >
+    <div
+      class="container aos-init"
+      data-aos="fade-left"
+    >
+      <div class="row justify-content-center">
         <div class="col-sm-10 col-md-8">
           <h1 class="mb-5">Posts tagged with "{{tagName}}"</h1>
         </div>
       </div>
       <div
-        class="row justify-content-center aos-init"
-        data-aos="fade-left"
+        class="row justify-content-center"
         v-for="(post, key) in posts"
         :key="key"
       >

@@ -81,10 +81,7 @@ module.exports = {
     '~/assets/sass/main.scss'
   ],
   modules: [
-    '@nuxtjs/sitemap',
     ['@nuxtjs/google-tag-manager', { id: 'GTM-N24F89P' }],
-    // global 載入sass的資源(variables、functions、mixins…)使用的套件相關設定在 styleResources
-    '@nuxtjs/style-resources',
     ['nuxt-fontawesome', {
       component: 'fa',
       imports: [
@@ -94,6 +91,11 @@ module.exports = {
         }
       ]
     }]
+  ],
+  buildModules: [
+    '@nuxtjs/sitemap',
+    // global 載入sass的資源(variables、functions、mixins…)使用的套件相關設定在 styleResources
+    '@nuxtjs/style-resources'
   ],
   styleResources: {
     // global 載入sass的資源(variables、functions、mixins…)
