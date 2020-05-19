@@ -1,7 +1,7 @@
 <template>
   <header class="intro text-center">
     <nuxt-link to="/" class="intro__avatar">
-      <img alt="MonkeyBinBin" :src="avatar" class="img-thumbnail rounded-circle">
+      <img alt="MonkeyBinBin" src="~/assets/img/avatar.jpg" class="img-thumbnail rounded-circle">
     </nuxt-link>
     <div class="intro__text">
       <h2 class="text-white">{{title}}</h2>
@@ -11,15 +11,13 @@
 </template>
 
 <script>
-import avatar from '~/assets/img/avatar.jpg'
 import PageNav from '~/components/PageNav'
 import constant from '~/constant'
 export default {
   name: 'PageHeader',
   data () {
     return {
-      title: constant.title,
-      avatar
+      title: constant.title
     }
   },
   components: {

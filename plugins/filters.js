@@ -22,9 +22,7 @@ marked.setOptions({
   }
 })
 
-Vue.filter('parseMd', function (content) {
-  return marked(content)
-})
+Vue.filter('parseMd', marked)
 
 Vue.filter('parseDatetime', function (datetime) {
   const parseDate = moment(datetime, 'YYYY-MM-DD')
