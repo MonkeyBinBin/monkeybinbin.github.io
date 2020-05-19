@@ -7,11 +7,12 @@ script:
   - npm run generate
 deploy:
   provider: pages
-  skip-cleanup: true
+  strategy: git
+  skip_cleanup: true
   github_token: $GITHUB_TOKEN
-  local-dir: dist
+  local_dir: dist
   repo: MonkeyBinBin/monkeybinbin.github.io
-  target-branch: master
+  target_branch: master
   on:
     branch: develop
 branches:
