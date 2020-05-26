@@ -65,6 +65,7 @@ import AOS from 'aos'
 import constant from '~/constant'
 import api from '~/services/api'
 import ArticleOutline from '~/components/ArticleOutline'
+import config from '~/config'
 
 export default {
   name: 'Article',
@@ -82,7 +83,8 @@ export default {
       ]
     }
     if (this.post && this.post.tags) {
-      _head.meta.push({ hid: 'keywords', name: 'keywords', content: this.post.tags.join() })
+      const keywords = [...config.keywords, ...this.post.tags, this.post.title]
+      _head.meta.push({ hid: 'keywords', name: 'keywords', content: [...new Set(keywords)].join() })
     }
     if (this.post && this.post.slug) {
       _head.meta.push({ hid: 'description', property: 'description', content: this.post.slug })
