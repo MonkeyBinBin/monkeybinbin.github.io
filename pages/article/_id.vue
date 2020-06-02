@@ -82,8 +82,8 @@ export default {
         { src: '//assets.codepen.io/assets/embed/ei.js' }
       ]
     }
-    if (this.post && this.post.tags) {
-      const keywords = [...config.keywords, ...this.post.tags, this.post.title]
+    if (this.post && this.post.categoryList) {
+      const keywords = [...config.keywords, ...this.post.categoryList, this.post.title]
       _head.meta.push({ hid: 'keywords', name: 'keywords', content: [...new Set(keywords)].join() })
     }
     if (this.post && this.post.slug) {

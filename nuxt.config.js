@@ -16,7 +16,7 @@ const client = contentful.createClient(
 const getArticles = () => {
   return client.getEntries({
     content_type: config.CTF_BLOG_POST_TYPE_ID,
-    select: 'fields.id,fields.createDate,fields.title,fields.slug,fields.tags',
+    select: 'fields.id,fields.createDate,fields.title,fields.slug,fields.categoryList',
     order: '-fields.createDate'
   })
     .then(res => map(res.items, item => item.fields))

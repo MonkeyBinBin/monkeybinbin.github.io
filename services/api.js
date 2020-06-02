@@ -1,33 +1,33 @@
-import filter from 'lodash/filter'
 import map from 'lodash/map'
 import head from 'lodash/head'
 import constant from '~/constant'
 import contentful from '~/plugins/contentful.js'
 const client = contentful.createClient()
 
-const getArticles = (limit) => {
-  const queryOptions = {
-    content_type: process.env.CTF_BLOG_POST_TYPE_ID,
-    select: 'fields.id,fields.createDate,fields.title,fields.slug,fields.tags',
-    order: '-fields.createDate'
-  }
-
-  if (limit && !isNaN(limit)) {
-    queryOptions.limit = limit
-  }
-
-  return client.getEntries(queryOptions)
-    .then(res => map(res.items, item => item.fields))
-    .catch(() => Promise.resolve([]))
-}
-
 export default {
-  getArticles,
+  getArticles: (limit) => {
+    const queryOptions = {
+      content_type: process.env.CTF_BLOG_POST_TYPE_ID,
+      select: 'fields.id,fields.createDate,fields.title,fields.slug,fields.categoryList',
+      order: '-fields.createDate'
+    }
+
+    if (limit && !isNaN(limit)) {
+      queryOptions.limit = limit
+    }
+
+    return client.getEntries(queryOptions)
+      .then(res => map(res.items, item => item.fields))
+      .catch(() => Promise.resolve([]))
+  },
   getArticlesWithTag: (tag) => {
-    return getArticles()
-      .then(res => {
-        return filter(res, function (o) { return o.tags && o.tags.includes(tag) })
-      })
+    return client.getEntries({
+      content_type: process.env.CTF_BLOG_POST_TYPE_ID,
+      select: 'fields.id,fields.createDate,fields.title,fields.slug,fields.categoryList',
+      order: '-fields.createDate',
+      'fields.categoryList': tag
+    })
+      .then(res => map(res.items, item => item.fields))
       .catch(() => Promise.resolve([]))
   },
   getArticleById: (id) => {

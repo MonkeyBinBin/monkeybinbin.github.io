@@ -1,7 +1,7 @@
 <template>
   <div class="article">
     <div
-      v-if="post && post.tags"
+      v-if="post && post.categoryList"
       class="tags"
     >
       <span
@@ -12,7 +12,7 @@
         {{post.createDate|parseDatetime}}
       </span>
       <nuxt-link
-        v-for="tag in post.tags"
+        v-for="tag in post.categoryList"
         :key="tag"
         :to="'/tag/'+tag"
         :class="['small', markedTag && tag === markedTag && 'marked']"
