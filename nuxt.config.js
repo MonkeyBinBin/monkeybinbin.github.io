@@ -121,8 +121,8 @@ module.exports = {
       const routes = posts.map(post => {
         return {
           url: '/article/' + post.id,
-          changefreq: 'daily',
-          priority: 0.8,
+          changefreq: 'yearly',
+          priority: 0.5,
           lastmodISO: post.createDate
         }
       })
