@@ -139,10 +139,6 @@ export default {
   }
 }
 
-// .article__date::after {
-//   content: '';
-// }
-
 .other-article-link {
   color: $primary-color;
 }
