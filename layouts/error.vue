@@ -37,7 +37,7 @@ export default {
 
 <style lang="scss" scoped>
 .not-found-title {
-  font-size: 200px;
   color: $primary-color;
+  font-size: 200px;
 }
 </style>

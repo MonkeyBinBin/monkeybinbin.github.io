@@ -71,20 +71,25 @@ export default {
 
 <style lang="scss" scoped>
 .archieve-list {
-  padding-top: 10px;
   padding-bottom: 10px;
+  padding-top: 10px;
+
   &__category {
     padding-bottom: 5px;
   }
+
   &__article {
     a {
-      color: $primary-color;
       @include link-animation($primary-color);
+
+      color: $primary-color;
+
       &:hover {
         text-decoration: none;
       }
     }
   }
+
   &__date {
     font-size: small;
   }

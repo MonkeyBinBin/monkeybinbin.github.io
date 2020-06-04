@@ -95,7 +95,8 @@ module.exports = {
   buildModules: [
     '@nuxtjs/sitemap',
     // global 載入sass的資源(variables、functions、mixins…)使用的套件相關設定在 styleResources
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    '@nuxtjs/stylelint-module'
   ],
   styleResources: {
     // global 載入sass的資源(variables、functions、mixins…)

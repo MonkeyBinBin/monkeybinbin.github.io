@@ -1,5 +1,5 @@
 <template>
-  <div :class="!isShowGoTopButton && 'top'">
+  <div :class="['layout-inner', !isShowGoTopButton && 'top']">
     <page-header/>
     <div class="container">
       <nuxt/>
@@ -47,25 +47,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.layout-inner {
+  height: 100vh;
+}
+
 .container {
   // 100vh - header height(350px) - footer height(80px)
   min-height: calc(100vh - 430px);
-  padding-top: 30px;
   padding-bottom: 30px;
+  padding-top: 30px;
 }
+
 .scrolltop-button {
-  position: fixed;
-  font-size: 22px;
-  opacity: 0;
-  z-index: 1;
-  right: 3%;
-  bottom: 90px;
-  transition: opacity 0.5s;
-  font-weight: bolder;
-  color: white;
   background-color: $primary-color;
+  bottom: 90px;
+  color: #fff;
+  font-size: 22px;
+  font-weight: bolder;
+  opacity: 0;
+  position: fixed;
+  right: 3%;
+  transition: opacity 0.5s;
+  z-index: 1;
 }
+
 .scrolltop-button.active {
-  opacity: .8;
+  opacity: 0.8;
 }
 </style>

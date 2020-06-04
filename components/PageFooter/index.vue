@@ -19,7 +19,7 @@ export default {
 <style lang="scss" scoped>
 .footer {
   background: #fff;
-  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.1);
   color: rgb(146, 146, 146);
   font-size: 14px;
 }

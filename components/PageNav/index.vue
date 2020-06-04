@@ -16,51 +16,47 @@
 
 <style lang="scss" scoped>
 .menu {
-  max-width: 960px;
-  mask-image: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    #ffffff 25%,
-    #ffffff 75%,
-    rgba(255, 255, 255, 0) 100%
-  );
   margin: 0 auto;
+  mask-image: linear-gradient(90deg,
+  rgba(255, 255, 255, 0) 0%,
+  #fff 25%,
+  #fff 75%,
+  rgba(255, 255, 255, 0) 100%);
+  max-width: 960px;
   padding: 20px 0;
-}
 
-.menu__container {
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  background: linear-gradient(
-    90deg,
+  &__container {
+    background: linear-gradient(90deg,
     rgba(255, 255, 255, 0) 0%,
     rgba(255, 255, 255, 0.2) 25%,
     rgba(255, 255, 255, 0.2) 75%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.1),
-    inset 0 0 1px rgba(255, 255, 255, 0.6);
-}
+    rgba(255, 255, 255, 0) 100%);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.1),
+      inset 0 0 1px rgba(255, 255, 255, 0.6);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
 
-.menu__item {
-  display: inline-block;
-}
+  &__item {
+    display: inline-block;
+  }
 
-.menu__link {
-  padding: 18px;
-  font-family: "Open Sans";
-  text-transform: uppercase;
-  color: #ffffffbb;
-  font-size: 18px;
-  text-decoration: none;
-  display: block;
-}
+  &__link {
+    color: #fffb;
+    display: block;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    padding: 18px;
+    text-decoration: none;
+    text-transform: uppercase;
 
-.menu__link:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1),
-    inset 0 0 1px rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.1);
-  color:#ffffff;
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1),
+        inset 0 0 1px rgba(255, 255, 255, 0.6);
+      color: #fff;
+    }
+  }
 }
 </style>

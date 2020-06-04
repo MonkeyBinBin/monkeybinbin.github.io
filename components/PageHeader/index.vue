@@ -28,35 +28,36 @@ export default {
 
 <style lang="scss" scoped>
 .intro {
-  width: 100%;
-  height: 350px;
   background: linear-gradient(45deg, $tertiary-color, $primary-color);
+  height: 350px;
   position: relative;
-}
+  width: 100%;
 
-.intro__text {
-  padding-top: 20px;
-  text-align: center;
-  vertical-align: top;
-}
-
-.intro__avatar {
-  display: inline-block;
-  margin-top: 50px;
-  line-height: 0;
-  padding: 0.25rem;
-  position: relative;
-  img {
-    max-width: 7.5rem;
+  &__text {
+    padding-top: 20px;
+    text-align: center;
+    vertical-align: top;
   }
 
-  &::before {
-    content: 'MonkeyBINBIN';
-    position: absolute;
-    right: -70%;
-    bottom: 20px;
-    color: #fff;
-    font-weight: bolder;
+  &__avatar {
+    display: inline-block;
+    line-height: 0;
+    margin-top: 50px;
+    padding: 0.25rem;
+    position: relative;
+
+    img {
+      max-width: 7.5rem;
+    }
+
+    &::before {
+      bottom: 20px;
+      color: #fff;
+      content: 'MonkeyBINBIN';
+      font-weight: bolder;
+      position: absolute;
+      right: -70%;
+    }
   }
 }
 </style>

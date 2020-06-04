@@ -1,17 +1,22 @@
 /**
 * 為了調整footer置底
 */
-html, body {
+html,
+body {
   height: 100vh;
+
+  > div,
+  > div > div {
+    height: 100vh;
+  }
 }
 
-#__nuxt, #__layout, #__layout > div {
-  height: 100vh;
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.5s;
 }
 
-.page-enter-active, .page-leave-active {
-  transition: opacity .5s;
-}
-.page-enter, .page-leave-active {
+.page-enter,
+.page-leave-active {
   opacity: 0;
 }

@@ -19,7 +19,7 @@
           <nuxt-link
             v-if="!!prevPost"
             :to="'/article/'+prevPost.id"
-            class="other_article_link"
+            class="other-article-link"
           >
             <div class="d-flex justify-content-start align-items-center">
               <font-awesome-icon
@@ -34,7 +34,7 @@
           <nuxt-link
             v-if="!!nextPost"
             :to="'/article/'+nextPost.id"
-            class="other_article_link"
+            class="other-article-link"
           >
             <div class="d-flex justify-content-end align-items-center">
               <span class="text-right">{{nextPost.title}}</span>
@@ -134,14 +134,16 @@ export default {
 
 <style lang="scss" scoped>
 .md-content {
-  & /deep/ img {
+  /deep/ img {
     max-width: 100%;
   }
 }
-.article__date::after {
-  content: "";
-}
-.other_article_link {
+
+// .article__date::after {
+//   content: '';
+// }
+
+.other-article-link {
   color: $primary-color;
 }
 </style>
