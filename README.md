@@ -27,3 +27,6 @@ $ npm run deploy
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
 
+## Notices
+npm script => "lint:css": "npx stylelint '**/*.{css,scss,sass,vue}'"
+要使用上述指令需要將 nodejs 升級至 10.13 以上(含10.13)版本
