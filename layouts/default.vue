@@ -1,13 +1,17 @@
 <template>
   <div :class="['layout-inner', !isShowGoTopButton && 'top']">
-    <page-header/>
+    <page-header />
     <div class="container">
-      <nuxt/>
-      <button type="button" :class="['btn scrolltop-button', isShowGoTopButton && 'active']" @click="goTop">
+      <nuxt />
+      <button
+        type="button"
+        :class="['btn scrolltop-button', isShowGoTopButton && 'active']"
+        @click="goTop"
+      >
         <font-awesome-icon :icon="['fas', 'arrow-up']" />
       </button>
     </div>
-    <page-footer/>
+    <page-footer />
   </div>
 </template>
 
@@ -24,14 +28,6 @@ export default {
       scrollPos: process.client ? window.scrollY : 0
     }
   },
-  methods: {
-    goTop: function () {
-      $('html,body').animate({ scrollTop: 0 }, 500)
-    },
-    handleScroll: function () {
-      this.scrollPos = window.scrollY
-    }
-  },
   computed: {
     isShowGoTopButton: function () {
       return this.scrollPos > 0
@@ -42,6 +38,14 @@ export default {
   },
   beforeDestroy () {
     window.removeEventListener('scroll', this.handleScroll)
+  },
+  methods: {
+    goTop: function () {
+      $('html,body').animate({ scrollTop: 0 }, 500)
+    },
+    handleScroll: function () {
+      this.scrollPos = window.scrollY
+    }
   }
 }
 </script>

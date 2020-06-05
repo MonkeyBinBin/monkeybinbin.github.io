@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-12 text-center">
-          © 2018 MonkeyBinBin. <br class="d-block d-sm-none" />Built with Nuxt.js and Bootstrap 4.
+          © 2018 MonkeyBinBin. <br class="d-block d-sm-none">Built with Nuxt.js and Bootstrap 4.
         </div>
       </div>
     </div>

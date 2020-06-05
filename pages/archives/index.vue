@@ -7,7 +7,9 @@
       <div class="row justify-content-center">
         <div class="col-sm-10 col-md-8">
           <div class="section-header">
-            <h3 class="section-title">文章列表</h3>
+            <h3 class="section-title">
+              文章列表
+            </h3>
           </div>
         </div>
       </div>
@@ -23,7 +25,8 @@
                 <font-awesome-icon
                   class="mr-2"
                   :icon="['fas', 'calendar-alt']"
-                />{{key}}</h5>
+                />{{ key }}
+              </h5>
             </div>
             <div
               v-for="(post, postKey) in monthPosts"
@@ -31,7 +34,9 @@
               class="archieve-list__article"
             >
               <nuxt-link :to="'/article/'+post.id">
-                <span>{{post.title}}</span><span class="archieve-list__date"> [ {{post.createDate}} ]</span>
+                <span>{{ post.title }}</span><span class="archieve-list__date">
+                  [ {{ post.createDate }} ]
+                </span>
               </nuxt-link>
             </div>
           </div>
@@ -47,15 +52,15 @@ import api from '~/services/api'
 
 export default {
   name: 'Archives',
-  mounted () {
-    this.$nextTick(function () {
-      AOS.init()
-    })
-  },
   data () {
     return {
       posts: []
     }
+  },
+  mounted () {
+    this.$nextTick(function () {
+      AOS.init()
+    })
   },
   async asyncData ({ params }) {
     return Promise.all([

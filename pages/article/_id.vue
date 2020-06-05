@@ -6,7 +6,11 @@
     >
       <div class="row">
         <div class="col-12">
-          <article-outline :post="post" :is-show-more="false" />
+          <article-outline
+            :post="post"
+            :is-show-more="false"
+          />
+          <!-- eslint-disabl vue/no-v-html -->
           <div
             v-if="post && post.articleContent"
             class="md-content"
@@ -26,7 +30,7 @@
                 class="fa-2x mr-1"
                 :icon="['fas', 'arrow-alt-circle-left']"
               />
-              <span>{{prevPost.title}}</span>
+              <span>{{ prevPost.title }}</span>
             </div>
           </nuxt-link>
         </div>
@@ -37,7 +41,9 @@
             class="other-article-link"
           >
             <div class="d-flex justify-content-end align-items-center">
-              <span class="text-right">{{nextPost.title}}</span>
+              <span class="text-right">
+                {{ nextPost.title }}
+              </span>
               <font-awesome-icon
                 class="fa-2x ml-1"
                 :icon="['fas', 'arrow-alt-circle-right']"
@@ -46,13 +52,13 @@
           </nuxt-link>
         </div>
         <div class="col-12">
-          <hr />
+          <hr>
           <div class="comments">
             <vue-disqus
               shortname="monkeybinbinblog"
               :identifier="id"
               :url="`https://monkeybinbin.github.io/article/${id}`"
-            ></vue-disqus>
+            />
           </div>
         </div>
       </div>

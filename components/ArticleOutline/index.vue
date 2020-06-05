@@ -5,11 +5,11 @@
       class="tags"
     >
       <span
-        class="small text-secondary article__date"
         v-if="post.createDate"
+        class="small text-secondary article__date"
       >
         <font-awesome-icon :icon="['fas', 'calendar-alt']" />
-        {{post.createDate|parseDatetime}}
+        {{ post.createDate|parseDatetime }}
       </span>
       <nuxt-link
         v-for="tag in post.categoryList"
@@ -28,10 +28,15 @@
     </h2>
     <hr class="article__divider my-4 mx-0">
     <p
-      class="article__slug text-black-50 ml-4"
       v-if="post.slug"
-    >{{post.slug}}</p>
-    <div class="text-right" v-if="isShowMore">
+      class="article__slug text-black-50 ml-4"
+    >
+      {{ post.slug }}
+    </p>
+    <div
+      v-if="isShowMore"
+      class="text-right"
+    >
       <nuxt-link
         :to="'/article/'+post.id"
         class="more"

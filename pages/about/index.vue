@@ -7,7 +7,9 @@
       <div class="row justify-content-center">
         <div class="col-sm-10 col-md-8">
           <div class="section-header">
-            <h3 class="section-title">關於我</h3>
+            <h3 class="section-title">
+              關於我
+            </h3>
           </div>
         </div>
       </div>

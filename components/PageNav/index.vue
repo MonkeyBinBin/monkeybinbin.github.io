@@ -2,13 +2,28 @@
   <nav class="menu">
     <ul class="menu__container">
       <li class="menu__item">
-        <nuxt-link class="menu__link" to="/">HOME</nuxt-link>
+        <nuxt-link
+          class="menu__link"
+          to="/"
+        >
+          HOME
+        </nuxt-link>
       </li>
       <li class="menu__item">
-        <nuxt-link class="menu__link" to="/archives">ARCHIVES</nuxt-link>
+        <nuxt-link
+          class="menu__link"
+          to="/archives"
+        >
+          ARCHIVES
+        </nuxt-link>
       </li>
       <li class="menu__item">
-        <nuxt-link class="menu__link" to="/about">ABOUT</nuxt-link>
+        <nuxt-link
+          class="menu__link"
+          to="/about"
+        >
+          ABOUT
+        </nuxt-link>
       </li>
     </ul>
   </nav>

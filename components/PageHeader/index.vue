@@ -1,10 +1,19 @@
 <template>
   <header class="intro text-center">
-    <nuxt-link to="/" class="intro__avatar">
-      <img alt="MonkeyBinBin" src="~/assets/img/avatar.jpg" class="img-thumbnail rounded-circle">
+    <nuxt-link
+      to="/"
+      class="intro__avatar"
+    >
+      <img
+        alt="MonkeyBinBin"
+        src="~/assets/img/avatar.jpg"
+        class="img-thumbnail rounded-circle"
+      >
     </nuxt-link>
     <div class="intro__text">
-      <h2 class="text-white">{{title}}</h2>
+      <h2 class="text-white">
+        {{ title }}
+      </h2>
     </div>
     <page-nav />
   </header>
@@ -15,13 +24,13 @@ import PageNav from '~/components/PageNav'
 import constant from '~/constant'
 export default {
   name: 'PageHeader',
+  components: {
+    PageNav
+  },
   data () {
     return {
       title: constant.title
     }
-  },
-  components: {
-    PageNav
   }
 }
 </script>
