@@ -46,7 +46,7 @@ export default {
   validate ({ params }) {
     return !!params.tag
   },
-  asyncData ({ params }) {
+  asyncData ({ params, error }) {
     return Promise.all([
       api.getArticlesWithTag(params.tag)
     ]).then(([posts]) => {
@@ -54,7 +54,9 @@ export default {
         tagName: params.tag,
         posts
       }
-    }).catch(console.error)
+    }).catch(reason => {
+      error({ message: reason })
+    })
   },
   mounted () {
     this.$nextTick(function () {

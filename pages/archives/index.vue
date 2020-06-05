@@ -62,14 +62,16 @@ export default {
       AOS.init()
     })
   },
-  async asyncData ({ params }) {
+  async asyncData ({ params, error }) {
     return Promise.all([
       api.getArticlesGroupByYearMonth()
     ]).then(([posts]) => {
       return {
         posts
       }
-    }).catch(console.error)
+    }).catch(reason => {
+      error({ message: reason })
+    })
   }
 }
 </script>

@@ -33,14 +33,16 @@ export default {
       posts: []
     }
   },
-  asyncData () {
+  asyncData ({ error }) {
     return Promise.all([
       api.getArticles(constant.articleListMaxLimit)
     ]).then(([posts]) => {
       return {
         posts
       }
-    }).catch(console.error)
+    }).catch(reason => {
+      error({ message: reason })
+    })
   },
   mounted () {
     this.$nextTick(function () {
