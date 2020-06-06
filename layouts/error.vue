@@ -22,6 +22,7 @@
       <nuxt-link
         to="/"
         class="btn btn-dark"
+        title="回首頁"
       >
         回首頁
       </nuxt-link>

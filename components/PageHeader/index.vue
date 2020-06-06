@@ -3,6 +3,7 @@
     <nuxt-link
       to="/"
       class="intro__avatar"
+      title="HOME"
     >
       <img
         alt="MonkeyBinBin"

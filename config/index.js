@@ -1,6 +1,7 @@
 module.exports = {
-  title: '被程式設計的猴子',
+  title: '被程式設計的猴子 Blog',
   keywords: ['被程式設計的猴子', 'Nuxt.js', 'Bootstrap 4', 'MonkeyBinBin', 'blog'],
+  description: '來自台灣的工程師，目前偏好前端開發。本網站使用 Nuxt.js 與 Bootstrap 4 搭建而成。紀錄一些日常開發程式的大小事情，加深自已的印象也能更深入的研究各種技術。',
   domain: 'https://monkeybinbin.github.io',
   fbId: '1816214708495848',
   CTF_BLOG_POST_TYPE_ID: 'post',

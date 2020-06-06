@@ -16,16 +16,20 @@
         :key="tag"
         :to="'/tag/'+tag"
         :class="['small', 'tag-link', markedTag && tag === markedTag && 'marked']"
+        :title="tag"
       >
         <font-awesome-icon :icon="['fas', 'tag']" />
         {{ tag }}
       </nuxt-link>
     </div>
-    <h2>
-      <nuxt-link :to="'/article/'+post.id">
+    <h1>
+      <nuxt-link
+        :to="'/article/'+post.id"
+        :title="post.title"
+      >
         {{ post.title }}
       </nuxt-link>
-    </h2>
+    </h1>
     <hr class="article__divider my-4 mx-0">
     <p
       v-if="post.slug"
@@ -40,6 +44,7 @@
       <nuxt-link
         :to="'/article/'+post.id"
         class="more"
+        :title="post.title"
       >
         more
       </nuxt-link>
@@ -71,10 +76,11 @@ export default {
 .article {
   margin-bottom: 50px;
 
-  /deep/ h2 a {
+  /deep/ h1 a {
     @include link-animation(#000);
 
     color: #000;
+    font-size: 2rem;
     text-decoration: none;
   }
 

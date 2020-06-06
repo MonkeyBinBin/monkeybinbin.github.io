@@ -33,7 +33,10 @@
               :key="`post_${postKey}`"
               class="archieve-list__article"
             >
-              <nuxt-link :to="'/article/'+post.id">
+              <nuxt-link
+                :to="'/article/'+post.id"
+                :title="post.title"
+              >
                 <span>{{ post.title }}</span><span class="archieve-list__date">
                   [ {{ post.createDate }} ]
                 </span>

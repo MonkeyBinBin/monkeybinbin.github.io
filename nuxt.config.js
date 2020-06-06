@@ -4,7 +4,6 @@ const config = require('./config')
 const map = require('lodash/map')
 
 const baseUrl = '/'
-const description = '使用 Nuxt.js、 Bootstrap 4 建立的blog。分享與紀錄一些程式開發的東西。'
 
 const contentful = require('contentful')
 const client = contentful.createClient(
@@ -36,14 +35,15 @@ module.exports = {
       { name: 'author', content: 'MonkeyBinBin' },
       { property: 'fb:app_id', content: config.fbId },
       { hid: 'keywords', name: 'keywords', content: config.keywords.join() },
-      { hid: 'description', name: 'description', content: description },
+      { hid: 'description', name: 'description', content: config.description },
       { hid: 'og:title', property: 'og:title', content: config.title },
+      { hid: 'og:site_name', property: 'og:site_name', content: config.title },
       { hid: 'og:type', property: 'og:type', content: 'article' },
       { hid: 'og:url', property: 'og:url', content: `${config.domain}${baseUrl}` },
-      { hid: 'og:image', property: 'og:image', content: `${path.join(config.domain, baseUrl, '/img/fb.jpg')}` },
-      { hid: 'og:image:width', property: 'og:image:width', content: '474' },
-      { hid: 'og:image:height', property: 'og:image:height', content: '474' },
-      { hid: 'og:description', property: 'og:description', content: description }
+      { hid: 'og:image', property: 'og:image', content: `${path.join(config.domain, baseUrl, '/img/share.jpg')}` },
+      { hid: 'og:image:width', property: 'og:image:width', content: '1080' },
+      { hid: 'og:image:height', property: 'og:image:height', content: '1080' },
+      { hid: 'og:description', property: 'og:description', content: config.description }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}favicon.ico` }

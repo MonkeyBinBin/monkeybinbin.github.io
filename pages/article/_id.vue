@@ -24,6 +24,7 @@
             v-if="!!prevPost"
             :to="'/article/'+prevPost.id"
             class="other-article-link"
+            :title="prevPost.title"
           >
             <div class="d-flex justify-content-start align-items-center">
               <font-awesome-icon
@@ -39,6 +40,7 @@
             v-if="!!nextPost"
             :to="'/article/'+nextPost.id"
             class="other-article-link"
+            :title="nextPost.title"
           >
             <div class="d-flex justify-content-end align-items-center">
               <span class="text-right">

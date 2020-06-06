@@ -5,6 +5,7 @@
         <nuxt-link
           class="menu__link"
           to="/"
+          title="HOME"
         >
           HOME
         </nuxt-link>
@@ -13,6 +14,7 @@
         <nuxt-link
           class="menu__link"
           to="/archives"
+          title="ARCHIVES"
         >
           ARCHIVES
         </nuxt-link>
@@ -21,6 +23,7 @@
         <nuxt-link
           class="menu__link"
           to="/about"
+          title="ABOUT"
         >
           ABOUT
         </nuxt-link>
