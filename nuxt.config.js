@@ -40,7 +40,7 @@ module.exports = {
       { hid: 'og:site_name', property: 'og:site_name', content: config.title },
       { hid: 'og:type', property: 'og:type', content: 'article' },
       { hid: 'og:url', property: 'og:url', content: `${config.domain}${baseUrl}` },
-      { hid: 'og:image', property: 'og:image', content: `${path.join(config.domain, baseUrl, '/img/share.jpg')}` },
+      { hid: 'og:image', property: 'og:image', content: `${config.domain}${path.join(baseUrl, '/img/share.jpg')}` },
       { hid: 'og:image:width', property: 'og:image:width', content: '1080' },
       { hid: 'og:image:height', property: 'og:image:height', content: '1080' },
       { hid: 'og:description', property: 'og:description', content: config.description }
