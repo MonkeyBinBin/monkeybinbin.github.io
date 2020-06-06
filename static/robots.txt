@@ -1,4 +1,3 @@
 User-agent: *
-Disallow: /tag/
 
 Sitemap: https://monkeybinbin.github.io/sitemap.xml

@@ -112,21 +112,29 @@ module.exports = {
     cacheTime: 1000 * 60 * 15, // 站點路由更新頻率，只在 generate: false有用
     gzip: true, // 生成 .xml.gz 檔的 sitemap
     generate: true, // 允許使用 nuxt generate 生成
-    // 排除不要的頁面路由
-    exclude: [
-      '/tag'
-    ],
     // 靜態頁面路徑
     routes: async (callback) => {
       const posts = await getArticles()
       const routes = posts.map(post => {
         return {
-          url: '/article/' + post.id,
+          url: `/article/${post.id}`,
           changefreq: 'yearly',
           priority: 0.5,
           lastmodISO: post.createDate
         }
       })
+
+      // tags
+      const tags = posts.reduce((acc, post) => {
+        return [...new Set([...acc, ...post.categoryList])]
+      }, [])
+      routes.push(...tags.map(tag => {
+        return {
+          url: `/tag/${tag}`,
+          changefreq: 'monthly',
+          priority: 0.5
+        }
+      }))
       callback(null, routes)
     }
   },
@@ -172,10 +180,23 @@ module.exports = {
   generate: {
     fallback: true,
     routes: async () => {
-      const posts = await getArticles()
-      return posts.map(post => {
+      const articles = await getArticles()
+      let posts = []
+
+      // 文章
+      posts.push(...articles.map(post => {
         return `/article/${post.id}`
-      })
+      }))
+
+      // tags
+      const tags = articles.reduce((acc, post) => {
+        return [...new Set([...acc, ...post.categoryList])]
+      }, [])
+      posts.push(...tags.map(tag => {
+        return `/tag/${tag}`
+      }))
+
+      return posts
     }
   }
 }
