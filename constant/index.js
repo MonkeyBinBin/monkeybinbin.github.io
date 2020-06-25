@@ -1,5 +1,5 @@
 const constant = {
-  title: process.env.title,
+  title: '被程式設計的猴子',
   keywords: process.env.keywords,
   domain: process.env.domain,
   baseUrl: process.env.baseUrl,

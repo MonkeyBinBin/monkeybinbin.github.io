@@ -81,8 +81,9 @@ export default {
     ArticleOutline
   },
   head () {
+    const title = `${this.post.title} - ${constant.title}`
     const _head = {
-      title: this.post.title,
+      title,
       meta: [
         { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` }
       ],
@@ -99,7 +100,7 @@ export default {
       _head.meta.push({ hid: 'og:description', property: 'og:description', content: this.post.slug })
     }
     if (this.post && this.post.title) {
-      _head.meta.push({ hid: 'og:title', property: 'og:title', content: this.post.title })
+      _head.meta.push({ hid: 'og:title', property: 'og:title', content: title })
     }
     return _head
   },
