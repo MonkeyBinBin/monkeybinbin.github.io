@@ -1,3 +1,4 @@
+// for nuxt.config.js 設定檔
 module.exports = {
   title: '被程式設計的猴子 - 記錄日常工作、開發遇到的大小事',
   keywords: ['被程式設計的猴子', 'Nuxt.js', 'Bootstrap 4', 'MonkeyBinBin', 'blog'],

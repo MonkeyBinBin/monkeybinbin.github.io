@@ -73,7 +73,6 @@ import AOS from 'aos'
 import constant from '~/constant'
 import api from '~/services/api'
 import ArticleOutline from '~/components/ArticleOutline'
-import config from '~/config'
 
 export default {
   name: 'Article',
@@ -82,27 +81,27 @@ export default {
   },
   head () {
     const title = `${this.post.title} - ${constant.title}`
-    const _head = {
+    const head = {
       title,
       meta: [
-        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` }
+        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}` }
       ],
       script: [
         { src: '//assets.codepen.io/assets/embed/ei.js' }
       ]
     }
     if (this.post && this.post.categoryList) {
-      const keywords = [...config.keywords, ...this.post.categoryList, this.post.title]
-      _head.meta.push({ hid: 'keywords', name: 'keywords', content: [...new Set(keywords)].join() })
+      const keywords = [...constant.keywords, ...this.post.categoryList, this.post.title]
+      head.meta.push({ hid: 'keywords', name: 'keywords', content: [...new Set(keywords)].join() })
     }
     if (this.post && this.post.slug) {
-      _head.meta.push({ hid: 'description', property: 'description', content: this.post.slug })
-      _head.meta.push({ hid: 'og:description', property: 'og:description', content: this.post.slug })
+      head.meta.push({ hid: 'description', property: 'description', content: this.post.slug })
+      head.meta.push({ hid: 'og:description', property: 'og:description', content: this.post.slug })
     }
     if (this.post && this.post.title) {
-      _head.meta.push({ hid: 'og:title', property: 'og:title', content: title })
+      head.meta.push({ hid: 'og:title', property: 'og:title', content: title })
     }
-    return _head
+    return head
   },
   async asyncData (context) {
     const { params, error } = context

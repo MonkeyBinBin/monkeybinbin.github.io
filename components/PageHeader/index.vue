@@ -13,7 +13,7 @@
     </nuxt-link>
     <div class="intro__text">
       <h1 class="text-white">
-        被程式設計的猴子
+        {{ title }}
       </h1>
     </div>
     <page-nav />
@@ -22,11 +22,16 @@
 
 <script>
 import PageNav from '~/components/PageNav'
-
+import constant from '~/constant'
 export default {
   name: 'PageHeader',
   components: {
     PageNav
+  },
+  data () {
+    return {
+      title: constant.title
+    }
   }
 }
 </script>

@@ -52,6 +52,7 @@
 <script>
 import AOS from 'aos'
 import api from '~/services/api'
+import constant from '~/constant'
 
 export default {
   name: 'Archives',
@@ -75,6 +76,20 @@ export default {
     }).catch(reason => {
       error({ message: reason })
     })
+  },
+  head () {
+    const title = `所有文章列表 - ${constant.title}`
+    const description = `依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊`
+    const head = {
+      title,
+      meta: [
+        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}archives` },
+        { hid: 'og:title', property: 'og:title', content: title },
+        { hid: 'description', property: 'description', content: description },
+        { hid: 'og:description', property: 'og:description', content: description }
+      ]
+    }
+    return head
   }
 }
 </script>

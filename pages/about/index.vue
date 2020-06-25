@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import constant from '~/constant'
 import AOS from 'aos'
 export default {
   name: 'About',
@@ -31,6 +32,17 @@ export default {
     this.$nextTick(function () {
       AOS.init()
     })
+  },
+  head () {
+    const title = `關於我 - ${constant.title}`
+    const head = {
+      title,
+      meta: [
+        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}about` },
+        { hid: 'og:title', property: 'og:title', content: title }
+      ]
+    }
+    return head
   }
 }
 </script>
