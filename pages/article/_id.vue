@@ -116,7 +116,7 @@ export default {
     const head = {
       title,
       meta: [
-        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}` }
+        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}/` }
       ],
       script: [
         { src: '//assets.codepen.io/assets/embed/ei.js' }
