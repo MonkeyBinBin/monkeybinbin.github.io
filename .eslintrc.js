@@ -23,8 +23,7 @@ module.exports = {
     "vue/no-v-html": "off"
   },
   globals: {
-    "$": true,
-    "moment": true,
-    "_": true,
+    "$": "readonly",
+    "moment": "readonly"
   }
 }

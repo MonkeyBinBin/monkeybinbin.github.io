@@ -164,9 +164,8 @@ module.exports = {
       config.plugins.push(
         new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /(en|zh-tw)$/),
         new webpack.ProvidePlugin({
-          '$': 'jquery',
-          '_': 'lodash',
-          'moment': 'moment'
+          $: 'jquery',
+          moment: 'moment'
         })
       )
     },
@@ -181,7 +180,7 @@ module.exports = {
     fallback: true,
     routes: async () => {
       const articles = await getArticles()
-      let posts = []
+      const posts = []
 
       // 文章
       posts.push(...articles.map(post => {

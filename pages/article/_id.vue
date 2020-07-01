@@ -10,7 +10,6 @@
             :post="post"
             :is-show-more="false"
           />
-          <!-- eslint-disabl vue/no-v-html -->
           <div
             v-if="post && post.articleContent"
             class="md-content"
