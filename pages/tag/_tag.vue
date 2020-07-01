@@ -38,6 +38,29 @@ export default {
   components: {
     ArticleOutline
   },
+  asyncData ({ params, error }) {
+    return Promise.all([
+      api.getArticlesWithTag(params.tag)
+    ]).then(([posts]) => {
+      return {
+        tagName: params.tag,
+        posts
+      }
+    }).catch(reason => {
+      error({ message: reason })
+    })
+  },
+  data () {
+    return {
+      tagName: '',
+      posts: []
+    }
+  },
+  mounted () {
+    this.$nextTick(function () {
+      AOS.init()
+    })
+  },
   head () {
     const title = `${this.tagName} 相關文章 - ${constant.title}`
     const description = `所有與 ${this.tagName} 主題相關的文章`
@@ -56,31 +79,8 @@ export default {
     }
     return head
   },
-  data () {
-    return {
-      tagName: '',
-      posts: []
-    }
-  },
   validate ({ params }) {
     return !!params.tag
-  },
-  asyncData ({ params, error }) {
-    return Promise.all([
-      api.getArticlesWithTag(params.tag)
-    ]).then(([posts]) => {
-      return {
-        tagName: params.tag,
-        posts
-      }
-    }).catch(reason => {
-      error({ message: reason })
-    })
-  },
-  mounted () {
-    this.$nextTick(function () {
-      AOS.init()
-    })
   }
 }
 </script>

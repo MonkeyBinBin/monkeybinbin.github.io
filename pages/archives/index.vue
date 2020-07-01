@@ -56,16 +56,6 @@ import constant from '~/constant'
 
 export default {
   name: 'Archives',
-  data () {
-    return {
-      posts: []
-    }
-  },
-  mounted () {
-    this.$nextTick(function () {
-      AOS.init()
-    })
-  },
   async asyncData ({ params, error }) {
     return Promise.all([
       api.getArticlesGroupByYearMonth()
@@ -75,6 +65,16 @@ export default {
       }
     }).catch(reason => {
       error({ message: reason })
+    })
+  },
+  data () {
+    return {
+      posts: []
+    }
+  },
+  mounted () {
+    this.$nextTick(function () {
+      AOS.init()
     })
   },
   head () {

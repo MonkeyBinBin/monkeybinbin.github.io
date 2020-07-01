@@ -55,9 +55,8 @@
         <div class="col-12">
           <hr>
           <div class="comments">
-            <vue-disqus
+            <disqus
               shortname="monkeybinbinblog"
-              :identifier="id"
               :url="`https://monkeybinbin.github.io/article/${id}`"
             />
           </div>
@@ -77,30 +76,6 @@ export default {
   name: 'Article',
   components: {
     ArticleOutline
-  },
-  head () {
-    const title = `${this.post.title} - ${constant.title}`
-    const head = {
-      title,
-      meta: [
-        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}` }
-      ],
-      script: [
-        { src: '//assets.codepen.io/assets/embed/ei.js' }
-      ]
-    }
-    if (this.post && this.post.categoryList) {
-      const keywords = [...constant.keywords, ...this.post.categoryList, this.post.title]
-      head.meta.push({ hid: 'keywords', name: 'keywords', content: [...new Set(keywords)].join() })
-    }
-    if (this.post && this.post.slug) {
-      head.meta.push({ hid: 'description', property: 'description', content: this.post.slug })
-      head.meta.push({ hid: 'og:description', property: 'og:description', content: this.post.slug })
-    }
-    if (this.post && this.post.title) {
-      head.meta.push({ hid: 'og:title', property: 'og:title', content: title })
-    }
-    return head
   },
   async asyncData (context) {
     const { params, error } = context
@@ -135,6 +110,30 @@ export default {
     this.$nextTick(function () {
       AOS.init()
     })
+  },
+  head () {
+    const title = `${this.post.title} - ${constant.title}`
+    const head = {
+      title,
+      meta: [
+        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}article/${this.id}` }
+      ],
+      script: [
+        { src: '//assets.codepen.io/assets/embed/ei.js' }
+      ]
+    }
+    if (this.post && this.post.categoryList) {
+      const keywords = [...constant.keywords, ...this.post.categoryList, this.post.title]
+      head.meta.push({ hid: 'keywords', name: 'keywords', content: [...new Set(keywords)].join() })
+    }
+    if (this.post && this.post.slug) {
+      head.meta.push({ hid: 'description', property: 'description', content: this.post.slug })
+      head.meta.push({ hid: 'og:description', property: 'og:description', content: this.post.slug })
+    }
+    if (this.post && this.post.title) {
+      head.meta.push({ hid: 'og:title', property: 'og:title', content: title })
+    }
+    return head
   }
 }
 </script>

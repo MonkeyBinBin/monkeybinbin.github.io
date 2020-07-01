@@ -43,7 +43,8 @@ module.exports = {
       { hid: 'og:image', property: 'og:image', content: `${config.domain}${path.join(baseUrl, '/img/share.jpg')}` },
       { hid: 'og:image:width', property: 'og:image:width', content: '1080' },
       { hid: 'og:image:height', property: 'og:image:height', content: '1080' },
-      { hid: 'og:description', property: 'og:description', content: config.description }
+      { hid: 'og:description', property: 'og:description', content: config.description },
+      { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}favicon.ico` }
@@ -144,6 +145,10 @@ module.exports = {
     '~/plugins/disqus.js',
     '~/plugins/font-awesome.js'
   ],
+  // server: {
+  //   port: 3000, // default: 3000
+  //   host: '0.0.0.0' // default: localhost
+  // },
   /*
   ** Build configuration
   */

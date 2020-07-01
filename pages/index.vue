@@ -28,11 +28,6 @@ export default {
   components: {
     ArticleOutline
   },
-  data () {
-    return {
-      posts: []
-    }
-  },
   asyncData ({ error }) {
     return Promise.all([
       api.getArticles(constant.articleListMaxLimit)
@@ -43,6 +38,11 @@ export default {
     }).catch(reason => {
       error({ message: reason })
     })
+  },
+  data () {
+    return {
+      posts: []
+    }
   },
   mounted () {
     this.$nextTick(function () {
