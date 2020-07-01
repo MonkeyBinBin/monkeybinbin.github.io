@@ -49,8 +49,6 @@
     rgba(255, 255, 255, 0.2) 25%,
     rgba(255, 255, 255, 0.2) 75%,
     rgba(255, 255, 255, 0) 100%);
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.1),
-      inset 0 0 1px rgba(255, 255, 255, 0.6);
     margin: 0;
     padding: 0;
     text-align: center;
