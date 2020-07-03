@@ -120,6 +120,9 @@ export default {
       ],
       script: [
         { src: '//assets.codepen.io/assets/embed/ei.js' }
+      ],
+      link: [
+        { hid: 'canonical', rel: 'canonical', href: `${constant.domain}${constant.baseUrl}article/${this.id}/` }
       ]
     }
     if (this.post && this.post.categoryList) {

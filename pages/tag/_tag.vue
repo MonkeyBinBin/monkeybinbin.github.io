@@ -71,6 +71,9 @@ export default {
         { hid: 'description', property: 'description', content: description },
         { hid: 'og:description', property: 'og:description', content: description },
         { hid: 'og:title', property: 'og:title', content: title }
+      ],
+      link: [
+        { hid: 'canonical', rel: 'canonical', href: `${constant.domain}${constant.baseUrl}tag/${this.tagName}` }
       ]
     }
     if (this.posts && this.posts.length > 0) {

@@ -87,6 +87,9 @@ export default {
         { hid: 'og:title', property: 'og:title', content: title },
         { hid: 'description', property: 'description', content: description },
         { hid: 'og:description', property: 'og:description', content: description }
+      ],
+      link: [
+        { hid: 'canonical', rel: 'canonical', href: `${constant.domain}${constant.baseUrl}archives` }
       ]
     }
     return head

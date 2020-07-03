@@ -47,7 +47,8 @@ module.exports = {
       { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}favicon.ico` }
+      { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}favicon.ico` },
+      { hid: 'canonical', rel: 'canonical', href: `${config.domain}${baseUrl}` }
     ]
   },
   env: {

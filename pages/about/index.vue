@@ -40,6 +40,9 @@ export default {
       meta: [
         { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}about` },
         { hid: 'og:title', property: 'og:title', content: title }
+      ],
+      link: [
+        { hid: 'canonical', rel: 'canonical', href: `${constant.domain}${constant.baseUrl}about` }
       ]
     }
     return head
