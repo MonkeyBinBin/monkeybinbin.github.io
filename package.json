@@ -36,6 +36,7 @@
     "vue-disqus": "^4.0.0"
   },
   "devDependencies": {
+    "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/stylelint-module": "^4.0.0",
     "babel-eslint": "^8.2.1",
     "del-cli": "^1.1.0",
