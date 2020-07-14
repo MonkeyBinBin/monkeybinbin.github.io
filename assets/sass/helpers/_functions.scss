@@ -1,7 +1,23 @@
-@function sum($numbers...) {
-  $sum: 0;
-  @each $number in $numbers {
-    $sum: $sum + $number;
+@function map-has-nested-keys($map, $keys...) {
+  @each $key in $keys {
+    @if not map-has-key($map, $key) {
+      @return false;
+    }
+    $map: map-get($map, $key);
   }
-  @return $sum;
+  @return true;
+}
+
+@function map-deep-get($map, $keys...) {
+  @each $key in $keys {
+    $map: map-get($map, $key);
+  }
+  @return $map;
+}
+
+@function z($layers...) {
+  @if not map-has-nested-keys($z-layers, $layers...) {
+    @warn 'No layer found for `#{inspect($layers)}` in $z-layers map. Property omitted.';
+  }
+  @return map-deep-get($z-layers, $layers...);
 }
