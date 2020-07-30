@@ -27,7 +27,8 @@
   ],
   "path-autocomplete.extensionOnImport": true,
   "path-autocomplete.pathMappings": {
-    "@/": "${folder}/src"
+    "@/": "${folder}/",
+    "~/": "${folder}/"
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,

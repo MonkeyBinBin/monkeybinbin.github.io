@@ -111,7 +111,7 @@ module.exports = {
   },
   sitemap: {
     path: '/sitemap.xml', // sitemap名稱，不用改
-    hostname: process.env.DEPLOY_ENV === 'production' ? `${config.domain}` : 'http://localhost:3000/', // 網址
+    hostname: process.env.NODE_ENV === 'production' ? `${config.domain}` : 'http://localhost:3000/', // 網址
     cacheTime: 1000 * 60 * 15, // 站點路由更新頻率，只在 generate: false有用
     gzip: true, // 生成 .xml.gz 檔的 sitemap
     generate: true, // 允許使用 nuxt generate 生成
@@ -169,9 +169,9 @@ module.exports = {
     },
     // 增加打包檔案解析的設定
     analyze: false,
-    extractCSS: process.env.DEPLOY_ENV === 'production',
+    extractCSS: process.env.NODE_ENV === 'production',
     optimization: {
-      minimize: process.env.DEPLOY_ENV === 'production'
+      minimize: process.env.NODE_ENV === 'production'
     }
   },
   generate: {
