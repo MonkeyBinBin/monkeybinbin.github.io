@@ -26,7 +26,7 @@
     "bootstrap-vue": "^2.0.0-rc.21",
     "contentful": "^7.2.0",
     "glob-all": "^3.2.1",
-    "highlight.js": "9.18.1",
+    "highlight.js": "10.4.1",
     "jquery": "^3.5.1",
     "lodash": "^4.17.15",
     "marked": "^0.7.0",
