@@ -22,7 +22,7 @@
     "@nuxtjs/style-resources": "^0.1.2",
     "aos": "^3.0.0-beta.6",
     "autoprefixer": "^9.4.7",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "bootstrap-vue": "^2.0.0-rc.21",
     "contentful": "^7.2.0",
     "glob-all": "^3.2.1",
