@@ -29,7 +29,7 @@
     "highlight.js": "10.4.1",
     "jquery": "^3.5.1",
     "lodash": "^4.17.15",
-    "marked": "^0.7.0",
+    "marked": "^4.0.10",
     "moment": "^2.24.0",
     "nuxt": "^2.12.2",
     "nuxt-fontawesome": "^0.4.0",
