@@ -31,7 +31,7 @@
     "lodash": "^4.17.15",
     "marked": "^4.0.10",
     "moment": "^2.24.0",
-    "nuxt": "^2.12.2",
+    "nuxt": "^3.17.5",
     "nuxt-fontawesome": "^0.4.0",
     "vue-disqus": "^4.0.0"
   },
