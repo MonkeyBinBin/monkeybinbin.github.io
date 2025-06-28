@@ -17,13 +17,15 @@
       <div
         v-for="(post, key) in validPosts"
         :key="post.id || key"
-        class="row justify-content-center"
+        class="row justify-content-center mb-4"
       >
         <div class="col-sm-10 col-md-8">
-          <article-outline
-            :post="post"
-            :marked-tag="tagName"
-          />
+          <div class="tech-card">
+            <article-outline
+              :post="post"
+              :marked-tag="tagName"
+            />
+          </div>
         </div>
       </div>
     </motion-div>
@@ -94,3 +96,100 @@ useHead({
   ]
 })
 </script>
+
+<style lang="scss" scoped>
+@use '~/assets/sass/helpers/variables' as *;
+@use '~/assets/sass/helpers/mixins' as *;
+
+.section {
+  padding: 2rem 0;
+  min-height: 100vh;
+}
+
+.tech-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.06);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, $primary-color, $tertiary-color);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.12),
+      0 16px 64px rgba(0, 0, 0, 0.08);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, $primary-color, $tertiary-color);
+    border-radius: 2px;
+  }
+}
+
+// 響應式設計
+@media (max-width: 768px) {
+  .section {
+    padding: 1rem 0;
+  }
+
+  .tech-card {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .tech-card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+}
+</style>

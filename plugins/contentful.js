@@ -1,7 +1,5 @@
 import { defineNuxtPlugin, useRuntimeConfig } from '#app'
-import pkg from 'contentful'
-
-const { createClient } = pkg
+import { createClient } from 'contentful'
 
 // 移除頂層呼叫 useRuntimeConfig，避免 Nuxt instance is unavailable 錯誤
 // 若需要建立 client，請於 plugin 內部或 setup function 內呼叫

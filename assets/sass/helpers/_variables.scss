@@ -5,3 +5,17 @@ $secondary-color: color.adjust($primary-color, $saturation: 25%, $lightness: 50%
 $tertiary-color: #1de099;
 $marked-primary-color: #c91414;
 $marked-secondary-color: color.adjust($marked-primary-color, $saturation: 25%, $lightness: 50%);
+
+// ScrollTop Button 色彩變數 - 基於主色系
+$scrolltop-gradient-start: $primary-color;
+$scrolltop-gradient-middle: $tertiary-color;
+$scrolltop-gradient-end: $primary-color;
+$scrolltop-shadow-primary: rgba(29, 200, 205, 0.4);
+$scrolltop-shadow-secondary: rgba(29, 224, 153, 0.3);
+$scrolltop-shadow-hover-primary: rgba(29, 200, 205, 0.6);
+$scrolltop-shadow-hover-secondary: rgba(29, 224, 153, 0.4);
+$scrolltop-shadow-active-primary: rgba(29, 200, 205, 0.5);
+$scrolltop-shadow-active-secondary: rgba(29, 224, 153, 0.3);
+$scrolltop-text-color: #fff;
+$scrolltop-inner-highlight: rgba(255, 255, 255, 0.2);
+$scrolltop-inner-highlight-hover: rgba(255, 255, 255, 0.3);

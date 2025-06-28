@@ -1,77 +1,273 @@
 <template>
-  <nav class="menu">
-    <ul class="menu__container">
-      <li class="menu__item">
-        <nuxt-link
-          class="menu__link"
-          to="/"
-          title="HOME"
-        >
-          HOME
-        </nuxt-link>
-      </li>
-      <li class="menu__item">
-        <nuxt-link
-          class="menu__link"
-          to="/archives"
-          title="ARCHIVES"
-        >
-          ARCHIVES
-        </nuxt-link>
-      </li>
-      <li class="menu__item">
-        <nuxt-link
-          class="menu__link"
-          to="/about"
-          title="ABOUT"
-        >
-          ABOUT
-        </nuxt-link>
-      </li>
-    </ul>
+  <nav class="tech-nav">
+    <!-- 導航內容 -->
+    <div class="nav-content">
+      <ul class="nav-list">
+        <li>
+          <nuxt-link
+            to="/"
+            class="nav-item"
+          >
+            <span class="icon">⌂</span>
+            <span class="text">HOME</span>
+          </nuxt-link>
+        </li>
+        <li>
+          <nuxt-link
+            to="/archives"
+            class="nav-item"
+          >
+            <span class="icon">⚏</span>
+            <span class="text">ARCHIVES</span>
+          </nuxt-link>
+        </li>
+        <li>
+          <nuxt-link
+            to="/about"
+            class="nav-item"
+          >
+            <span class="icon">◉</span>
+            <span class="text">ABOUT</span>
+          </nuxt-link>
+        </li>
+      </ul>
+    </div>
   </nav>
 </template>
 
 <style lang="scss" scoped>
-.menu {
+// 科技感顏色
+$primary: #00d4ff;
+$secondary: #ff6b6b;
+$accent: #00ff88;
+$dark: #0a0e27;
+$darker: #070b1f;
+
+.tech-nav {
+  max-width: 900px;
   margin: 0 auto;
-  mask-image: linear-gradient(90deg,
-  rgba(255, 255, 255, 0) 0%,
-  #fff 25%,
-  #fff 75%,
-  rgba(255, 255, 255, 0) 100%);
-  max-width: 960px;
-  padding: 20px 0;
+  padding: 40px 20px;
+  position: relative;
+}
 
-  &__container {
-    background: linear-gradient(90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.2) 25%,
-    rgba(255, 255, 255, 0.2) 75%,
-    rgba(255, 255, 255, 0) 100%);
-    margin: 0;
-    padding: 0;
-    text-align: center;
+// 導航內容
+.nav-content {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg,
+    rgba($dark, 0.9),
+    rgba($darker, 0.95));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba($primary, 0.3);
+  border-radius: 16px;
+  padding: 30px;
+  overflow: hidden;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 40px rgba($primary, 0.2),
+    0 0 80px rgba($accent, 0.1);
+
+  // 光線特效
+  &::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(45deg,
+      transparent 25%,
+      rgba($primary, 0.4) 45%,
+      rgba($primary, 0.5) 50%,
+      rgba($primary, 0.4) 55%,
+      transparent 75%);
+    border-radius: 20px;
+    z-index: -1;
+    animation: lightBeam 3s ease-in-out infinite;
   }
 
-  &__item {
-    display: inline-block;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+      rgba($primary, 0.08) 0%,
+      transparent 25%,
+      transparent 75%,
+      rgba($primary, 0.08) 100%);
+    border-radius: 16px;
+    z-index: -1;
+    animation: glowPulse 5s ease-in-out infinite alternate;
+  }
+}
+
+// 導航列表
+.nav-list {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+  }
+}
+
+// 導航項目
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 25px;
+  text-decoration: none;
+  color: #ffffff;
+  background: linear-gradient(145deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba($primary, 0.2);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  .icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: $primary;
+    transition: all 0.3s ease;
   }
 
-  &__link {
-    color: #fffb;
-    display: block;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 18px;
-    padding: 18px;
-    text-decoration: none;
+  .text {
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+  }
 
-    &:hover {
-      background: rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1),
-        inset 0 0 1px rgba(255, 255, 255, 0.6);
-      color: #fff;
+  // 懸停效果
+  &:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(145deg,
+      rgba($primary, 0.1),
+      rgba($primary, 0.05));
+    border-color: rgba($primary, 0.5);
+    box-shadow:
+      0 8px 25px rgba($primary, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+    .icon {
+      color: $accent;
+      transform: scale(1.1);
+    }
+
+    .text {
+      color: #ffffff;
+    }
+  }
+
+  // 活躍狀態
+  &.nuxt-link-active {
+    background: linear-gradient(145deg,
+      rgba($accent, 0.15),
+      rgba($accent, 0.08));
+    border-color: rgba($accent, 0.6);
+    box-shadow:
+      0 4px 20px rgba($accent, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+    .icon {
+      color: $accent;
+    }
+
+    .text {
+      color: #ffffff;
+    }
+  }
+}
+
+// 光線動畫
+@keyframes lightBeam {
+  0% {
+    opacity: 0.4;
+    transform: rotate(0deg) scale(1);
+  }
+  33% {
+    opacity: 0.7;
+    transform: rotate(1deg) scale(1.01);
+  }
+  66% {
+    opacity: 0.8;
+    transform: rotate(-1deg) scale(1.02);
+  }
+  100% {
+    opacity: 0.4;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@keyframes glowPulse {
+  0% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+}
+
+// 響應式設計
+@media (max-width: 768px) {
+  .tech-nav {
+    padding: 30px 15px;
+  }
+
+  .nav-content {
+    padding: 20px;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .nav-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+
+    .icon {
+      margin-bottom: 0;
+      margin-right: 15px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-item {
+    padding: 15px 20px;
+
+    .icon {
+      font-size: 20px;
+      margin-right: 12px;
+    }
+
+    .text {
+      font-size: 11px;
+      letter-spacing: 1px;
     }
   }
 }
