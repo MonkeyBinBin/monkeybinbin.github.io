@@ -33,13 +33,25 @@
         aria-label="文章分頁導覽"
       >
         <div class="pagination-wrapper">
+          <!-- 上一頁 -->
+          <NuxtLink
+            v-if="currentPage > 1"
+            :to="currentPage === 2 ? '/' : `/page/${currentPage - 1}`"
+            class="pagination-link pagination-prev"
+            aria-label="上一頁"
+          >
+            <i class="fas fa-chevron-left" />
+            <span>上一頁</span>
+          </NuxtLink>
+
           <!-- 頁碼 -->
           <div class="pagination-numbers">
             <!-- 第一頁 -->
             <NuxtLink
               v-if="showFirstPage"
               to="/"
-              class="pagination-number active"
+              class="pagination-number"
+              :class="{ active: currentPage === 1 }"
             >
               1
             </NuxtLink>
@@ -56,6 +68,7 @@
               :key="page"
               :to="page === 1 ? '/' : `/page/${page}`"
               class="pagination-number"
+              :class="{ active: currentPage === page }"
             >
               {{ page }}
             </NuxtLink>
@@ -71,6 +84,7 @@
               v-if="showLastPage"
               :to="`/page/${totalPages}`"
               class="pagination-number"
+              :class="{ active: currentPage === totalPages }"
             >
               {{ totalPages }}
             </NuxtLink>
@@ -78,8 +92,8 @@
 
           <!-- 下一頁 -->
           <NuxtLink
-            v-if="totalPages > 1"
-            to="/page/2"
+            v-if="currentPage < totalPages"
+            :to="`/page/${currentPage + 1}`"
             class="pagination-link pagination-next"
             aria-label="下一頁"
           >
@@ -90,7 +104,7 @@
 
         <!-- 頁面資訊 -->
         <div class="pagination-info">
-          第 1 頁，共 {{ totalPages }} 頁（總計 {{ postsData.total }} 篇文章）
+          第 {{ currentPage }} 頁，共 {{ totalPages }} 頁（總計 {{ postsData.total }} 篇文章）
         </div>
       </nav>
     </div>
@@ -102,42 +116,31 @@ import { ref, computed } from 'vue'
 import ArticleOutline from '~/components/ArticleOutline'
 import api from '~/services/api'
 import config from '~/config'
-import { useAsyncData } from '#app'
+import { useAsyncData, useRoute, createError } from '#app'
 
+const route = useRoute()
 const container = ref(null)
 
-// 分頁設定 - 首頁顯示第一頁
+// 分頁設定
 const POSTS_PER_PAGE = config.articleListMaxLimit
-const currentPage = 1 // 首頁固定為第一頁
+const currentPage = computed(() => {
+  const page = parseInt(route.params.page)
+  return isNaN(page) || page < 1 ? 1 : page
+})
 
-// 使用 useAsyncData 取得第一頁文章資料
-const { data: postsData, error } = await useAsyncData('posts-page-1', () => api().getArticles(POSTS_PER_PAGE, 0))
+const skip = computed(() => (currentPage.value - 1) * POSTS_PER_PAGE)
+
+// 使用 useAsyncData 取得文章資料
+const { data: postsData, error } = await useAsyncData(
+  `posts-page-${currentPage.value}`,
+  () => api().getArticles(POSTS_PER_PAGE, skip.value)
+)
 
 // 計算分頁資訊
 const totalPages = computed(() => {
   if (!postsData.value || !postsData.value.total) return 1
   return Math.ceil(postsData.value.total / POSTS_PER_PAGE)
 })
-
-// 分頁導覽計算
-const visibleRange = 2 // 當前頁面前後顯示的頁數
-const visiblePages = computed(() => {
-  const pages = []
-  const start = Math.max(2, currentPage - visibleRange)
-  const end = Math.min(totalPages.value - 1, currentPage + visibleRange)
-
-  for (let i = start; i <= end; i++) {
-    if (i !== 1 && i !== totalPages.value) {
-      pages.push(i)
-    }
-  }
-  return pages
-})
-
-const showFirstPage = computed(() => currentPage > visibleRange + 1 || totalPages.value <= 5)
-const showLastPage = computed(() => currentPage < totalPages.value - visibleRange || totalPages.value <= 5)
-const showFirstEllipsis = computed(() => currentPage > visibleRange + 2)
-const showLastEllipsis = computed(() => currentPage < totalPages.value - visibleRange - 1)
 
 // 過濾有效的文章資料
 const validPosts = computed(() => {
@@ -152,12 +155,40 @@ const validPosts = computed(() => {
       post.title
 
     if (!isValid && process.dev) {
-      console.warn('首頁發現無效的文章資料:', post)
+      console.warn('分頁發現無效的文章資料:', post)
     }
 
     return isValid
   })
 })
+
+// 分頁導覽計算
+const visibleRange = 2 // 當前頁面前後顯示的頁數
+const visiblePages = computed(() => {
+  const pages = []
+  const start = Math.max(2, currentPage.value - visibleRange)
+  const end = Math.min(totalPages.value - 1, currentPage.value + visibleRange)
+
+  for (let i = start; i <= end; i++) {
+    if (i !== 1 && i !== totalPages.value) {
+      pages.push(i)
+    }
+  }
+  return pages
+})
+
+const showFirstPage = computed(() => currentPage.value > visibleRange + 1 || totalPages.value <= 5)
+const showLastPage = computed(() => currentPage.value < totalPages.value - visibleRange || totalPages.value <= 5)
+const showFirstEllipsis = computed(() => currentPage.value > visibleRange + 2)
+const showLastEllipsis = computed(() => currentPage.value < totalPages.value - visibleRange - 1)
+
+// 檢查頁面是否有效
+if (currentPage.value > totalPages.value && totalPages.value > 0) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: '頁面不存在'
+  })
+}
 
 if (error.value) throw new Error(error.value)
 </script>
@@ -243,6 +274,7 @@ if (error.value) throw new Error(error.value)
   gap: 40px;
   max-width: 900px;
   margin: 0 auto;
+  margin-bottom: 60px;
 }
 
 .tech-card-wrapper {
@@ -326,103 +358,6 @@ if (error.value) throw new Error(error.value)
     }
   }
 }
-
-// 動畫關鍵框架
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: 0 0, -100% -100%;
-  }
-  50% {
-    background-position: 0 0, 100% 100%;
-  }
-  100% {
-    background-position: 0 0, -100% -100%;
-  }
-}
-
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes borderGlow {
-  0% {
-    background-position: 0% 50%;
-    opacity: 0.3;
-  }
-  50% {
-    background-position: 100% 50%;
-    opacity: 0.8;
-  }
-  100% {
-    background-position: 0% 50%;
-    opacity: 0.3;
-  }
-}
-
-// 響應式設計
-@media (max-width: 768px) {
-  .tech-section {
-    padding: 40px 0;
-  }
-
-  .tech-container {
-    padding: 0 16px;
-  }
-
-  .tech-header {
-    margin-bottom: 50px;
-  }
-
-  .tech-grid {
-    gap: 24px;
-  }
-
-  .tech-card {
-    padding: 24px;
-    border-radius: 12px;
-  }
-}
-
-// 為每個卡片設定不同的動畫延遲
-.tech-card-wrapper:nth-child(1) { --index: 1; }
-.tech-card-wrapper:nth-child(2) { --index: 2; }
-.tech-card-wrapper:nth-child(3) { --index: 3; }
-.tech-card-wrapper:nth-child(4) { --index: 4; }
-.tech-card-wrapper:nth-child(5) { --index: 5; }
-.tech-card-wrapper:nth-child(6) { --index: 6; }
-.tech-card-wrapper:nth-child(7) { --index: 7; }
-.tech-card-wrapper:nth-child(8) { --index: 8; }
-.tech-card-wrapper:nth-child(9) { --index: 9; }
-.tech-card-wrapper:nth-child(10) { --index: 10; }
-.tech-card-wrapper:nth-child(11) { --index: 11; }
-.tech-card-wrapper:nth-child(12) { --index: 12; }
-.tech-card-wrapper:nth-child(13) { --index: 13; }
-.tech-card-wrapper:nth-child(14) { --index: 14; }
-.tech-card-wrapper:nth-child(15) { --index: 15; }
-.tech-card-wrapper:nth-child(16) { --index: 16; }
-.tech-card-wrapper:nth-child(17) { --index: 17; }
-.tech-card-wrapper:nth-child(18) { --index: 18; }
-.tech-card-wrapper:nth-child(19) { --index: 19; }
-.tech-card-wrapper:nth-child(20) { --index: 20; }
 
 // 分頁樣式
 .pagination-nav {
@@ -509,4 +444,117 @@ if (error.value) throw new Error(error.value)
   font-size: 0.9rem;
   text-align: center;
 }
+
+// 動畫關鍵框架
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0 0, -100% -100%;
+  }
+  50% {
+    background-position: 0 0, 100% 100%;
+  }
+  100% {
+    background-position: 0 0, -100% -100%;
+  }
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes borderGlow {
+  0% {
+    background-position: 0% 50%;
+    opacity: 0.3;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 0.8;
+  }
+  100% {
+    background-position: 0% 50%;
+    opacity: 0.3;
+  }
+}
+
+// 響應式設計
+@media (max-width: 768px) {
+  .tech-section {
+    padding: 40px 0;
+  }
+
+  .tech-container {
+    padding: 0 16px;
+  }
+
+  .tech-header {
+    margin-bottom: 50px;
+  }
+
+  .tech-grid {
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .tech-card {
+    padding: 24px;
+    border-radius: 12px;
+  }
+
+  .pagination-wrapper {
+    gap: 4px;
+  }
+
+  .pagination-link {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .pagination-number {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+}
+
+// 為每個卡片設定不同的動畫延遲
+.tech-card-wrapper:nth-child(1) { --index: 1; }
+.tech-card-wrapper:nth-child(2) { --index: 2; }
+.tech-card-wrapper:nth-child(3) { --index: 3; }
+.tech-card-wrapper:nth-child(4) { --index: 4; }
+.tech-card-wrapper:nth-child(5) { --index: 5; }
+.tech-card-wrapper:nth-child(6) { --index: 6; }
+.tech-card-wrapper:nth-child(7) { --index: 7; }
+.tech-card-wrapper:nth-child(8) { --index: 8; }
+.tech-card-wrapper:nth-child(9) { --index: 9; }
+.tech-card-wrapper:nth-child(10) { --index: 10; }
+.tech-card-wrapper:nth-child(11) { --index: 11; }
+.tech-card-wrapper:nth-child(12) { --index: 12; }
+.tech-card-wrapper:nth-child(13) { --index: 13; }
+.tech-card-wrapper:nth-child(14) { --index: 14; }
+.tech-card-wrapper:nth-child(15) { --index: 15; }
+.tech-card-wrapper:nth-child(16) { --index: 16; }
+.tech-card-wrapper:nth-child(17) { --index: 17; }
+.tech-card-wrapper:nth-child(18) { --index: 18; }
+.tech-card-wrapper:nth-child(19) { --index: 19; }
+.tech-card-wrapper:nth-child(20) { --index: 20; }
 </style>

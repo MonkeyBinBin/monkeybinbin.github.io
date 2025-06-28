@@ -15,6 +15,24 @@
         <p class="tech-archive-subtitle">
           依據建立時間排序的所有文章，探索知識的時光軌跡
         </p>
+
+        <!-- 年份選擇器 -->
+        <div class="tech-year-selector">
+          <button
+            :class="['tech-year-btn', { active: selectedYear === null }]"
+            @click="selectYear(null)"
+          >
+            全部年份
+          </button>
+          <button
+            v-for="year in availableYears"
+            :key="year"
+            :class="['tech-year-btn', { active: selectedYear === year }]"
+            @click="selectYear(year)"
+          >
+            {{ year }}
+          </button>
+        </div>
       </div>
 
       <div class="tech-archive-grid">
@@ -73,31 +91,228 @@
           </div>
         </div>
       </div>
+
+      <!-- 載入狀態指示器 -->
+      <div
+        v-if="isLoading && selectedYear === null"
+        class="tech-loading-container"
+      >
+        <div class="tech-loading-spinner">
+          <font-awesome-icon
+            :icon="['fas', 'spinner']"
+            spin
+          />
+        </div>
+        <p class="tech-loading-text">
+          載入更多文章中...
+        </p>
+      </div>
+
+      <!-- 無限滾動偵測元素 -->
+      <div
+        ref="loadMoreTrigger"
+        class="tech-load-trigger"
+      />
     </motion-div>
   </section>
 </template>
 
 <script setup>
-import { useAsyncData, useError, useHead } from 'nuxt/app'
+import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { useAsyncData, useError, useHead, useRoute, useRouter } from 'nuxt/app'
 import apiModule from '~/services/api'
+import config from '~/config'
 import constant from '~/constant'
 
-// 取得文章資料
-const { data } = await useAsyncData('archives', async () => {
+const route = useRoute()
+const router = useRouter()
+
+// 響應式資料
+const selectedYear = ref(null)
+const posts = ref({})
+const availableYears = ref([])
+const isLoading = ref(false)
+const hasMore = ref(true)
+const currentSkip = ref(0)
+const pageSize = config.articleListMaxLimit
+const loadMoreTrigger = ref(null)
+let observer = null
+
+// 從路由參數取得初始年份
+if (route.query.year && !isNaN(route.query.year)) {
+  selectedYear.value = parseInt(route.query.year)
+}
+
+// 取得可用年份清單
+const { data: yearsData } = await useAsyncData('available-years', async () => {
   try {
     const api = apiModule()
-    const posts = await api.getArticlesGroupByYearMonth()
-    return { posts }
+    return await api.getAvailableYears()
   } catch (error) {
-    throw useError({ statusCode: 500, message: error.message || 'Failed to fetch articles' })
+    console.error('Failed to fetch available years:', error)
+    return []
   }
 })
 
-const posts = data.value?.posts || []
+if (yearsData.value) {
+  availableYears.value = yearsData.value
+}
+
+// 合併文章資料的輔助函式
+const mergePosts = (existingPosts, newPosts) => {
+  const merged = { ...existingPosts }
+
+  Object.keys(newPosts).forEach(monthKey => {
+    if (merged[monthKey]) {
+      // 合併同月份的文章，避免重複
+      const existingIds = new Set(merged[monthKey].map(post => post.id))
+      const newArticles = newPosts[monthKey].filter(post => !existingIds.has(post.id))
+      merged[monthKey] = [...merged[monthKey], ...newArticles]
+    } else {
+      merged[monthKey] = newPosts[monthKey]
+    }
+  })
+
+  return merged
+}
+
+// 取得文章資料的函式
+const fetchPosts = async (year = null, skip = 0, isLoadMore = false) => {
+  try {
+    const api = apiModule()
+    const limit = selectedYear.value === null ? pageSize : null // 只有全部年份時才分頁
+    const result = await api.getArticlesGroupByYearMonth(year, limit, skip)
+
+    if (isLoadMore) {
+      // 載入更多時合併資料
+      posts.value = mergePosts(posts.value, result.posts)
+    } else {
+      // 初始載入或切換年份時直接設定
+      posts.value = result.posts
+    }
+
+    hasMore.value = result.hasMore
+    currentSkip.value = skip + (result.limit || 0)
+
+    return result
+  } catch (error) {
+    if (!isLoadMore) {
+      throw useError({ statusCode: 500, message: error.message || 'Failed to fetch articles' })
+    } else {
+      console.error('Failed to load more articles:', error)
+      return { posts: {}, hasMore: false }
+    }
+  }
+}
+
+// 載入更多文章
+const loadMorePosts = async () => {
+  if (isLoading.value || !hasMore.value || selectedYear.value !== null) {
+    return
+  }
+
+  isLoading.value = true
+
+  try {
+    await fetchPosts(null, currentSkip.value, true)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+// 設定無限滾動觀察器
+const setupIntersectionObserver = () => {
+  if (!loadMoreTrigger.value || typeof IntersectionObserver === 'undefined') {
+    return
+  }
+
+  observer = new IntersectionObserver(
+    (entries) => {
+      const [entry] = entries
+      if (entry.isIntersecting && selectedYear.value === null) {
+        loadMorePosts()
+      }
+    },
+    {
+      rootMargin: '100px' // 提前 100px 觸發載入
+    }
+  )
+
+  observer.observe(loadMoreTrigger.value)
+}
+
+// 清理觀察器
+const cleanupObserver = () => {
+  if (observer) {
+    observer.disconnect()
+    observer = null
+  }
+}
+
+// 初始載入文章資料
+await useAsyncData(
+  `archives-${selectedYear.value || 'all'}`,
+  () => fetchPosts(selectedYear.value, 0, false)
+)
+
+// 年份選擇函式
+const selectYear = async (year) => {
+  selectedYear.value = year
+  currentSkip.value = 0
+  hasMore.value = true
+
+  // 更新 URL
+  if (year) {
+    await router.push({ query: { year } })
+  } else {
+    await router.push({ query: {} })
+  }
+
+  // 重新載入資料
+  try {
+    await fetchPosts(year, 0, false)
+  } catch (error) {
+    console.error('Failed to fetch posts for year:', year, error)
+  }
+}
+
+// 監聽路由變化
+watch(() => route.query.year, (newYear) => {
+  const yearValue = newYear ? parseInt(newYear) : null
+  if (yearValue !== selectedYear.value) {
+    selectedYear.value = yearValue
+    currentSkip.value = 0
+    hasMore.value = true
+    fetchPosts(yearValue, 0, false).catch(error => {
+      console.error('Failed to fetch posts for year:', yearValue, error)
+    })
+  }
+})
 
 // 設定頁面標題和 meta 資訊
-const title = `所有文章列表 - ${constant.title}`
-const description = '依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊'
+const title = ref(`所有文章列表 - ${constant.title}`)
+const description = ref('依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊')
+
+// 監聽選擇的年份變化，更新頁面標題
+watch(selectedYear, (newYear) => {
+  if (newYear) {
+    title.value = `${newYear} 年文章列表 - ${constant.title}`
+    description.value = `${newYear} 年的所有文章，依據建立時間排序，由新到舊`
+  } else {
+    title.value = `所有文章列表 - ${constant.title}`
+    description.value = '依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊'
+  }
+})
+
+// 生命週期鉤子
+onMounted(async () => {
+  await nextTick()
+  setupIntersectionObserver()
+})
+
+onUnmounted(() => {
+  cleanupObserver()
+})
 
 useHead({
   title,
@@ -185,8 +400,72 @@ useHead({
   font-size: 1.1rem;
   font-weight: 400;
   max-width: 500px;
-  margin: 0 auto;
+  margin: 0 auto 40px;
   line-height: 1.6;
+}
+
+.tech-year-selector {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.tech-year-btn {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(29, 200, 205, 0.2);
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(29, 200, 205, 0.1), transparent);
+    transition: left 0.3s ease;
+  }
+
+  &:hover {
+    border-color: rgba(29, 200, 205, 0.4);
+    color: $primary-color;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(29, 200, 205, 0.15);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &.active {
+    background: linear-gradient(135deg, $primary-color, $tertiary-color);
+    border-color: $primary-color;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow:
+      0 8px 25px rgba(29, 200, 205, 0.3),
+      0 0 20px rgba(29, 224, 153, 0.2);
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
 }
 
 .tech-archive-grid {
@@ -363,6 +642,47 @@ useHead({
   font-size: 1.1rem;
   transition: all 0.3s ease;
   margin-left: 16px;
+}
+
+// 載入狀態指示器
+.tech-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  margin-top: 40px;
+}
+
+.tech-loading-spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $primary-color, $tertiary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 25px rgba(29, 200, 205, 0.3);
+
+  svg {
+    color: white;
+    font-size: 1.5rem;
+  }
+}
+
+.tech-loading-text {
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  margin: 0;
+}
+
+.tech-load-trigger {
+  height: 20px;
+  width: 100%;
+  margin-top: 40px;
 }
 
 // 動畫關鍵框架

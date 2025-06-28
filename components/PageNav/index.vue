@@ -46,7 +46,7 @@ $darker: #070b1f;
 .tech-nav {
   max-width: 900px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 20px 10px;
   position: relative;
 }
 
@@ -60,7 +60,7 @@ $darker: #070b1f;
   backdrop-filter: blur(10px);
   border: 1px solid rgba($primary, 0.3);
   border-radius: 16px;
-  padding: 30px;
+  padding: 20px;
   overflow: hidden;
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.5),
@@ -109,13 +109,15 @@ $darker: #070b1f;
 .nav-list {
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: 20px;
   margin: 0;
   padding: 0;
   list-style: none;
 
   li {
     position: relative;
+    flex: 1;
+    min-width: 0; // 確保 flex 項目可以收縮
   }
 }
 
@@ -124,6 +126,7 @@ $darker: #070b1f;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; // 垂直置中對齊
   padding: 20px 25px;
   text-decoration: none;
   color: #ffffff;
@@ -135,6 +138,9 @@ $darker: #070b1f;
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
+  width: 100%; // 讓導航項目填滿父容器的寬度
+  height: 80px; // 設定固定高度以確保一致性
+  box-sizing: border-box; // 確保 padding 包含在寬度內
 
   .icon {
     font-size: 24px;
@@ -151,6 +157,8 @@ $darker: #070b1f;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.8);
     transition: all 0.3s ease;
+    text-align: center; // 確保文字置中
+    white-space: nowrap; // 防止文字換行
   }
 
   // 懸停效果
