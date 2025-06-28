@@ -14,6 +14,7 @@ export default defineNuxtConfig({
   app: {
     baseURL: '/',
     cdnURL: '/',
+    buildAssetsDir: '/_nuxt/',
     head: {
       title: config.title,
       meta: [
@@ -113,6 +114,7 @@ export default defineNuxtConfig({
             // 過濾掉無效的路徑
             return routes.filter(route =>
               typeof route === 'string' &&
+              route.length > 0 &&
               !route.includes('[object Object]') &&
               !route.includes('undefined')
             )

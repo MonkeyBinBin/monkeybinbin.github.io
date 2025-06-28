@@ -12,8 +12,9 @@
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:css": "npx stylelint '**/*.{css,scss,sass,vue}'",
     "predeploy": "npm run generate",
-    "deploy": "del-cli -f 'static/sitemap.xml' 'static/sitemap.xml.gz' && push-dir --dir=dist --branch=master --cleanup",
-    "prebuild": "node ./scripts/generateRoutes.mjs"
+    "deploy": "del-cli -f 'public/sitemap.xml' 'public/sitemap.xml.gz' && push-dir --dir=dist --branch=master --cleanup",
+    "prebuild": "node ./scripts/generateRoutes.mjs",
+    "github-pages-fix": "npm run generate && echo 'Build completed successfully. Check dist/ folder before deploying.'"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
