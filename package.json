@@ -11,7 +11,9 @@
     "generate": "node scripts/generateRoutes.mjs && nuxi generate",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:css": "npx stylelint '**/*.{css,scss,sass,vue}'",
+    "predeploy": "npm run generate",
     "deploy": "del-cli -f 'static/sitemap.xml' 'static/sitemap.xml.gz' && push-dir --dir=dist --branch=main --cleanup",
+    "deploy:force": "del-cli -f 'dist' && npm run generate && push-dir --dir=dist --branch=main --cleanup --force",
     "prebuild": "node ./scripts/generateRoutes.mjs"
   },
   "dependencies": {
