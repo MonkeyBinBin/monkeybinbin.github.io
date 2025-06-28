@@ -1,12 +1,11 @@
 // 這個腳本會查詢所有文章、標籤、歸檔資訊，並輸出 Nuxt generate 需要的路徑陣列
 import path from 'path'
 import config from '../config/index.mjs'
-import pkg from 'contentful'
+import { createClient } from 'contentful'
 import map from 'lodash/map.js'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
 
-const { createClient } = pkg
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
