@@ -36,6 +36,7 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'shortcut icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'canonical', href: `${config.domain}/` }
       ],
       script: [
