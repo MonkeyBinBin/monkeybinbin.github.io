@@ -1,1 +1,0 @@
-var e={baseUrl:"/",keywords:["被程式設計的猴子","Nuxt.js","Bootstrap 4","MonkeyBinBin","blog"],domain:"https://monkeybinbin.github.io"};const r={title:"被程式設計的猴子",keywords:e.keywords,domain:e.domain,baseUrl:e.baseUrl,articleListMaxLimit:10,months:["January","February","March","April","May","June","July","August","September","October","November","December"]};export{r as c};
