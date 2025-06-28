@@ -1,5 +1,7 @@
+@use "sass:color";
+
 $primary-color: #1dc8cd;
-$secondary-color: lighten(saturate($primary-color, 25), 50);
+$secondary-color: color.adjust($primary-color, $saturation: 25%, $lightness: 50%);
 $tertiary-color: #1de099;
 $marked-primary-color: #c91414;
-$marked-secondary-color: lighten(saturate($marked-primary-color, 25), 50);
+$marked-secondary-color: color.adjust($marked-primary-color, $saturation: 25%, $lightness: 50%);

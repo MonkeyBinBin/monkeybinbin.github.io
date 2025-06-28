@@ -1,14 +1,16 @@
-const contentful = require('contentful')
-// use default environment config for convenience
-// these will be set via `env` property in nuxt.config.js
-const config = {
-  space: process.env.CTF_SPACE_ID,
-  accessToken: process.env.CTF_CDA_ACCESS_TOKEN
-}
+import { defineNuxtPlugin, useRuntimeConfig } from '#app'
+import pkg from 'contentful'
 
-// export `createClient` to use it in page components
-module.exports = {
-  createClient () {
-    return contentful.createClient(config)
-  }
-}
+const { createClient } = pkg
+
+// 移除頂層呼叫 useRuntimeConfig，避免 Nuxt instance is unavailable 錯誤
+// 若需要建立 client，請於 plugin 內部或 setup function 內呼叫
+
+export default defineNuxtPlugin((nuxtApp) => {
+  const config = useRuntimeConfig()
+  const client = createClient({
+    space: config.public.ctfSpaceId,
+    accessToken: config.public.ctfCdaAccessToken
+  })
+  nuxtApp.provide('contentfulClient', client)
+})

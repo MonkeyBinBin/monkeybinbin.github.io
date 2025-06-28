@@ -1,9 +1,13 @@
 <template>
-  <div :class="['layout-inner', !isShowGoTopButton && 'top']">
+  <div
+    :key="hydrated ? 'hydrated' : 'ssr'"
+    class="layout-inner"
+  >
     <page-header />
     <div class="container">
-      <nuxt />
+      <NuxtPage />
       <button
+        v-if="hydrated"
         type="button"
         :class="['btn scrolltop-button', isShowGoTopButton && 'active']"
         @click="goTop"
@@ -25,7 +29,8 @@ export default {
   },
   data () {
     return {
-      scrollPos: process.client ? window.scrollY : 0
+      scrollPos: 0, // SSR/CSR 一致
+      hydrated: false // 標記是否已 client hydration
     }
   },
   computed: {
@@ -33,8 +38,21 @@ export default {
       return this.scrollPos > 0
     }
   },
-  beforeMount () {
+  mounted () {
+    this.hydrated = true // hydration 完成後才顯示 goTop 按鈕
     window.addEventListener('scroll', this.handleScroll)
+    this.handleScroll() // 初始化 scrollPos
+
+    // 防止第三方擴充功能修改類別造成的 hydration 錯誤
+    this.$nextTick(() => {
+      const layoutElement = this.$el
+      if (layoutElement && layoutElement.classList) {
+        // 確保 layout-inner 類別存在
+        if (!layoutElement.classList.contains('layout-inner')) {
+          layoutElement.classList.add('layout-inner')
+        }
+      }
+    })
   },
   beforeDestroy () {
     window.removeEventListener('scroll', this.handleScroll)

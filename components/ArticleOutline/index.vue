@@ -5,11 +5,11 @@
       class="tags"
     >
       <span
-        v-if="post.createDate"
+        v-if="post && post.createDate"
         class="small text-secondary article__date"
       >
         <font-awesome-icon :icon="['fas', 'calendar-alt']" />
-        {{ post.createDate|parseDatetime }}
+        {{ formatDate(post.createDate) }}
       </span>
       <nuxt-link
         v-for="tag in post.categoryList"
@@ -24,21 +24,23 @@
     </div>
     <h1>
       <nuxt-link
+        v-if="post && post.id && typeof post.id === 'string'"
         :to="'/article/'+post.id"
         :title="post.title"
       >
         {{ post.title }}
       </nuxt-link>
+      <span v-else>{{ post?.title || 'Untitled' }}</span>
     </h1>
     <hr class="article__divider my-4 mx-0">
     <p
-      v-if="post.slug"
+      v-if="post && post.slug"
       class="article__slug text-black-50 ml-4"
     >
       {{ post.slug }}
     </p>
     <div
-      v-if="isShowMore"
+      v-show="isShowMore && post && post.id && typeof post.id === 'string'"
       class="text-right"
     >
       <nuxt-link
@@ -54,11 +56,18 @@
 
 <script>
 export default {
-  name: 'ArticleOutline',
   props: {
     post: {
       type: Object,
-      required: true
+      required: true,
+      validator (value) {
+        // 在開發模式下，檢查 post 物件是否有效
+        if (process.dev && value && typeof value.id !== 'string' && value.id !== undefined) {
+          console.warn('ArticleOutline: Invalid post.id type:', typeof value.id, value.id)
+          console.warn('Full post object:', value)
+        }
+        return true
+      }
     },
     markedTag: {
       type: String,
@@ -68,6 +77,11 @@ export default {
       type: Boolean,
       default: true
     }
+  },
+  methods: {
+    formatDate (date) {
+      return this.$filters && this.$filters.parseDatetime ? this.$filters.parseDatetime(date) : date
+    }
   }
 }
 </script>
@@ -76,7 +90,7 @@ export default {
 .article {
   margin-bottom: 50px;
 
-  /deep/ h1 a {
+  :deep(h1 a) {
     @include link-animation(#000);
 
     color: #000;

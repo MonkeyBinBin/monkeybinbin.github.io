@@ -1,7 +1,10 @@
 <template>
-  <div
-    class="row aos-init"
-    data-aos="fade-left"
+  <motion-div
+    v-motion="{
+      initial: { opacity: 0, x: 40 },
+      enter: { opacity: 1, x: 0, transition: { duration: 0.6 } }
+    }"
+    class="row"
   >
     <div class="col-12 text-center">
       <h1 class="not-found-title">
@@ -27,12 +30,10 @@
         回首頁
       </nuxt-link>
     </div>
-  </div>
+  </motion-div>
 </template>
 
 <script>
-import AOS from 'aos'
-
 export default {
   name: 'Error',
   props: {
@@ -40,11 +41,6 @@ export default {
       type: Object,
       required: true
     }
-  },
-  mounted () {
-    this.$nextTick(function () {
-      AOS.init()
-    })
   }
 }
 </script>

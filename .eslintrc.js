@@ -5,7 +5,8 @@ module.exports = {
     node: true
   },
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: '@babel/eslint-parser',
+    requireConfigFile: false
   },
   extends: [
     'eslint:recommended',
@@ -14,7 +15,9 @@ module.exports = {
   ],
   plugins: [],
   rules: {
-    'vue/no-v-html': 'off'
+    'vue/no-v-html': 'off',
+    'vue/multi-word-component-names': 'off',
+    'vue/no-reserved-component-names': 'warn'
   },
   globals: {
     $: 'readonly',

@@ -1,4 +1,5 @@
 {
+  "customSyntax": "postcss-html",
   "extends": [
     "stylelint-config-standard",
     "stylelint-config-prettier",
@@ -6,7 +7,9 @@
   ],
   "plugins": ["stylelint-scss", "stylelint-order"],
   "rules": {
-    "max-nesting-depth": 3
+    "max-nesting-depth": 3,
+    "color-function-notation": "legacy",
+    "alpha-value-notation": "number"
   },
   "ignoreFiles": [
     "./node_modules/**/*.{css,scss,sass}",

@@ -1,8 +1,11 @@
 <template>
   <section class="section">
-    <div
-      class="container aos-init"
-      data-aos="fade-left"
+    <motion-div
+      v-motion="{
+        initial: { opacity: 0, x: 40 },
+        enter: { opacity: 1, x: 0, transition: { duration: 0.6 } }
+      }"
+      class="container"
     >
       <div class="row justify-content-center">
         <div class="col-sm-10 col-md-8">
@@ -34,6 +37,7 @@
               class="archieve-list__article"
             >
               <nuxt-link
+                v-if="post && post.id && typeof post.id === 'string'"
                 :to="'/article/'+post.id"
                 :title="post.title"
               >
@@ -41,60 +45,56 @@
                   [ {{ post.createDate }} ]
                 </span>
               </nuxt-link>
+              <span
+                v-else
+                class="text-muted"
+              >
+                {{ post?.title || 'Untitled' }} <span class="archieve-list__date">
+                  [ {{ post?.createDate || 'Unknown date' }} ]
+                </span>
+              </span>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </motion-div>
   </section>
 </template>
 
-<script>
-import AOS from 'aos'
-import api from '~/services/api'
+<script setup>
+import { useAsyncData, useError, useHead } from 'nuxt/app'
+import apiModule from '~/services/api'
 import constant from '~/constant'
 
-export default {
-  name: 'Archives',
-  async asyncData ({ params, error }) {
-    return Promise.all([
-      api.getArticlesGroupByYearMonth()
-    ]).then(([posts]) => {
-      return {
-        posts
-      }
-    }).catch(reason => {
-      error({ message: reason })
-    })
-  },
-  data () {
-    return {
-      posts: []
-    }
-  },
-  mounted () {
-    this.$nextTick(function () {
-      AOS.init()
-    })
-  },
-  head () {
-    const title = `所有文章列表 - ${constant.title}`
-    const description = '依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊'
-    const head = {
-      title,
-      meta: [
-        { hid: 'og:url', property: 'og:url', content: `${constant.domain}${constant.baseUrl}archives` },
-        { hid: 'og:title', property: 'og:title', content: title },
-        { hid: 'description', property: 'description', content: description },
-        { hid: 'og:description', property: 'og:description', content: description }
-      ],
-      link: [
-        { hid: 'canonical', rel: 'canonical', href: `${constant.domain}${constant.baseUrl}archives` }
-      ]
-    }
-    return head
+// 取得文章資料
+const { data } = await useAsyncData('archives', async () => {
+  try {
+    const api = apiModule()
+    const posts = await api.getArticlesGroupByYearMonth()
+    return { posts }
+  } catch (error) {
+    throw useError({ statusCode: 500, message: error.message || 'Failed to fetch articles' })
   }
-}
+})
+
+const posts = data.value?.posts || []
+
+// 設定頁面標題和 meta 資訊
+const title = `所有文章列表 - ${constant.title}`
+const description = '依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊'
+
+useHead({
+  title,
+  meta: [
+    { name: 'description', content: description },
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
+    { property: 'og:url', content: `${constant.domain}${constant.baseUrl}archives` }
+  ],
+  link: [
+    { rel: 'canonical', href: `${constant.domain}${constant.baseUrl}archives` }
+  ]
+})
 </script>
 
 <style lang="scss" scoped>

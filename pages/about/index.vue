@@ -1,8 +1,11 @@
 <template>
   <section class="section">
-    <div
-      class="container aos-init"
-      data-aos="fade-left"
+    <motion-div
+      v-motion="{
+        initial: { opacity: 0, x: 40 },
+        enter: { opacity: 1, x: 0, transition: { duration: 0.6 } }
+      }"
+      class="container"
     >
       <div class="row justify-content-center">
         <div class="col-sm-10 col-md-8">
@@ -19,20 +22,14 @@
           <p>略懂C#、Xamarin、Cordova、HTML、CSS、Javascript、React、Vue、Angular、Webpack、Photoshop、Bootstrap...</p>
         </div>
       </div>
-    </div>
+    </motion-div>
   </section>
 </template>
 
 <script>
 import constant from '~/constant'
-import AOS from 'aos'
 export default {
   name: 'About',
-  mounted () {
-    this.$nextTick(function () {
-      AOS.init()
-    })
-  },
   head () {
     const title = `關於我 - ${constant.title}`
     const head = {
