@@ -1,8 +1,5 @@
 <template>
-  <div
-    :key="hydrated ? 'hydrated' : 'ssr'"
-    class="layout-inner"
-  >
+  <div :key="hydrated ? 'hydrated' : 'ssr'" class="layout-inner">
     <page-header />
     <div class="container">
       <NuxtPage />
@@ -20,42 +17,42 @@
 </template>
 
 <script>
-import PageHeader from '~/components/PageHeader'
-import PageFooter from '~/components/PageFooter'
+import PageHeader from '~/components/PageHeader';
+import PageFooter from '~/components/PageFooter';
 export default {
   components: {
     PageHeader,
-    PageFooter
+    PageFooter,
   },
-  data () {
+  data() {
     return {
       scrollPos: 0, // SSR/CSR 一致
-      hydrated: false // 標記是否已 client hydration
-    }
+      hydrated: false, // 標記是否已 client hydration
+    };
   },
   computed: {
     isShowGoTopButton: function () {
-      return this.scrollPos > 0
-    }
+      return this.scrollPos > 0;
+    },
   },
-  mounted () {
-    this.hydrated = true // hydration 完成後才顯示 goTop 按鈕
-    window.addEventListener('scroll', this.handleScroll)
-    this.handleScroll() // 初始化 scrollPos
+  mounted() {
+    this.hydrated = true; // hydration 完成後才顯示 goTop 按鈕
+    window.addEventListener('scroll', this.handleScroll);
+    this.handleScroll(); // 初始化 scrollPos
 
     // 防止第三方擴充功能修改類別造成的 hydration 錯誤
     this.$nextTick(() => {
-      const layoutElement = this.$el
+      const layoutElement = this.$el;
       if (layoutElement && layoutElement.classList) {
         // 確保 layout-inner 類別存在
         if (!layoutElement.classList.contains('layout-inner')) {
-          layoutElement.classList.add('layout-inner')
+          layoutElement.classList.add('layout-inner');
         }
       }
-    })
+    });
   },
-  beforeDestroy () {
-    window.removeEventListener('scroll', this.handleScroll)
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
     goTop: function () {
@@ -63,14 +60,14 @@ export default {
       window.scrollTo({
         top: 0,
         left: 0,
-        behavior: 'smooth'
-      })
+        behavior: 'smooth',
+      });
     },
     handleScroll: function () {
-      this.scrollPos = window.scrollY
-    }
-  }
-}
+      this.scrollPos = window.scrollY;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -93,16 +90,21 @@ export default {
   bottom: 160px; // 避免被 footer (120px) 遮住，額外留出空間
   width: 56px;
   height: 56px;
-  border: none;
+  border-width: 0;
   border-radius: 50%;
   opacity: 0;
   z-index: 999;
   cursor: pointer;
 
   // 科技感背景與效果
-  background: linear-gradient(135deg, $scrolltop-gradient-start 0%, $scrolltop-gradient-middle 50%, $scrolltop-gradient-end 100%);
+  background: linear-gradient(
+    135deg,
+    $scrolltop-gradient-start 0%,
+    $scrolltop-gradient-middle 50%,
+    $scrolltop-gradient-end 100%
+  );
   background-size: 200% 200%;
-  animation: gradientFlow 3s ease infinite;
+  animation: gradient-flow 3s ease infinite;
 
   // 外框光暈效果
   box-shadow:
@@ -130,7 +132,7 @@ export default {
     right: 2px;
     bottom: 2px;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
     pointer-events: none;
     transition: all 0.3s ease;
   }
@@ -144,7 +146,7 @@ export default {
       inset 0 1px 0 $scrolltop-inner-highlight-hover;
 
     &::before {
-      background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.2));
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.2));
     }
   }
 
@@ -162,26 +164,32 @@ export default {
   opacity: 0.9;
 
   // 脈衝動畫
-  animation: gradientFlow 3s ease infinite, pulse 2s ease-in-out infinite;
+  animation:
+    gradient-flow 3s ease infinite,
+    pulse 2s ease-in-out infinite;
 }
 
 // 科技感動畫效果
-@keyframes gradientFlow {
-  0%, 100% {
+@keyframes gradient-flow {
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow:
       0 0 20px $scrolltop-shadow-primary,
       0 0 40px $scrolltop-shadow-secondary,
       inset 0 1px 0 $scrolltop-inner-highlight;
   }
+
   50% {
     box-shadow:
       0 0 30px $scrolltop-shadow-hover-primary,

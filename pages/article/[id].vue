@@ -1,32 +1,20 @@
 <template>
   <section class="tech-article-section">
-    <div
-      ref="container"
-      class="tech-article-container"
-    >
+    <div ref="container" class="tech-article-container">
       <!-- 文章標題與資訊區域 -->
       <div class="tech-article-header">
-        <article-outline
-          :post="post"
-          :is-show-more="false"
-        />
+        <article-outline :post="post" :is-show-more="false" />
       </div>
 
       <!-- 文章內容區域 -->
       <div class="tech-article-content">
-        <div
-          v-if="post && post.articleContent"
-          class="markdown-content"
-          v-html="parsedContent"
-        />
+        <div v-if="post && post.articleContent" class="markdown-content" v-html="parsedContent" />
       </div>
 
       <!-- 留言區域 -->
       <div class="tech-comments-section">
         <div class="tech-comments-header">
-          <h2 class="tech-comments-title">
-            <span class="tech-accent">討論</span> 與回饋
-          </h2>
+          <h2 class="tech-comments-title"><span class="tech-accent">討論</span> 與回饋</h2>
           <div class="tech-divider" />
         </div>
         <div class="tech-comments-wrapper">
@@ -40,62 +28,63 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRoute, useAsyncData, useError } from 'nuxt/app'
-import { animate, inView } from 'motion'
-import { marked, Renderer } from 'marked'
-import highlightjs from 'highlight.js'
-import api from '~/services/api'
-import ArticleOutline from '~/components/ArticleOutline'
-import pathHelper from '~/helpers/path'
+import { ref, computed, onMounted } from 'vue';
+import { useRoute, useAsyncData, useError } from 'nuxt/app';
+import { animate, inView } from 'motion';
+import { marked, Renderer } from 'marked';
+import highlightjs from 'highlight.js';
+import api from '~/services/api';
+import ArticleOutline from '~/components/ArticleOutline';
+import pathHelper from '~/helpers/path';
 
 // 設定 marked 渲染器
-const renderer = new Renderer()
+const renderer = new Renderer();
 renderer.link = (token) => {
   // 從 token 物件中取得連結資訊
-  const { href, title, text } = token
+  const { href, title, text } = token;
   // 安全檢查 title 參數，避免顯示 undefined
-  const safeTitle = title && typeof title === 'string' && title !== 'undefined' && title !== 'null' && title.trim()
-  const titleAttr = safeTitle ? ` title="${safeTitle}"` : ''
-  return `<a target="_blank" href="${href}"${titleAttr}>${text}</a>`
-}
+  const safeTitle =
+    title && typeof title === 'string' && title !== 'undefined' && title !== 'null' && title.trim();
+  const titleAttr = safeTitle ? ` title="${safeTitle}"` : '';
+  return `<a target="_blank" href="${href}"${titleAttr}>${text}</a>`;
+};
 
 marked.setOptions({
   renderer,
   baseUrl: pathHelper.getBaseUrl(),
   highlight: function (code, language) {
-    const validLang = !!(language && highlightjs.getLanguage(language))
-    const highlighted = validLang ? highlightjs.highlight(language, code).value : code
-    return `<pre><code class="hljs ${language}">${highlighted}</code></pre>`
-  }
-})
+    const validLang = !!(language && highlightjs.getLanguage(language));
+    const highlighted = validLang ? highlightjs.highlight(language, code).value : code;
+    return `<pre><code class="hljs ${language}">${highlighted}</code></pre>`;
+  },
+});
 
-const container = ref(null)
-const route = useRoute()
-const id = route.params.id
+const container = ref(null);
+const route = useRoute();
+const id = route.params.id;
 
 const { data } = await useAsyncData('article', async () => {
-  const post = await api().getArticleById(id)
+  const post = await api().getArticleById(id);
   if (!post || post.message) {
-    throw useError({ statusCode: 404, message: post?.message || 'Not found' })
+    throw useError({ statusCode: 404, message: post?.message || 'Not found' });
   }
-  return { post }
-})
+  return { post };
+});
 
-const post = data.value?.post
+const post = data.value?.post;
 
 // 計算處理後的 Markdown 內容
 const parsedContent = computed(() => {
-  if (!post?.articleContent) return ''
-  return marked(post.articleContent)
-})
+  if (!post?.articleContent) return '';
+  return marked(post.articleContent);
+});
 
 // Disqus 頁面配置
 const pageConfig = computed(() => ({
   url: `https://monkeybinbin.github.io/article/${id}`,
   identifier: `article-${id}`,
-  title: post?.articleTitle || 'MonkeyBinBin Blog'
-}))
+  title: post?.articleTitle || 'MonkeyBinBin Blog',
+}));
 
 onMounted(() => {
   inView(container.value, () => {
@@ -103,9 +92,9 @@ onMounted(() => {
       container.value,
       { opacity: [0, 1], x: [-50, 0] },
       { duration: 0.8, easing: 'ease-out' }
-    )
-  })
-})
+    );
+  });
+});
 </script>
 
 <style lang="scss" scoped>
@@ -115,7 +104,7 @@ onMounted(() => {
 .tech-article-section {
   position: relative;
   min-height: 100vh;
-  background: #ffffff;
+  background: #fff;
   padding: 60px 0;
   overflow: hidden;
 
@@ -127,9 +116,9 @@ onMounted(() => {
     left: 0;
     right: 0;
     bottom: 0;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(29, 200, 205, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(29, 224, 153, 0.03) 0%, transparent 50%);
+    background:
+      radial-gradient(circle at 20% 20%, rgba(29, 200, 205, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(29, 224, 153, 0.03) 0%, transparent 50%);
     pointer-events: none;
   }
 }
@@ -168,7 +157,7 @@ onMounted(() => {
 
   // 入場動畫
   opacity: 0;
-  animation: slideInFromTop 0.8s ease-out forwards;
+  animation: slide-in-from-top 0.8s ease-out forwards;
 }
 
 .tech-article-content {
@@ -185,7 +174,7 @@ onMounted(() => {
 
   // 入場動畫
   opacity: 0;
-  animation: slideInFromLeft 0.8s ease-out 0.2s forwards;
+  animation: slide-in-from-left 0.8s ease-out 0.2s forwards;
 }
 
 .markdown-content {
@@ -194,10 +183,15 @@ onMounted(() => {
   font-size: 1.1rem;
 
   // 標題樣式
-  :deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(h5), :deep(h6) {
+  :deep(h1),
+  :deep(h2),
+  :deep(h3),
+  :deep(h4),
+  :deep(h5),
+  :deep(h6) {
     color: #2c3e50;
     font-weight: 600;
-    margin: 2rem 0 1rem 0;
+    margin: 2rem 0 1rem;
     position: relative;
 
     &::before {
@@ -283,7 +277,7 @@ onMounted(() => {
     code {
       background: none;
       padding: 0;
-      border: none;
+      border: 0;
       font-family: 'Fira Code', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
       font-size: 0.9rem;
       line-height: 1.6;
@@ -328,7 +322,8 @@ onMounted(() => {
   }
 
   // 列表樣式
-  :deep(ul), :deep(ol) {
+  :deep(ul),
+  :deep(ol) {
     margin: 1.5rem 0;
     padding-left: 2rem;
 
@@ -360,12 +355,13 @@ onMounted(() => {
     width: 100%;
     border-collapse: collapse;
     margin: 2rem 0;
-    background: white;
+    background: #fff;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
-    th, td {
+    th,
+    td {
       padding: 12px 16px;
       text-align: left;
       border-bottom: 1px solid #e2e8f0;
@@ -396,7 +392,7 @@ onMounted(() => {
 
   // 入場動畫
   opacity: 0;
-  animation: slideInFromRight 0.8s ease-out 0.4s forwards;
+  animation: slide-in-from-right 0.8s ease-out 0.4s forwards;
 }
 
 .tech-comments-header {
@@ -415,7 +411,6 @@ onMounted(() => {
 .tech-accent {
   background: linear-gradient(135deg, $primary-color, $tertiary-color);
   background-clip: text;
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 600;
 }
@@ -448,33 +443,36 @@ onMounted(() => {
 }
 
 // 動畫關鍵框架
-@keyframes slideInFromTop {
+@keyframes slide-in-from-top {
   from {
     opacity: 0;
     transform: translateY(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes slideInFromLeft {
+@keyframes slide-in-from-left {
   from {
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
   }
 }
 
-@keyframes slideInFromRight {
+@keyframes slide-in-from-right {
   from {
     opacity: 0;
     transform: translateX(30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -539,7 +537,12 @@ onMounted(() => {
   }
 
   .markdown-content {
-    :deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(h5), :deep(h6) {
+    :deep(h1),
+    :deep(h2),
+    :deep(h3),
+    :deep(h4),
+    :deep(h5),
+    :deep(h6) {
       &::before {
         left: -12px;
         width: 3px;

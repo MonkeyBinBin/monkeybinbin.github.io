@@ -1,4 +1,4 @@
-@use "sass:map";
+@use 'sass:map';
 
 @function map-has-nested-keys($map, $keys...) {
   @each $key in $keys {

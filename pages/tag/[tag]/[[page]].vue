@@ -3,15 +3,13 @@
     <motion-div
       v-motion="{
         initial: { opacity: 0, x: 40 },
-        enter: { opacity: 1, x: 0, transition: { duration: 0.6 } }
+        enter: { opacity: 1, x: 0, transition: { duration: 0.6 } },
       }"
       class="container"
     >
       <div class="row justify-content-center">
         <div class="col-sm-10 col-md-8">
-          <h1 class="mb-5">
-            Posts tagged with "{{ tagName }}"
-          </h1>
+          <h1 class="mb-5">Posts tagged with "{{ tagName }}"</h1>
         </div>
       </div>
       <div
@@ -21,24 +19,15 @@
       >
         <div class="col-sm-10 col-md-8">
           <div class="tech-card">
-            <article-outline
-              :post="post"
-              :marked-tag="tagName"
-            />
+            <article-outline :post="post" :marked-tag="tagName" />
           </div>
         </div>
       </div>
 
       <!-- 分頁導覽 -->
-      <div
-        v-if="totalPages > 1"
-        class="row justify-content-center mt-5"
-      >
+      <div v-if="totalPages > 1" class="row justify-content-center mt-5">
         <div class="col-sm-10 col-md-8">
-          <nav
-            class="pagination-nav"
-            aria-label="標籤文章分頁導覽"
-          >
+          <nav class="pagination-nav" aria-label="標籤文章分頁導覽">
             <div class="pagination-wrapper">
               <!-- 上一頁 -->
               <NuxtLink
@@ -64,10 +53,7 @@
                 </NuxtLink>
 
                 <!-- 省略號 -->
-                <span
-                  v-if="showFirstEllipsis"
-                  class="pagination-ellipsis"
-                >...</span>
+                <span v-if="showFirstEllipsis" class="pagination-ellipsis">...</span>
 
                 <!-- 中間頁碼 -->
                 <NuxtLink
@@ -81,10 +67,7 @@
                 </NuxtLink>
 
                 <!-- 省略號 -->
-                <span
-                  v-if="showLastEllipsis"
-                  class="pagination-ellipsis"
-                >...</span>
+                <span v-if="showLastEllipsis" class="pagination-ellipsis">...</span>
 
                 <!-- 最後一頁 -->
                 <NuxtLink
@@ -111,7 +94,9 @@
 
             <!-- 頁面資訊 -->
             <div class="pagination-info">
-              第 {{ currentPage }} 頁，共 {{ totalPages }} 頁（總計 {{ postsData.total }} 篇 "{{ tagName }}" 相關文章）
+              第 {{ currentPage }} 頁，共 {{ totalPages }} 頁（總計 {{ postsData.total }} 篇 "{{
+                tagName
+              }}" 相關文章）
             </div>
           </nav>
         </div>
@@ -121,103 +106,109 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useRoute, useAsyncData, useError, useHead } from 'nuxt/app'
-import ArticleOutline from '~/components/ArticleOutline'
-import config from '~/config'
-import constant from '~/constant'
-import api from '~/services/api'
+import { computed } from 'vue';
+import { useRoute, useAsyncData, useError, useHead } from 'nuxt/app';
+import ArticleOutline from '~/components/ArticleOutline';
+import config from '~/config';
+import constant from '~/constant';
+import api from '~/services/api';
 
-const route = useRoute()
-const tagName = route.params.tag
+const route = useRoute();
+const tagName = route.params.tag;
 
 // 驗證 tag 參數
 if (!tagName) {
-  throw useError({ statusCode: 404, message: 'Tag parameter is required' })
+  throw useError({ statusCode: 404, message: 'Tag parameter is required' });
 }
 
 // 分頁設定 - 使用動態路由參數
-const POSTS_PER_PAGE = config.articleListMaxLimit
+const POSTS_PER_PAGE = config.articleListMaxLimit;
 const currentPage = computed(() => {
   // 使用路徑參數，如果沒有頁碼參數則預設為第 1 頁
-  const page = parseInt(route.params.page) || 1
-  return isNaN(page) || page < 1 ? 1 : page
-})
+  const page = parseInt(route.params.page) || 1;
+  return isNaN(page) || page < 1 ? 1 : page;
+});
 
-const skip = computed(() => (currentPage.value - 1) * POSTS_PER_PAGE)
+const skip = computed(() => (currentPage.value - 1) * POSTS_PER_PAGE);
 
 // 取得文章資料
-const { data } = await useAsyncData(`articles-by-tag-${tagName}-page-${currentPage.value}`, async () => {
-  try {
-    const postsData = await api().getArticlesWithTag(tagName, POSTS_PER_PAGE, skip.value)
-    return { postsData, tagName }
-  } catch (error) {
-    throw useError({ statusCode: 500, message: error.message || 'Failed to fetch articles' })
+const { data } = await useAsyncData(
+  `articles-by-tag-${tagName}-page-${currentPage.value}`,
+  async () => {
+    try {
+      const postsData = await api().getArticlesWithTag(tagName, POSTS_PER_PAGE, skip.value);
+      return { postsData, tagName };
+    } catch (error) {
+      throw useError({ statusCode: 500, message: error.message || 'Failed to fetch articles' });
+    }
   }
-})
+);
 
-const postsData = data.value?.postsData || { items: [], total: 0 }
-const posts = postsData.items || []
+const postsData = data.value?.postsData || { items: [], total: 0 };
+const posts = postsData.items || [];
 
 // 計算分頁資訊
 const totalPages = computed(() => {
-  if (!postsData.total) return 1
-  return Math.ceil(postsData.total / POSTS_PER_PAGE)
-})
+  if (!postsData.total) return 1;
+  return Math.ceil(postsData.total / POSTS_PER_PAGE);
+});
 
 // 檢查頁面是否有效
 if (currentPage.value > totalPages.value && totalPages.value > 0) {
   throw useError({
     statusCode: 404,
-    statusMessage: `標籤 "${tagName}" 的第 ${currentPage.value} 頁不存在`
-  })
+    statusMessage: `標籤 "${tagName}" 的第 ${currentPage.value} 頁不存在`,
+  });
 }
 
 // 過濾有效的文章資料
 const validPosts = computed(() => {
-  return posts.filter(post => {
+  return posts.filter((post) => {
     // 檢查 post 是否為有效物件且有必要的屬性
-    const isValid = post &&
+    const isValid =
+      post &&
       typeof post === 'object' &&
       post.id &&
       typeof post.id === 'string' &&
       post.id.trim() &&
-      post.title
+      post.title;
 
     if (!isValid && process.dev) {
-      console.warn(`標籤頁面 "${tagName}" 發現無效的文章資料:`, post)
+      console.warn(`標籤頁面 "${tagName}" 發現無效的文章資料:`, post);
     }
 
-    return isValid
-  })
-})
+    return isValid;
+  });
+});
 
 // 分頁導覽計算
-const visibleRange = 2
+const visibleRange = 2;
 const visiblePages = computed(() => {
-  const pages = []
-  const start = Math.max(2, currentPage.value - visibleRange)
-  const end = Math.min(totalPages.value - 1, currentPage.value + visibleRange)
+  const pages = [];
+  const start = Math.max(2, currentPage.value - visibleRange);
+  const end = Math.min(totalPages.value - 1, currentPage.value + visibleRange);
 
   for (let i = start; i <= end; i++) {
     if (i !== 1 && i !== totalPages.value) {
-      pages.push(i)
+      pages.push(i);
     }
   }
-  return pages
-})
+  return pages;
+});
 
-const showFirstPage = computed(() => currentPage.value > visibleRange + 1 || totalPages.value <= 5)
-const showLastPage = computed(() => currentPage.value < totalPages.value - visibleRange || totalPages.value <= 5)
-const showFirstEllipsis = computed(() => currentPage.value > visibleRange + 2)
-const showLastEllipsis = computed(() => currentPage.value < totalPages.value - visibleRange - 1)
+const showFirstPage = computed(() => currentPage.value > visibleRange + 1 || totalPages.value <= 5);
+const showLastPage = computed(
+  () => currentPage.value < totalPages.value - visibleRange || totalPages.value <= 5
+);
+const showFirstEllipsis = computed(() => currentPage.value > visibleRange + 2);
+const showLastEllipsis = computed(() => currentPage.value < totalPages.value - visibleRange - 1);
 
 // 設定頁面標題和 meta 資訊
 const title = computed(() => {
-  const pageInfo = currentPage.value > 1 ? ` - 第 ${currentPage.value} 頁` : ''
-  return `${tagName} 相關文章${pageInfo} - ${constant.title}`
-})
-const description = `所有與 ${tagName} 主題相關的文章`
+  const pageInfo = currentPage.value > 1 ? ` - 第 ${currentPage.value} 頁` : '';
+  return `${tagName} 相關文章${pageInfo} - ${constant.title}`;
+});
+const description = `所有與 ${tagName} 主題相關的文章`;
 
 useHead({
   title,
@@ -226,12 +217,10 @@ useHead({
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
     { property: 'og:url', content: `${constant.domain}${constant.baseUrl}tag/${tagName}` },
-    { name: 'keywords', content: [...constant.keywords, `${tagName} 相關文章`].join(',') }
+    { name: 'keywords', content: [...constant.keywords, `${tagName} 相關文章`].join(',') },
   ],
-  link: [
-    { rel: 'canonical', href: `${constant.domain}${constant.baseUrl}tag/${tagName}` }
-  ]
-})
+  link: [{ rel: 'canonical', href: `${constant.domain}${constant.baseUrl}tag/${tagName}` }],
+});
 </script>
 
 <style lang="scss" scoped>
@@ -333,7 +322,7 @@ h1 {
 
   &:hover {
     background: $primary-color;
-    color: white;
+    color: #fff;
     border-color: $primary-color;
     box-shadow: 0 4px 12px rgba(29, 200, 205, 0.3);
   }
@@ -369,7 +358,7 @@ h1 {
   &.active {
     background: $primary-color;
     border-color: $primary-color;
-    color: white;
+    color: #fff;
     box-shadow: 0 4px 12px rgba(29, 200, 205, 0.3);
   }
 }

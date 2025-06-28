@@ -1,25 +1,14 @@
 <template>
   <section class="tech-section">
-    <div
-      ref="container"
-      class="tech-container"
-    >
+    <div ref="container" class="tech-container">
       <div class="tech-header">
-        <h1 class="tech-title">
-          <span class="tech-accent">Blog</span> Articles
-        </h1>
+        <h1 class="tech-title"><span class="tech-accent">Blog</span> Articles</h1>
         <div class="tech-divider" />
-        <p class="tech-subtitle">
-          探索程式設計與技術領域的精選文章與心得分享
-        </p>
+        <p class="tech-subtitle">探索程式設計與技術領域的精選文章與心得分享</p>
       </div>
 
       <div class="tech-grid">
-        <div
-          v-for="(post, key) in validPosts"
-          :key="post.id || key"
-          class="tech-card-wrapper"
-        >
+        <div v-for="(post, key) in validPosts" :key="post.id || key" class="tech-card-wrapper">
           <div class="tech-card">
             <article-outline :post="post" />
           </div>
@@ -27,11 +16,7 @@
       </div>
 
       <!-- 分頁導覽 -->
-      <nav
-        v-if="totalPages > 1"
-        class="pagination-nav"
-        aria-label="文章分頁導覽"
-      >
+      <nav v-if="totalPages > 1" class="pagination-nav" aria-label="文章分頁導覽">
         <div class="pagination-wrapper">
           <!-- 上一頁 -->
           <NuxtLink
@@ -57,10 +42,7 @@
             </NuxtLink>
 
             <!-- 省略號 -->
-            <span
-              v-if="showFirstEllipsis"
-              class="pagination-ellipsis"
-            >...</span>
+            <span v-if="showFirstEllipsis" class="pagination-ellipsis">...</span>
 
             <!-- 中間頁碼 -->
             <NuxtLink
@@ -74,10 +56,7 @@
             </NuxtLink>
 
             <!-- 省略號 -->
-            <span
-              v-if="showLastEllipsis"
-              class="pagination-ellipsis"
-            >...</span>
+            <span v-if="showLastEllipsis" class="pagination-ellipsis">...</span>
 
             <!-- 最後一頁 -->
             <NuxtLink
@@ -112,85 +91,87 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import ArticleOutline from '~/components/ArticleOutline'
-import api from '~/services/api'
-import config from '~/config'
-import { useAsyncData, useRoute, createError } from '#app'
+import { ref, computed } from 'vue';
+import ArticleOutline from '~/components/ArticleOutline';
+import api from '~/services/api';
+import config from '~/config';
+import { useAsyncData, useRoute, createError } from '#app';
 
-const route = useRoute()
-const container = ref(null)
+const route = useRoute();
+const container = ref(null);
 
 // 分頁設定
-const POSTS_PER_PAGE = config.articleListMaxLimit
+const POSTS_PER_PAGE = config.articleListMaxLimit;
 const currentPage = computed(() => {
-  const page = parseInt(route.params.page)
-  return isNaN(page) || page < 1 ? 1 : page
-})
+  const page = parseInt(route.params.page);
+  return isNaN(page) || page < 1 ? 1 : page;
+});
 
-const skip = computed(() => (currentPage.value - 1) * POSTS_PER_PAGE)
+const skip = computed(() => (currentPage.value - 1) * POSTS_PER_PAGE);
 
 // 使用 useAsyncData 取得文章資料
-const { data: postsData, error } = await useAsyncData(
-  `posts-page-${currentPage.value}`,
-  () => api().getArticles(POSTS_PER_PAGE, skip.value)
-)
+const { data: postsData, error } = await useAsyncData(`posts-page-${currentPage.value}`, () =>
+  api().getArticles(POSTS_PER_PAGE, skip.value)
+);
 
 // 計算分頁資訊
 const totalPages = computed(() => {
-  if (!postsData.value || !postsData.value.total) return 1
-  return Math.ceil(postsData.value.total / POSTS_PER_PAGE)
-})
+  if (!postsData.value || !postsData.value.total) return 1;
+  return Math.ceil(postsData.value.total / POSTS_PER_PAGE);
+});
 
 // 過濾有效的文章資料
 const validPosts = computed(() => {
-  if (!postsData.value || !postsData.value.items) return []
+  if (!postsData.value || !postsData.value.items) return [];
 
-  return postsData.value.items.filter(post => {
-    const isValid = post &&
+  return postsData.value.items.filter((post) => {
+    const isValid =
+      post &&
       typeof post === 'object' &&
       post.id &&
       typeof post.id === 'string' &&
       post.id.trim() &&
-      post.title
+      post.title;
 
     if (!isValid && process.dev) {
-      console.warn('分頁發現無效的文章資料:', post)
+      console.warn('分頁發現無效的文章資料:', post);
     }
 
-    return isValid
-  })
-})
+    return isValid;
+  });
+});
 
 // 分頁導覽計算
-const visibleRange = 2 // 當前頁面前後顯示的頁數
+const visibleRange = 2; // 當前頁面前後顯示的頁數
 const visiblePages = computed(() => {
-  const pages = []
-  const start = Math.max(2, currentPage.value - visibleRange)
-  const end = Math.min(totalPages.value - 1, currentPage.value + visibleRange)
+  const pages = [];
+  const start = Math.max(2, currentPage.value - visibleRange);
+  const end = Math.min(totalPages.value - 1, currentPage.value + visibleRange);
 
   for (let i = start; i <= end; i++) {
     if (i !== 1 && i !== totalPages.value) {
-      pages.push(i)
+      pages.push(i);
     }
   }
-  return pages
-})
+  return pages;
+});
 
-const showFirstPage = computed(() => currentPage.value > visibleRange + 1 || totalPages.value <= 5)
-const showLastPage = computed(() => currentPage.value < totalPages.value - visibleRange || totalPages.value <= 5)
-const showFirstEllipsis = computed(() => currentPage.value > visibleRange + 2)
-const showLastEllipsis = computed(() => currentPage.value < totalPages.value - visibleRange - 1)
+const showFirstPage = computed(() => currentPage.value > visibleRange + 1 || totalPages.value <= 5);
+const showLastPage = computed(
+  () => currentPage.value < totalPages.value - visibleRange || totalPages.value <= 5
+);
+const showFirstEllipsis = computed(() => currentPage.value > visibleRange + 2);
+const showLastEllipsis = computed(() => currentPage.value < totalPages.value - visibleRange - 1);
 
 // 檢查頁面是否有效
 if (currentPage.value > totalPages.value && totalPages.value > 0) {
   throw createError({
     statusCode: 404,
-    statusMessage: '頁面不存在'
-  })
+    statusMessage: '頁面不存在',
+  });
 }
 
-if (error.value) throw new Error(error.value)
+if (error.value) throw new Error(error.value);
 </script>
 
 <style lang="scss" scoped>
@@ -200,7 +181,7 @@ if (error.value) throw new Error(error.value)
 .tech-section {
   position: relative;
   min-height: 100vh;
-  background: #ffffff;
+  background: #fff;
   padding: 60px 0;
   overflow: hidden;
 }
@@ -217,7 +198,7 @@ if (error.value) throw new Error(error.value)
   text-align: center;
   margin-bottom: 80px;
   opacity: 0;
-  animation: fadeInUp 0.8s ease-out forwards;
+  animation: fade-in-up 0.8s ease-out forwards;
 }
 
 .tech-title {
@@ -235,7 +216,6 @@ if (error.value) throw new Error(error.value)
 .tech-accent {
   background: linear-gradient(135deg, $primary-color, $tertiary-color);
   background-clip: text;
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 600;
 }
@@ -279,7 +259,7 @@ if (error.value) throw new Error(error.value)
 
 .tech-card-wrapper {
   opacity: 0;
-  animation: fadeInUp 0.8s ease-out forwards;
+  animation: fade-in-up 0.8s ease-out forwards;
   animation-delay: calc(var(--index) * 0.1s);
 }
 
@@ -318,8 +298,12 @@ if (error.value) throw new Error(error.value)
     background:
       linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(29, 200, 205, 0.05) 100%),
       linear-gradient(45deg, transparent 30%, rgba(29, 200, 205, 0.1) 50%, transparent 70%);
-    background-size: 100% 100%, 200% 200%;
-    background-position: 0 0, -100% -100%;
+    background-size:
+      100% 100%,
+      200% 200%;
+    background-position:
+      0 0,
+      -100% -100%;
     animation: shimmer 2s infinite;
     transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) scale(1.02);
     filter: brightness(1.05) saturate(1.1);
@@ -328,12 +312,9 @@ if (error.value) throw new Error(error.value)
     &::before {
       opacity: 1;
       height: 3px;
-      background: linear-gradient(90deg,
-        $primary-color,
-        $tertiary-color,
-        $primary-color);
+      background: linear-gradient(90deg, $primary-color, $tertiary-color, $primary-color);
       background-size: 200% 100%;
-      animation: gradientMove 1.5s infinite;
+      animation: gradient-move 1.5s infinite;
       box-shadow:
         0 0 15px rgba(29, 200, 205, 0.3),
         0 0 25px rgba(29, 224, 153, 0.15);
@@ -347,12 +328,9 @@ if (error.value) throw new Error(error.value)
       right: 1px;
       bottom: 1px;
       border-radius: 15px;
-      background: linear-gradient(45deg,
-        transparent,
-        rgba(29, 200, 205, 0.1),
-        transparent);
+      background: linear-gradient(45deg, transparent, rgba(29, 200, 205, 0.1), transparent);
       background-size: 200% 200%;
-      animation: borderGlow 2s infinite;
+      animation: border-glow 2s infinite;
       pointer-events: none;
       z-index: -1;
     }
@@ -392,7 +370,7 @@ if (error.value) throw new Error(error.value)
 
   &:hover {
     background: $primary-color;
-    color: white;
+    color: #fff;
     border-color: $primary-color;
     box-shadow: 0 4px 12px rgba(29, 200, 205, 0.3);
   }
@@ -428,7 +406,7 @@ if (error.value) throw new Error(error.value)
   &.active {
     background: $primary-color;
     border-color: $primary-color;
-    color: white;
+    color: #fff;
     box-shadow: 0 4px 12px rgba(29, 200, 205, 0.3);
   }
 }
@@ -446,11 +424,12 @@ if (error.value) throw new Error(error.value)
 }
 
 // 動畫關鍵框架
-@keyframes fadeInUp {
+@keyframes fade-in-up {
   from {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -459,37 +438,49 @@ if (error.value) throw new Error(error.value)
 
 @keyframes shimmer {
   0% {
-    background-position: 0 0, -100% -100%;
+    background-position:
+      0 0,
+      -100% -100%;
   }
+
   50% {
-    background-position: 0 0, 100% 100%;
+    background-position:
+      0 0,
+      100% 100%;
   }
+
   100% {
-    background-position: 0 0, -100% -100%;
+    background-position:
+      0 0,
+      -100% -100%;
   }
 }
 
-@keyframes gradientMove {
+@keyframes gradient-move {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
 }
 
-@keyframes borderGlow {
+@keyframes border-glow {
   0% {
     background-position: 0% 50%;
     opacity: 0.3;
   }
+
   50% {
     background-position: 100% 50%;
     opacity: 0.8;
   }
+
   100% {
     background-position: 0% 50%;
     opacity: 0.3;
@@ -537,24 +528,83 @@ if (error.value) throw new Error(error.value)
 }
 
 // 為每個卡片設定不同的動畫延遲
-.tech-card-wrapper:nth-child(1) { --index: 1; }
-.tech-card-wrapper:nth-child(2) { --index: 2; }
-.tech-card-wrapper:nth-child(3) { --index: 3; }
-.tech-card-wrapper:nth-child(4) { --index: 4; }
-.tech-card-wrapper:nth-child(5) { --index: 5; }
-.tech-card-wrapper:nth-child(6) { --index: 6; }
-.tech-card-wrapper:nth-child(7) { --index: 7; }
-.tech-card-wrapper:nth-child(8) { --index: 8; }
-.tech-card-wrapper:nth-child(9) { --index: 9; }
-.tech-card-wrapper:nth-child(10) { --index: 10; }
-.tech-card-wrapper:nth-child(11) { --index: 11; }
-.tech-card-wrapper:nth-child(12) { --index: 12; }
-.tech-card-wrapper:nth-child(13) { --index: 13; }
-.tech-card-wrapper:nth-child(14) { --index: 14; }
-.tech-card-wrapper:nth-child(15) { --index: 15; }
-.tech-card-wrapper:nth-child(16) { --index: 16; }
-.tech-card-wrapper:nth-child(17) { --index: 17; }
-.tech-card-wrapper:nth-child(18) { --index: 18; }
-.tech-card-wrapper:nth-child(19) { --index: 19; }
-.tech-card-wrapper:nth-child(20) { --index: 20; }
+.tech-card-wrapper:nth-child(1) {
+  --index: 1;
+}
+
+.tech-card-wrapper:nth-child(2) {
+  --index: 2;
+}
+
+.tech-card-wrapper:nth-child(3) {
+  --index: 3;
+}
+
+.tech-card-wrapper:nth-child(4) {
+  --index: 4;
+}
+
+.tech-card-wrapper:nth-child(5) {
+  --index: 5;
+}
+
+.tech-card-wrapper:nth-child(6) {
+  --index: 6;
+}
+
+.tech-card-wrapper:nth-child(7) {
+  --index: 7;
+}
+
+.tech-card-wrapper:nth-child(8) {
+  --index: 8;
+}
+
+.tech-card-wrapper:nth-child(9) {
+  --index: 9;
+}
+
+.tech-card-wrapper:nth-child(10) {
+  --index: 10;
+}
+
+.tech-card-wrapper:nth-child(11) {
+  --index: 11;
+}
+
+.tech-card-wrapper:nth-child(12) {
+  --index: 12;
+}
+
+.tech-card-wrapper:nth-child(13) {
+  --index: 13;
+}
+
+.tech-card-wrapper:nth-child(14) {
+  --index: 14;
+}
+
+.tech-card-wrapper:nth-child(15) {
+  --index: 15;
+}
+
+.tech-card-wrapper:nth-child(16) {
+  --index: 16;
+}
+
+.tech-card-wrapper:nth-child(17) {
+  --index: 17;
+}
+
+.tech-card-wrapper:nth-child(18) {
+  --index: 18;
+}
+
+.tech-card-wrapper:nth-child(19) {
+  --index: 19;
+}
+
+.tech-card-wrapper:nth-child(20) {
+  --index: 20;
+}
 </style>

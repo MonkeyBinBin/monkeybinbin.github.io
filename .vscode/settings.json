@@ -1,11 +1,6 @@
 {
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
+  "stylelint.validate": ["css", "scss", "vue"],
   "auto-close-tag.excludedTags": [
     "area",
     "base",
@@ -33,5 +28,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
-  }
+  },
+  "editor.formatOnSave": true,
+  "cSpell.words": ["nuxi", "Nuxt", "scrolltop"]
 }

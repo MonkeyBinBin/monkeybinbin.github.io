@@ -1,7 +1,7 @@
-function getBaseUrl () {
-  return process.env.baseUrl || '/'
+function getBaseUrl() {
+  return process.env.baseUrl || '/';
 }
 
 export default {
-  getBaseUrl
-}
+  getBaseUrl,
+};

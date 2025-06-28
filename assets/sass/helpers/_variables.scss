@@ -1,4 +1,4 @@
-@use "sass:color";
+@use 'sass:color';
 
 $primary-color: #1dc8cd;
 $secondary-color: color.adjust($primary-color, $saturation: 25%, $lightness: 50%);

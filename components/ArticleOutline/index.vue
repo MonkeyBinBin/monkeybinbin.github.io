@@ -1,20 +1,14 @@
 <template>
   <div class="article">
-    <div
-      v-if="post && post.categoryList"
-      class="tags"
-    >
-      <span
-        v-if="post && post.createDate"
-        class="small text-secondary article__date"
-      >
+    <div v-if="post && post.categoryList" class="tags">
+      <span v-if="post && post.createDate" class="small text-secondary article__date">
         <font-awesome-icon :icon="['fas', 'calendar-alt']" />
         {{ formatDate(post.createDate) }}
       </span>
       <nuxt-link
         v-for="tag in post.categoryList"
         :key="tag"
-        :to="'/tag/'+tag"
+        :to="'/tag/' + tag"
         :class="['small', 'tag-link', markedTag && tag === markedTag && 'marked']"
         :title="tag"
       >
@@ -25,31 +19,22 @@
     <h1>
       <nuxt-link
         v-if="post && post.id && typeof post.id === 'string'"
-        :to="'/article/'+post.id"
+        :to="'/article/' + post.id"
         :title="post.title"
       >
         {{ post.title }}
       </nuxt-link>
       <span v-else>{{ post?.title || 'Untitled' }}</span>
     </h1>
-    <hr class="article__divider my-4 mx-0">
-    <p
-      v-if="post && post.slug"
-      class="article__slug text-black-50 ml-4"
-    >
+    <hr class="article__divider my-4 mx-0" />
+    <p v-if="post && post.slug" class="article__slug text-black-50 ml-4">
       {{ post.slug }}
     </p>
     <div
       v-show="isShowMore && post && post.id && typeof post.id === 'string'"
       class="text-right mt-5"
     >
-      <nuxt-link
-        :to="'/article/'+post.id"
-        class="more"
-        :title="post.title"
-      >
-        more
-      </nuxt-link>
+      <nuxt-link :to="'/article/' + post.id" class="more" :title="post.title"> more </nuxt-link>
     </div>
   </div>
 </template>
@@ -60,30 +45,32 @@ export default {
     post: {
       type: Object,
       required: true,
-      validator (value) {
+      validator(value) {
         // 在開發模式下，檢查 post 物件是否有效
         if (process.dev && value && typeof value.id !== 'string' && value.id !== undefined) {
-          console.warn('ArticleOutline: Invalid post.id type:', typeof value.id, value.id)
-          console.warn('Full post object:', value)
+          console.warn('ArticleOutline: Invalid post.id type:', typeof value.id, value.id);
+          console.warn('Full post object:', value);
         }
-        return true
-      }
+        return true;
+      },
     },
     markedTag: {
       type: String,
-      default: ''
+      default: '',
     },
     isShowMore: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   methods: {
-    formatDate (date) {
-      return this.$filters && this.$filters.parseDatetime ? this.$filters.parseDatetime(date) : date
-    }
-  }
-}
+    formatDate(date) {
+      return this.$filters && this.$filters.parseDatetime
+        ? this.$filters.parseDatetime(date)
+        : date;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -107,26 +94,26 @@ export default {
       display: block;
       transition: all 0.3s ease;
       position: relative;
+    }
 
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -4px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: linear-gradient(90deg, $primary-color, $tertiary-color);
-        transition: width 0.3s ease;
-      }
+    a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, $primary-color, $tertiary-color);
+      transition: width 0.3s ease;
+    }
 
-      &:hover {
-        color: $primary-color;
-        transform: translateX(4px);
+    a:hover {
+      color: $primary-color;
+      transform: translateX(4px);
+    }
 
-        &::after {
-          width: 60px;
-        }
-      }
+    a:hover::after {
+      width: 60px;
     }
   }
 
@@ -159,7 +146,7 @@ export default {
     height: 2px;
     width: 60px;
     margin: 20px 0;
-    border: none;
+    border: 0;
     border-radius: 1px;
   }
 }
@@ -190,7 +177,7 @@ export default {
 
   &:hover {
     background: linear-gradient(135deg, $primary-color, $tertiary-color);
-    color: white;
+    color: #fff;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(29, 200, 205, 0.3);
     text-decoration: none;
@@ -213,7 +200,7 @@ export default {
 
   &:hover {
     background: linear-gradient(135deg, $primary-color, $tertiary-color);
-    color: white;
+    color: #fff;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(29, 200, 205, 0.3);
     text-decoration: none;
@@ -229,7 +216,7 @@ export default {
 
   &:hover {
     background: linear-gradient(135deg, $marked-primary-color, #e74c3c);
-    color: white;
+    color: #fff;
     box-shadow: 0 4px 12px rgba(201, 20, 20, 0.3);
   }
 }

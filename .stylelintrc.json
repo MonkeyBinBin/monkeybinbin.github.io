@@ -9,10 +9,14 @@
   "rules": {
     "max-nesting-depth": 3,
     "color-function-notation": "legacy",
-    "alpha-value-notation": "number"
+    "alpha-value-notation": "number",
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": ["math.div", "math.random", "math.floor", "math.ceil", "math.round"]
+      }
+    ],
+    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["deep"] }]
   },
-  "ignoreFiles": [
-    "./node_modules/**/*.{css,scss,sass}",
-    "./dist/**/*.{css,scss,sass}"
-  ]
+  "ignoreFiles": ["./node_modules/**/*.{css,scss,sass}", "./dist/**/*.{css,scss,sass}"]
 }

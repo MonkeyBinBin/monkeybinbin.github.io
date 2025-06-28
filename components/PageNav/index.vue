@@ -4,28 +4,19 @@
     <div class="nav-content">
       <ul class="nav-list">
         <li>
-          <nuxt-link
-            to="/"
-            class="nav-item"
-          >
+          <nuxt-link to="/" class="nav-item">
             <span class="icon">⌂</span>
             <span class="text">HOME</span>
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link
-            to="/archives"
-            class="nav-item"
-          >
+          <nuxt-link to="/archives" class="nav-item">
             <span class="icon">⚏</span>
             <span class="text">ARCHIVES</span>
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link
-            to="/about"
-            class="nav-item"
-          >
+          <nuxt-link to="/about" class="nav-item">
             <span class="icon">◉</span>
             <span class="text">ABOUT</span>
           </nuxt-link>
@@ -39,7 +30,7 @@
 // 科技感顏色
 $primary: #00d4ff;
 $secondary: #ff6b6b;
-$accent: #00ff88;
+$accent: #0f8;
 $dark: #0a0e27;
 $darker: #070b1f;
 
@@ -54,9 +45,7 @@ $darker: #070b1f;
 .nav-content {
   position: relative;
   z-index: 2;
-  background: linear-gradient(135deg,
-    rgba($dark, 0.9),
-    rgba($darker, 0.95));
+  background: linear-gradient(135deg, rgba($dark, 0.9), rgba($darker, 0.95));
   backdrop-filter: blur(10px);
   border: 1px solid rgba($primary, 0.3);
   border-radius: 16px;
@@ -76,15 +65,17 @@ $darker: #070b1f;
     left: -3px;
     right: -3px;
     bottom: -3px;
-    background: linear-gradient(45deg,
+    background: linear-gradient(
+      45deg,
       transparent 25%,
       rgba($primary, 0.4) 45%,
       rgba($primary, 0.5) 50%,
       rgba($primary, 0.4) 55%,
-      transparent 75%);
+      transparent 75%
+    );
     border-radius: 20px;
     z-index: -1;
-    animation: lightBeam 3s ease-in-out infinite;
+    animation: light-beam 3s ease-in-out infinite;
   }
 
   &::after {
@@ -94,14 +85,16 @@ $darker: #070b1f;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg,
+    background: linear-gradient(
+      135deg,
       rgba($primary, 0.08) 0%,
       transparent 25%,
       transparent 75%,
-      rgba($primary, 0.08) 100%);
+      rgba($primary, 0.08) 100%
+    );
     border-radius: 16px;
     z-index: -1;
-    animation: glowPulse 5s ease-in-out infinite alternate;
+    animation: glow-pulse 5s ease-in-out infinite alternate;
   }
 }
 
@@ -129,10 +122,8 @@ $darker: #070b1f;
   justify-content: center; // 垂直置中對齊
   padding: 20px 25px;
   text-decoration: none;
-  color: #ffffff;
-  background: linear-gradient(145deg,
-    rgba(255, 255, 255, 0.05),
-    rgba(255, 255, 255, 0.02));
+  color: #fff;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
   border: 1px solid rgba($primary, 0.2);
   border-radius: 12px;
   position: relative;
@@ -150,7 +141,7 @@ $darker: #070b1f;
   }
 
   .text {
-    font-family: 'Orbitron', monospace;
+    font-family: Orbitron, monospace;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 1.5px;
@@ -164,9 +155,7 @@ $darker: #070b1f;
   // 懸停效果
   &:hover {
     transform: translateY(-3px);
-    background: linear-gradient(145deg,
-      rgba($primary, 0.1),
-      rgba($primary, 0.05));
+    background: linear-gradient(145deg, rgba($primary, 0.1), rgba($primary, 0.05));
     border-color: rgba($primary, 0.5);
     box-shadow:
       0 8px 25px rgba($primary, 0.3),
@@ -178,15 +167,13 @@ $darker: #070b1f;
     }
 
     .text {
-      color: #ffffff;
+      color: #fff;
     }
   }
 
   // 活躍狀態
   &.nuxt-link-active {
-    background: linear-gradient(145deg,
-      rgba($accent, 0.15),
-      rgba($accent, 0.08));
+    background: linear-gradient(145deg, rgba($accent, 0.15), rgba($accent, 0.08));
     border-color: rgba($accent, 0.6);
     box-shadow:
       0 4px 20px rgba($accent, 0.3),
@@ -197,40 +184,45 @@ $darker: #070b1f;
     }
 
     .text {
-      color: #ffffff;
+      color: #fff;
     }
   }
 }
 
 // 光線動畫
-@keyframes lightBeam {
+@keyframes light-beam {
   0% {
     opacity: 0.4;
     transform: rotate(0deg) scale(1);
   }
+
   33% {
     opacity: 0.7;
     transform: rotate(1deg) scale(1.01);
   }
+
   66% {
     opacity: 0.8;
     transform: rotate(-1deg) scale(1.02);
   }
+
   100% {
     opacity: 0.4;
     transform: rotate(0deg) scale(1);
   }
 }
 
-@keyframes glowPulse {
+@keyframes glow-pulse {
   0% {
     opacity: 0.4;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.7;
     transform: scale(1.01);
   }
+
   100% {
     opacity: 0.4;
     transform: scale(1);

@@ -8,13 +8,9 @@
       class="tech-archive-container"
     >
       <div class="tech-archive-header">
-        <h1 class="tech-archive-title">
-          <span class="tech-accent">文章</span> 列表
-        </h1>
+        <h1 class="tech-archive-title"><span class="tech-accent">文章</span> 列表</h1>
         <div class="tech-divider" />
-        <p class="tech-archive-subtitle">
-          依據建立時間排序的所有文章，探索知識的時光軌跡
-        </p>
+        <p class="tech-archive-subtitle">依據建立時間排序的所有文章，探索知識的時光軌跡</p>
 
         <!-- 年份選擇器 -->
         <div class="tech-year-selector">
@@ -36,17 +32,10 @@
       </div>
 
       <div class="tech-archive-grid">
-        <div
-          v-for="(monthPosts, key) in posts"
-          :key="key"
-          class="tech-timeline-group"
-        >
+        <div v-for="(monthPosts, key) in posts" :key="key" class="tech-timeline-group">
           <div class="tech-timeline-header">
             <div class="tech-timeline-marker">
-              <font-awesome-icon
-                :icon="['fas', 'calendar-alt']"
-                class="tech-timeline-icon"
-              />
+              <font-awesome-icon :icon="['fas', 'calendar-alt']" class="tech-timeline-icon" />
             </div>
             <h3 class="tech-timeline-date">
               {{ key }}
@@ -76,17 +65,12 @@
                   <font-awesome-icon :icon="['fas', 'arrow-right']" />
                 </div>
               </nuxt-link>
-              <div
-                v-else
-                class="tech-article-invalid"
-              >
+              <div v-else class="tech-article-invalid">
                 <div class="tech-article-content">
                   <h4 class="tech-article-title">
-                    {{ post?.title || "Untitled" }}
+                    {{ post?.title || 'Untitled' }}
                   </h4>
-                  <span class="tech-article-date">{{
-                    post?.createDate || "Unknown date"
-                  }}</span>
+                  <span class="tech-article-date">{{ post?.createDate || 'Unknown date' }}</span>
                 </div>
               </div>
             </div>
@@ -95,236 +79,223 @@
       </div>
 
       <!-- 載入狀態指示器 -->
-      <div
-        v-if="isLoading && selectedYear === null"
-        class="tech-loading-container"
-      >
+      <div v-if="isLoading && selectedYear === null" class="tech-loading-container">
         <div class="tech-loading-spinner">
-          <font-awesome-icon
-            :icon="['fas', 'spinner']"
-            spin
-          />
+          <font-awesome-icon :icon="['fas', 'spinner']" spin />
         </div>
-        <p class="tech-loading-text">
-          載入更多文章中...
-        </p>
+        <p class="tech-loading-text">載入更多文章中...</p>
       </div>
 
       <!-- 無限滾動偵測元素 -->
-      <div
-        ref="loadMoreTrigger"
-        class="tech-load-trigger"
-      />
+      <div ref="loadMoreTrigger" class="tech-load-trigger" />
     </motion-div>
   </section>
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
-import { useAsyncData, useError, useHead, useRoute, useRouter } from 'nuxt/app'
-import apiModule from '~/services/api'
-import config from '~/config'
-import constant from '~/constant'
+import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue';
+import { useAsyncData, useError, useHead, useRoute, useRouter } from 'nuxt/app';
+import apiModule from '~/services/api';
+import config from '~/config';
+import constant from '~/constant';
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
 // 響應式資料
-const selectedYear = ref(null)
-const posts = ref({})
-const availableYears = ref([])
-const isLoading = ref(false)
-const hasMore = ref(true)
-const currentSkip = ref(0)
-const pageSize = config.articleListMaxLimit
-const loadMoreTrigger = ref(null)
-let observer = null
+const selectedYear = ref(null);
+const posts = ref({});
+const availableYears = ref([]);
+const isLoading = ref(false);
+const hasMore = ref(true);
+const currentSkip = ref(0);
+const pageSize = config.articleListMaxLimit;
+const loadMoreTrigger = ref(null);
+let observer = null;
 
 // 從路由參數取得初始年份
 if (route.query.year && !isNaN(route.query.year)) {
-  selectedYear.value = parseInt(route.query.year)
+  selectedYear.value = parseInt(route.query.year);
 }
 
 // 取得可用年份清單
 const { data: yearsData } = await useAsyncData('available-years', async () => {
   try {
-    const api = apiModule()
-    return await api.getAvailableYears()
+    const api = apiModule();
+    return await api.getAvailableYears();
   } catch (error) {
-    console.error('Failed to fetch available years:', error)
-    return []
+    console.error('Failed to fetch available years:', error);
+    return [];
   }
-})
+});
 
 if (yearsData.value) {
-  availableYears.value = yearsData.value
+  availableYears.value = yearsData.value;
 }
 
 // 合併文章資料的輔助函式
 const mergePosts = (existingPosts, newPosts) => {
-  const merged = { ...existingPosts }
+  const merged = { ...existingPosts };
 
   Object.keys(newPosts).forEach((monthKey) => {
     if (merged[monthKey]) {
       // 合併同月份的文章，避免重複
-      const existingIds = new Set(merged[monthKey].map((post) => post.id))
-      const newArticles = newPosts[monthKey].filter(
-        (post) => !existingIds.has(post.id)
-      )
-      merged[monthKey] = [...merged[monthKey], ...newArticles]
+      const existingIds = new Set(merged[monthKey].map((post) => post.id));
+      const newArticles = newPosts[monthKey].filter((post) => !existingIds.has(post.id));
+      merged[monthKey] = [...merged[monthKey], ...newArticles];
     } else {
-      merged[monthKey] = newPosts[monthKey]
+      merged[monthKey] = newPosts[monthKey];
     }
-  })
+  });
 
-  return merged
-}
+  return merged;
+};
 
 // 取得文章資料的函式
 const fetchPosts = async (year = null, skip = 0, isLoadMore = false) => {
   try {
-    const api = apiModule()
-    const limit = selectedYear.value === null ? pageSize : null // 只有全部年份時才分頁
-    const result = await api.getArticlesGroupByYearMonth(year, limit, skip)
+    const api = apiModule();
+    const limit = selectedYear.value === null ? pageSize : null; // 只有全部年份時才分頁
+    const result = await api.getArticlesGroupByYearMonth(year, limit, skip);
 
     if (isLoadMore) {
       // 載入更多時合併資料
-      posts.value = mergePosts(posts.value, result.posts)
+      posts.value = mergePosts(posts.value, result.posts);
     } else {
       // 初始載入或切換年份時直接設定
-      posts.value = result.posts
+      posts.value = result.posts;
     }
 
-    hasMore.value = result.hasMore
-    currentSkip.value = skip + (result.limit || 0)
+    hasMore.value = result.hasMore;
+    currentSkip.value = skip + (result.limit || 0);
 
-    return result
+    return result;
   } catch (error) {
     if (!isLoadMore) {
       throw useError({
         statusCode: 500,
-        message: error.message || 'Failed to fetch articles'
-      })
+        message: error.message || 'Failed to fetch articles',
+      });
     } else {
-      console.error('Failed to load more articles:', error)
-      return { posts: {}, hasMore: false }
+      console.error('Failed to load more articles:', error);
+      return { posts: {}, hasMore: false };
     }
   }
-}
+};
 
 // 載入更多文章
 const loadMorePosts = async () => {
   if (isLoading.value || !hasMore.value || selectedYear.value !== null) {
-    return
+    return;
   }
 
-  isLoading.value = true
+  isLoading.value = true;
 
   try {
-    await fetchPosts(null, currentSkip.value, true)
+    await fetchPosts(null, currentSkip.value, true);
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
+};
 
 // 設定無限滾動觀察器
 const setupIntersectionObserver = () => {
   if (!loadMoreTrigger.value || typeof IntersectionObserver === 'undefined') {
-    return
+    return;
   }
 
   observer = new IntersectionObserver(
     (entries) => {
-      const [entry] = entries
+      const [entry] = entries;
       if (entry.isIntersecting && selectedYear.value === null) {
-        loadMorePosts()
+        loadMorePosts();
       }
     },
     {
-      rootMargin: '100px' // 提前 100px 觸發載入
+      rootMargin: '100px', // 提前 100px 觸發載入
     }
-  )
+  );
 
-  observer.observe(loadMoreTrigger.value)
-}
+  observer.observe(loadMoreTrigger.value);
+};
 
 // 清理觀察器
 const cleanupObserver = () => {
   if (observer) {
-    observer.disconnect()
-    observer = null
+    observer.disconnect();
+    observer = null;
   }
-}
+};
 
 // 初始載入文章資料
 await useAsyncData(`archives-${selectedYear.value || 'all'}`, () =>
   fetchPosts(selectedYear.value, 0, false)
-)
+);
 
 // 年份選擇函式
 const selectYear = async (year) => {
-  selectedYear.value = year
-  currentSkip.value = 0
-  hasMore.value = true
+  selectedYear.value = year;
+  currentSkip.value = 0;
+  hasMore.value = true;
 
   // 更新 URL
   if (year) {
-    await router.push({ query: { year } })
+    await router.push({ query: { year } });
   } else {
-    await router.push({ query: {} })
+    await router.push({ query: {} });
   }
 
   // 重新載入資料
   try {
-    await fetchPosts(year, 0, false)
+    await fetchPosts(year, 0, false);
   } catch (error) {
-    console.error('Failed to fetch posts for year:', year, error)
+    console.error('Failed to fetch posts for year:', year, error);
   }
-}
+};
 
 // 監聽路由變化
 watch(
   () => route.query.year,
   (newYear) => {
-    const yearValue = newYear ? parseInt(newYear) : null
+    const yearValue = newYear ? parseInt(newYear) : null;
     if (yearValue !== selectedYear.value) {
-      selectedYear.value = yearValue
-      currentSkip.value = 0
-      hasMore.value = true
+      selectedYear.value = yearValue;
+      currentSkip.value = 0;
+      hasMore.value = true;
       fetchPosts(yearValue, 0, false).catch((error) => {
-        console.error('Failed to fetch posts for year:', yearValue, error)
-      })
+        console.error('Failed to fetch posts for year:', yearValue, error);
+      });
     }
   }
-)
+);
 
 // 設定頁面標題和 meta 資訊
-const title = ref(`所有文章列表 - ${constant.title}`)
+const title = ref(`所有文章列表 - ${constant.title}`);
 const description = ref(
   '依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊'
-)
+);
 
 // 監聽選擇的年份變化，更新頁面標題
 watch(selectedYear, (newYear) => {
   if (newYear) {
-    title.value = `${newYear} 年文章列表 - ${constant.title}`
-    description.value = `${newYear} 年的所有文章，依據建立時間排序，由新到舊`
+    title.value = `${newYear} 年文章列表 - ${constant.title}`;
+    description.value = `${newYear} 年的所有文章，依據建立時間排序，由新到舊`;
   } else {
-    title.value = `所有文章列表 - ${constant.title}`
+    title.value = `所有文章列表 - ${constant.title}`;
     description.value =
-      '依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊'
+      '依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊';
   }
-})
+});
 
 // 生命週期鉤子
 onMounted(async () => {
-  await nextTick()
-  setupIntersectionObserver()
-})
+  await nextTick();
+  setupIntersectionObserver();
+});
 
 onUnmounted(() => {
-  cleanupObserver()
-})
+  cleanupObserver();
+});
 
 useHead({
   title,
@@ -334,18 +305,16 @@ useHead({
     { property: 'og:description', content: description },
     {
       property: 'og:url',
-      content: `${constant.domain}${constant.baseUrl}archives`
-    }
+      content: `${constant.domain}${constant.baseUrl}archives`,
+    },
   ],
-  link: [
-    { rel: 'canonical', href: `${constant.domain}${constant.baseUrl}archives` }
-  ]
-})
+  link: [{ rel: 'canonical', href: `${constant.domain}${constant.baseUrl}archives` }],
+});
 </script>
 
 <style lang="scss" scoped>
-@use "~/assets/sass/helpers/variables" as *;
-@use "~/assets/sass/helpers/mixins" as *;
+@use '~/assets/sass/helpers/variables' as *;
+@use '~/assets/sass/helpers/mixins' as *;
 
 .tech-archive-section {
   position: relative;
@@ -366,7 +335,7 @@ useHead({
   text-align: center;
   margin-bottom: 80px;
   opacity: 0;
-  animation: fadeInUp 0.8s ease-out forwards;
+  animation: fade-in-up 0.8s ease-out forwards;
 }
 
 .tech-archive-title {
@@ -385,7 +354,6 @@ useHead({
 .tech-accent {
   background: linear-gradient(135deg, $primary-color, $tertiary-color);
   background-clip: text;
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 600;
 }
@@ -399,19 +367,14 @@ useHead({
   position: relative;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 120px;
     height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(29, 200, 205, 0.3),
-      transparent
-    );
+    background: linear-gradient(90deg, transparent, rgba(29, 200, 205, 0.3), transparent);
   }
 }
 
@@ -447,18 +410,13 @@ useHead({
   overflow: hidden;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(29, 200, 205, 0.1),
-      transparent
-    );
+    background: linear-gradient(90deg, transparent, rgba(29, 200, 205, 0.1), transparent);
     transition: left 0.3s ease;
   }
 
@@ -476,9 +434,10 @@ useHead({
   &.active {
     background: linear-gradient(135deg, $primary-color, $tertiary-color);
     border-color: $primary-color;
-    color: white;
+    color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(29, 200, 205, 0.3),
+    box-shadow:
+      0 8px 25px rgba(29, 200, 205, 0.3),
       0 0 20px rgba(29, 224, 153, 0.2);
 
     &::before {
@@ -501,7 +460,7 @@ useHead({
 .tech-timeline-group {
   position: relative;
   opacity: 0;
-  animation: fadeInUp 0.8s ease-out forwards;
+  animation: fade-in-up 0.8s ease-out forwards;
   animation-delay: calc(var(--group-index) * 0.1s);
 }
 
@@ -522,14 +481,15 @@ useHead({
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 25px rgba(29, 200, 205, 0.3),
+  box-shadow:
+    0 8px 25px rgba(29, 200, 205, 0.3),
     0 0 20px rgba(29, 224, 153, 0.2);
   position: relative;
   z-index: 2;
   flex-shrink: 0; // 防止被壓縮
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     width: 60px;
     height: 60px;
@@ -540,8 +500,8 @@ useHead({
 }
 
 .tech-timeline-icon {
-  color: white;
-  font-size: 1rem; // 稍微縮小圖示大小確保不會被切掉
+  color: #fff;
+  font-size: 1rem;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -575,18 +535,27 @@ useHead({
   }
 }
 
+.tech-article-arrow {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  margin-left: 16px;
+}
+
 .tech-article-card {
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(29, 200, 205, 0.1);
   border-radius: 12px;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02), 0 0 0 1px rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.02),
+    0 0 0 1px rgba(255, 255, 255, 0.9);
   position: relative;
   overflow: hidden;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -599,8 +568,10 @@ useHead({
 
   &:hover {
     border-color: rgba(29, 200, 205, 0.3);
-    box-shadow: 0 12px 30px rgba(29, 200, 205, 0.15),
-      0 0 25px rgba(29, 224, 153, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 12px 30px rgba(29, 200, 205, 0.15),
+      0 0 25px rgba(29, 224, 153, 0.1),
+      inset 0 0 20px rgba(255, 255, 255, 0.1);
     transform: translateY(-2px);
     background: rgba(255, 255, 255, 0.95);
 
@@ -647,7 +618,7 @@ useHead({
   font-size: 1.2rem;
   font-weight: 600;
   color: #2c3e50;
-  margin: 0 0 8px 0;
+  margin: 0 0 8px;
   line-height: 1.4;
   transition: color 0.3s ease;
 
@@ -660,14 +631,7 @@ useHead({
   font-size: 0.9rem;
   color: #64748b;
   font-weight: 400;
-  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
-}
-
-.tech-article-arrow {
-  color: #94a3b8;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-  margin-left: 16px;
+  font-family: 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', monospace;
 }
 
 // 載入狀態指示器
@@ -692,7 +656,7 @@ useHead({
   box-shadow: 0 8px 25px rgba(29, 200, 205, 0.3);
 
   svg {
-    color: white;
+    color: #fff;
     font-size: 1.5rem;
   }
 }
@@ -712,11 +676,12 @@ useHead({
 }
 
 // 動畫關鍵框架
-@keyframes fadeInUp {
+@keyframes fade-in-up {
   from {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -728,10 +693,12 @@ useHead({
     transform: scale(1);
     opacity: 1;
   }
+
   50% {
     transform: scale(1.1);
     opacity: 0.7;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -806,30 +773,39 @@ useHead({
 .tech-timeline-group:nth-child(1) {
   --group-index: 1;
 }
+
 .tech-timeline-group:nth-child(2) {
   --group-index: 2;
 }
+
 .tech-timeline-group:nth-child(3) {
   --group-index: 3;
 }
+
 .tech-timeline-group:nth-child(4) {
   --group-index: 4;
 }
+
 .tech-timeline-group:nth-child(5) {
   --group-index: 5;
 }
+
 .tech-timeline-group:nth-child(6) {
   --group-index: 6;
 }
+
 .tech-timeline-group:nth-child(7) {
   --group-index: 7;
 }
+
 .tech-timeline-group:nth-child(8) {
   --group-index: 8;
 }
+
 .tech-timeline-group:nth-child(9) {
   --group-index: 9;
 }
+
 .tech-timeline-group:nth-child(10) {
   --group-index: 10;
 }

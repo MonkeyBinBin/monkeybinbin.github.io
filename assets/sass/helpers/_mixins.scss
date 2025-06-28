@@ -12,13 +12,19 @@
 }
 
 @mixin block($block_name) {
-  .#{$block_name} { @content; }
+  .#{$block_name} {
+    @content;
+  }
 }
 
 @mixin element($element_name) {
-  @at-root &__#{$element_name} { @content; }
+  @at-root &__#{$element_name} {
+    @content;
+  }
 }
 
 @mixin modifier($modifier_name) {
-  @at-root &--#{$modifier_name} { @content; }
+  @at-root &--#{$modifier_name} {
+    @content;
+  }
 }
