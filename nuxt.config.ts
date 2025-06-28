@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename)
 export default defineNuxtConfig({
   // GitHub Pages 靜態部署設定
   ssr: false,
-  
+
   app: {
     baseURL: '/',
     cdnURL: '/',
