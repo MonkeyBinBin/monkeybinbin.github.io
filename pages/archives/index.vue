@@ -3,7 +3,7 @@
     <motion-div
       v-motion="{
         initial: { opacity: 0, x: 40 },
-        enter: { opacity: 1, x: 0, transition: { duration: 0.6 } }
+        enter: { opacity: 1, x: 0, transition: { duration: 0.6 } },
       }"
       class="tech-archive-container"
     >
@@ -62,7 +62,7 @@
             >
               <nuxt-link
                 v-if="post && post.id && typeof post.id === 'string'"
-                :to="'/article/'+post.id"
+                :to="'/article/' + post.id"
                 :title="post.title"
                 class="tech-article-link"
               >
@@ -82,9 +82,11 @@
               >
                 <div class="tech-article-content">
                   <h4 class="tech-article-title">
-                    {{ post?.title || 'Untitled' }}
+                    {{ post?.title || "Untitled" }}
                   </h4>
-                  <span class="tech-article-date">{{ post?.createDate || 'Unknown date' }}</span>
+                  <span class="tech-article-date">{{
+                    post?.createDate || "Unknown date"
+                  }}</span>
                 </div>
               </div>
             </div>
@@ -162,11 +164,13 @@ if (yearsData.value) {
 const mergePosts = (existingPosts, newPosts) => {
   const merged = { ...existingPosts }
 
-  Object.keys(newPosts).forEach(monthKey => {
+  Object.keys(newPosts).forEach((monthKey) => {
     if (merged[monthKey]) {
       // 合併同月份的文章，避免重複
-      const existingIds = new Set(merged[monthKey].map(post => post.id))
-      const newArticles = newPosts[monthKey].filter(post => !existingIds.has(post.id))
+      const existingIds = new Set(merged[monthKey].map((post) => post.id))
+      const newArticles = newPosts[monthKey].filter(
+        (post) => !existingIds.has(post.id)
+      )
       merged[monthKey] = [...merged[monthKey], ...newArticles]
     } else {
       merged[monthKey] = newPosts[monthKey]
@@ -197,7 +201,10 @@ const fetchPosts = async (year = null, skip = 0, isLoadMore = false) => {
     return result
   } catch (error) {
     if (!isLoadMore) {
-      throw useError({ statusCode: 500, message: error.message || 'Failed to fetch articles' })
+      throw useError({
+        statusCode: 500,
+        message: error.message || 'Failed to fetch articles'
+      })
     } else {
       console.error('Failed to load more articles:', error)
       return { posts: {}, hasMore: false }
@@ -250,9 +257,8 @@ const cleanupObserver = () => {
 }
 
 // 初始載入文章資料
-await useAsyncData(
-  `archives-${selectedYear.value || 'all'}`,
-  () => fetchPosts(selectedYear.value, 0, false)
+await useAsyncData(`archives-${selectedYear.value || 'all'}`, () =>
+  fetchPosts(selectedYear.value, 0, false)
 )
 
 // 年份選擇函式
@@ -277,21 +283,26 @@ const selectYear = async (year) => {
 }
 
 // 監聽路由變化
-watch(() => route.query.year, (newYear) => {
-  const yearValue = newYear ? parseInt(newYear) : null
-  if (yearValue !== selectedYear.value) {
-    selectedYear.value = yearValue
-    currentSkip.value = 0
-    hasMore.value = true
-    fetchPosts(yearValue, 0, false).catch(error => {
-      console.error('Failed to fetch posts for year:', yearValue, error)
-    })
+watch(
+  () => route.query.year,
+  (newYear) => {
+    const yearValue = newYear ? parseInt(newYear) : null
+    if (yearValue !== selectedYear.value) {
+      selectedYear.value = yearValue
+      currentSkip.value = 0
+      hasMore.value = true
+      fetchPosts(yearValue, 0, false).catch((error) => {
+        console.error('Failed to fetch posts for year:', yearValue, error)
+      })
+    }
   }
-})
+)
 
 // 設定頁面標題和 meta 資訊
 const title = ref(`所有文章列表 - ${constant.title}`)
-const description = ref('依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊')
+const description = ref(
+  '依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊'
+)
 
 // 監聽選擇的年份變化，更新頁面標題
 watch(selectedYear, (newYear) => {
@@ -300,7 +311,8 @@ watch(selectedYear, (newYear) => {
     description.value = `${newYear} 年的所有文章，依據建立時間排序，由新到舊`
   } else {
     title.value = `所有文章列表 - ${constant.title}`
-    description.value = '依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊'
+    description.value =
+      '依據文章建立的時間，列出所有的文章連結，排列方式是利用文章建立的時間排序，由新到舊'
   }
 })
 
@@ -320,7 +332,10 @@ useHead({
     { name: 'description', content: description },
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
-    { property: 'og:url', content: `${constant.domain}${constant.baseUrl}archives` }
+    {
+      property: 'og:url',
+      content: `${constant.domain}${constant.baseUrl}archives`
+    }
   ],
   link: [
     { rel: 'canonical', href: `${constant.domain}${constant.baseUrl}archives` }
@@ -329,8 +344,8 @@ useHead({
 </script>
 
 <style lang="scss" scoped>
-@use '~/assets/sass/helpers/variables' as *;
-@use '~/assets/sass/helpers/mixins' as *;
+@use "~/assets/sass/helpers/variables" as *;
+@use "~/assets/sass/helpers/mixins" as *;
 
 .tech-archive-section {
   position: relative;
@@ -384,14 +399,19 @@ useHead({
   position: relative;
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 120px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(29, 200, 205, 0.3), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(29, 200, 205, 0.3),
+      transparent
+    );
   }
 }
 
@@ -427,13 +447,18 @@ useHead({
   overflow: hidden;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(29, 200, 205, 0.1), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(29, 200, 205, 0.1),
+      transparent
+    );
     transition: left 0.3s ease;
   }
 
@@ -453,8 +478,7 @@ useHead({
     border-color: $primary-color;
     color: white;
     transform: translateY(-2px);
-    box-shadow:
-      0 8px 25px rgba(29, 200, 205, 0.3),
+    box-shadow: 0 8px 25px rgba(29, 200, 205, 0.3),
       0 0 20px rgba(29, 224, 153, 0.2);
 
     &::before {
@@ -486,6 +510,8 @@ useHead({
   align-items: center;
   margin-bottom: 30px;
   position: relative;
+  min-height: 50px; // 確保有足夠高度容納圖示
+  padding-left: 30px;
 }
 
 .tech-timeline-marker {
@@ -496,14 +522,14 @@ useHead({
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow:
-    0 8px 25px rgba(29, 200, 205, 0.3),
+  box-shadow: 0 8px 25px rgba(29, 200, 205, 0.3),
     0 0 20px rgba(29, 224, 153, 0.2);
   position: relative;
   z-index: 2;
+  flex-shrink: 0; // 防止被壓縮
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     width: 60px;
     height: 60px;
@@ -515,7 +541,11 @@ useHead({
 
 .tech-timeline-icon {
   color: white;
-  font-size: 1.2rem;
+  font-size: 1rem; // 稍微縮小圖示大小確保不會被切掉
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tech-timeline-date {
@@ -551,14 +581,12 @@ useHead({
   border-radius: 12px;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
-  box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.02),
-    0 0 0 1px rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02), 0 0 0 1px rgba(255, 255, 255, 0.9);
   position: relative;
   overflow: hidden;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -571,10 +599,8 @@ useHead({
 
   &:hover {
     border-color: rgba(29, 200, 205, 0.3);
-    box-shadow:
-      0 12px 30px rgba(29, 200, 205, 0.15),
-      0 0 25px rgba(29, 224, 153, 0.1),
-      inset 0 0 20px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 30px rgba(29, 200, 205, 0.15),
+      0 0 25px rgba(29, 224, 153, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.1);
     transform: translateY(-2px);
     background: rgba(255, 255, 255, 0.95);
 
@@ -634,7 +660,7 @@ useHead({
   font-size: 0.9rem;
   color: #64748b;
   font-weight: 400;
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
 }
 
 .tech-article-arrow {
@@ -731,14 +757,25 @@ useHead({
   }
 
   .tech-timeline-header {
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 15px;
+    min-height: 36px; // 調整為配合較小的標記尺寸
+    padding-left: 10px;
   }
 
   .tech-timeline-marker {
-    width: 40px;
-    height: 40px;
+    width: 36px; // 進一步縮小標記大小
+    height: 36px;
+    flex-shrink: 0; // 防止被壓縮
+
+    &::before {
+      width: 44px; // 相應調整動畫邊框
+      height: 44px;
+    }
+
+    .tech-timeline-icon {
+      font-size: 0.8rem; // 進一步縮小圖示大小
+    }
   }
 
   .tech-timeline-date {
@@ -766,14 +803,34 @@ useHead({
 }
 
 // 為每個時間軸群組設定不同的動畫延遲
-.tech-timeline-group:nth-child(1) { --group-index: 1; }
-.tech-timeline-group:nth-child(2) { --group-index: 2; }
-.tech-timeline-group:nth-child(3) { --group-index: 3; }
-.tech-timeline-group:nth-child(4) { --group-index: 4; }
-.tech-timeline-group:nth-child(5) { --group-index: 5; }
-.tech-timeline-group:nth-child(6) { --group-index: 6; }
-.tech-timeline-group:nth-child(7) { --group-index: 7; }
-.tech-timeline-group:nth-child(8) { --group-index: 8; }
-.tech-timeline-group:nth-child(9) { --group-index: 9; }
-.tech-timeline-group:nth-child(10) { --group-index: 10; }
+.tech-timeline-group:nth-child(1) {
+  --group-index: 1;
+}
+.tech-timeline-group:nth-child(2) {
+  --group-index: 2;
+}
+.tech-timeline-group:nth-child(3) {
+  --group-index: 3;
+}
+.tech-timeline-group:nth-child(4) {
+  --group-index: 4;
+}
+.tech-timeline-group:nth-child(5) {
+  --group-index: 5;
+}
+.tech-timeline-group:nth-child(6) {
+  --group-index: 6;
+}
+.tech-timeline-group:nth-child(7) {
+  --group-index: 7;
+}
+.tech-timeline-group:nth-child(8) {
+  --group-index: 8;
+}
+.tech-timeline-group:nth-child(9) {
+  --group-index: 9;
+}
+.tech-timeline-group:nth-child(10) {
+  --group-index: 10;
+}
 </style>
