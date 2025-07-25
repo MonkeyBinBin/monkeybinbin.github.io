@@ -10,7 +10,9 @@
     "start": "nuxt start",
     "generate": "node scripts/generateRoutes.mjs && nuxi generate",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "lint:css": "npx stylelint '**/*.{css,scss,sass,vue}'",
+    "lint:css:vue": "npx stylelint '**/*.vue' --custom-syntax postcss-html",
+    "lint:css:scss": "npx stylelint '**/*.{css,scss,sass}'",
+    "lint:css": "npm run lint:css:vue && npm run lint:css:scss",
     "lint": "npm run lint:js && npm run lint:css",
     "predeploy": "npm run generate",
     "deploy": "npx del-cli -f 'public/sitemap.xml' 'public/sitemap.xml.gz' && gh-pages -d dist -b master",
@@ -57,12 +59,11 @@
     "postcss-html": "^1.8.0",
     "prettier": "^3.6.2",
     "purgecss-webpack-plugin": "^7.0.2",
-    "stylelint": "^14.16.1",
-    "stylelint-config-prettier": "^9.0.5",
-    "stylelint-config-sass-guidelines": "^10.0.0",
-    "stylelint-config-standard": "^29.0.0",
-    "stylelint-order": "^6.0.4",
-    "stylelint-scss": "^4.7.0",
+    "stylelint": "^16.22.0",
+    "stylelint-config-standard": "^38.0.0",
+    "stylelint-config-standard-scss": "^15.0.1",
+    "stylelint-config-standard-vue": "^1.0.0",
+    "stylelint-scss": "^6.12.1",
     "vue-eslint-parser": "^9.4.3"
   }
 }

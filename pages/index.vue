@@ -169,8 +169,10 @@ if (error.value) throw new Error(error.value);
   color: #2c3e50;
   margin-bottom: 20px;
   letter-spacing: -0.02em;
+}
 
-  @media (max-width: 768px) {
+@media (width <= 768px) {
+  .tech-title {
     font-size: 2.5rem;
   }
 }
@@ -178,6 +180,7 @@ if (error.value) throw new Error(error.value);
 .tech-accent {
   background: linear-gradient(135deg, $primary-color, $tertiary-color);
   background-clip: text;
+  color: transparent;
   -webkit-text-fill-color: transparent;
   font-weight: 600;
 }
@@ -198,7 +201,7 @@ if (error.value) throw new Error(error.value);
     transform: translate(-50%, -50%);
     width: 120px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(29, 200, 205, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgb(29 200 205 / 30%), transparent);
   }
 }
 
@@ -225,16 +228,16 @@ if (error.value) throw new Error(error.value);
 }
 
 .tech-card {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(29, 200, 205, 0.1);
+  background: rgb(255 255 255 / 90%);
+  border: 1px solid rgb(29 200 205 / 10%);
   border-radius: 16px;
   padding: 40px;
   position: relative;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.03),
-    0 0 0 1px rgba(255, 255, 255, 0.8);
+    0 4px 20px rgb(0 0 0 / 3%),
+    0 0 0 1px rgb(255 255 255 / 80%);
 
   &::before {
     content: '';
@@ -251,14 +254,14 @@ if (error.value) throw new Error(error.value);
 
   &:hover {
     box-shadow:
-      0 20px 40px rgba(29, 200, 205, 0.25),
-      0 0 30px rgba(29, 224, 153, 0.15),
-      inset 0 0 20px rgba(255, 255, 255, 0.1),
-      inset 0 0 0 1px rgba(29, 200, 205, 0.3);
+      0 20px 40px rgb(29 200 205 / 25%),
+      0 0 30px rgb(29 224 153 / 15%),
+      inset 0 0 20px rgb(255 255 255 / 10%),
+      inset 0 0 0 1px rgb(29 200 205 / 30%);
     border-color: transparent;
     background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(29, 200, 205, 0.05) 100%),
-      linear-gradient(45deg, transparent 30%, rgba(29, 200, 205, 0.1) 50%, transparent 70%);
+      linear-gradient(135deg, rgb(255 255 255 / 95%) 0%, rgb(29 200 205 / 5%) 100%),
+      linear-gradient(45deg, transparent 30%, rgb(29 200 205 / 10%) 50%, transparent 70%);
     background-size:
       100% 100%,
       200% 200%;
@@ -277,19 +280,16 @@ if (error.value) throw new Error(error.value);
       background-size: 200% 100%;
       animation: gradient-move 1.5s infinite;
       box-shadow:
-        0 0 15px rgba(29, 200, 205, 0.3),
-        0 0 25px rgba(29, 224, 153, 0.15);
+        0 0 15px rgb(29 200 205 / 30%),
+        0 0 25px rgb(29 224 153 / 15%);
     }
 
     &::after {
       content: '';
       position: absolute;
-      top: 1px;
-      left: 1px;
-      right: 1px;
-      bottom: 1px;
+      inset: 1px;
       border-radius: 15px;
-      background: linear-gradient(45deg, transparent, rgba(29, 200, 205, 0.1), transparent);
+      background: linear-gradient(45deg, transparent, rgb(29 200 205 / 10%), transparent);
       background-size: 200% 200%;
       animation: border-glow 2s infinite;
       pointer-events: none;
@@ -363,7 +363,7 @@ if (error.value) throw new Error(error.value);
 }
 
 // 響應式設計
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .tech-section {
     padding: 40px 0;
   }
@@ -489,8 +489,8 @@ if (error.value) throw new Error(error.value);
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(29, 200, 205, 0.2);
+  background: rgb(255 255 255 / 90%);
+  border: 1px solid rgb(29 200 205 / 20%);
   border-radius: 8px;
   color: $primary-color;
   text-decoration: none;
@@ -502,7 +502,7 @@ if (error.value) throw new Error(error.value);
     background: $primary-color;
     color: #fff;
     border-color: $primary-color;
-    box-shadow: 0 4px 12px rgba(29, 200, 205, 0.3);
+    box-shadow: 0 4px 12px rgb(29 200 205 / 30%);
   }
 }
 
@@ -518,8 +518,8 @@ if (error.value) throw new Error(error.value);
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(29, 200, 205, 0.2);
+  background: rgb(255 255 255 / 90%);
+  border: 1px solid rgb(29 200 205 / 20%);
   border-radius: 8px;
   color: #64748b;
   text-decoration: none;
@@ -528,7 +528,7 @@ if (error.value) throw new Error(error.value);
   backdrop-filter: blur(10px);
 
   &:hover {
-    background: rgba(29, 200, 205, 0.1);
+    background: rgb(29 200 205 / 10%);
     border-color: $primary-color;
     color: $primary-color;
   }
@@ -537,7 +537,7 @@ if (error.value) throw new Error(error.value);
     background: $primary-color;
     border-color: $primary-color;
     color: #fff;
-    box-shadow: 0 4px 12px rgba(29, 200, 205, 0.3);
+    box-shadow: 0 4px 12px rgb(29 200 205 / 30%);
   }
 }
 

@@ -233,17 +233,17 @@ useHead({
 }
 
 .tech-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgb(255 255 255 / 95%);
   border-radius: 16px;
   padding: 2rem;
   margin-bottom: 2rem;
   box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.08),
-    0 8px 32px rgba(0, 0, 0, 0.06);
+    0 4px 20px rgb(0 0 0 / 8%),
+    0 8px 32px rgb(0 0 0 / 6%);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgb(255 255 255 / 20%);
 
   &::before {
     content: '';
@@ -260,8 +260,8 @@ useHead({
   &:hover {
     transform: translateY(-8px);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.12),
-      0 16px 64px rgba(0, 0, 0, 0.08);
+      0 8px 32px rgb(0 0 0 / 12%),
+      0 16px 64px rgb(0 0 0 / 8%);
 
     &::before {
       opacity: 1;
@@ -311,8 +311,8 @@ h1 {
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(29, 200, 205, 0.2);
+  background: rgb(255 255 255 / 90%);
+  border: 1px solid rgb(29 200 205 / 20%);
   border-radius: 8px;
   color: $primary-color;
   text-decoration: none;
@@ -324,7 +324,7 @@ h1 {
     background: $primary-color;
     color: #fff;
     border-color: $primary-color;
-    box-shadow: 0 4px 12px rgba(29, 200, 205, 0.3);
+    box-shadow: 0 4px 12px rgb(29 200 205 / 30%);
   }
 }
 
@@ -340,8 +340,8 @@ h1 {
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(29, 200, 205, 0.2);
+  background: rgb(255 255 255 / 90%);
+  border: 1px solid rgb(29 200 205 / 20%);
   border-radius: 8px;
   color: #64748b;
   text-decoration: none;
@@ -350,7 +350,7 @@ h1 {
   backdrop-filter: blur(10px);
 
   &:hover {
-    background: rgba(29, 200, 205, 0.1);
+    background: rgb(29 200 205 / 10%);
     border-color: $primary-color;
     color: $primary-color;
   }
@@ -359,7 +359,7 @@ h1 {
     background: $primary-color;
     border-color: $primary-color;
     color: #fff;
-    box-shadow: 0 4px 12px rgba(29, 200, 205, 0.3);
+    box-shadow: 0 4px 12px rgb(29 200 205 / 30%);
   }
 }
 
@@ -375,7 +375,7 @@ h1 {
   text-align: center;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .section {
     padding: 1rem 0;
   }
@@ -407,7 +407,7 @@ h1 {
   }
 }
 
-@media (max-width: 576px) {
+@media (width <= 576px) {
   .tech-card {
     padding: 1rem;
     margin-bottom: 1rem;

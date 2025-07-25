@@ -127,12 +127,9 @@ export default {
   &::before {
     content: '';
     position: absolute;
-    top: 2px;
-    left: 2px;
-    right: 2px;
-    bottom: 2px;
+    inset: 2px;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+    background: linear-gradient(135deg, rgb(255 255 255 / 30%), rgb(255 255 255 / 10%));
     pointer-events: none;
     transition: all 0.3s ease;
   }
@@ -146,7 +143,7 @@ export default {
       inset 0 1px 0 $scrolltop-inner-highlight-hover;
 
     &::before {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.2));
+      background: linear-gradient(135deg, rgb(255 255 255 / 40%), rgb(255 255 255 / 20%));
     }
   }
 
@@ -199,7 +196,7 @@ export default {
 }
 
 // 響應式設計
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .scrolltop-button {
     width: 48px;
     height: 48px;

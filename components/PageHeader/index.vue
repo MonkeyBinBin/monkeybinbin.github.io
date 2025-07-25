@@ -62,8 +62,8 @@ $header-tech-cyan: rgba($header-primary, 0.5);
     border-radius: 50%;
     border: 4px solid rgba($header-text-primary, 0.95);
     box-shadow:
-      0 12px 35px rgba(0, 0, 0, 0.3),
-      0 6px 15px rgba(0, 0, 0, 0.15),
+      0 12px 35px rgb(0 0 0 / 30%),
+      0 6px 15px rgb(0 0 0 / 15%),
       inset 0 0 0 1px rgba($header-text-primary, 0.8);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     object-fit: cover;
@@ -73,10 +73,7 @@ $header-tech-cyan: rgba($header-primary, 0.5);
 
   .avatar-ring {
     position: absolute;
-    top: -12px;
-    left: -12px;
-    right: -12px;
-    bottom: -12px;
+    inset: -12px;
     border: 3px solid transparent;
     border-radius: 50%;
     background: linear-gradient(
@@ -96,10 +93,7 @@ $header-tech-cyan: rgba($header-primary, 0.5);
     &::before {
       content: '';
       position: absolute;
-      top: 3px;
-      left: 3px;
-      right: 3px;
-      bottom: 3px;
+      inset: 3px;
       background: transparent;
       border-radius: 50%;
     }
@@ -108,10 +102,7 @@ $header-tech-cyan: rgba($header-primary, 0.5);
   // 新增光暈效果
   .avatar-glow {
     position: absolute;
-    top: -20px;
-    left: -20px;
-    right: -20px;
-    bottom: -20px;
+    inset: -20px;
     border-radius: 50%;
     background: radial-gradient(
       circle,
@@ -134,7 +125,7 @@ $header-tech-cyan: rgba($header-primary, 0.5);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   text-shadow:
     0 0 10px rgba($header-primary, 0.5),
-    0 2px 8px rgba(0, 0, 0, 0.4);
+    0 2px 8px rgb(0 0 0 / 40%);
   position: relative;
   text-transform: uppercase;
 
@@ -167,10 +158,7 @@ $header-tech-cyan: rgba($header-primary, 0.5);
 
   &__backdrop {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background:
       linear-gradient(
         135deg,
@@ -187,10 +175,7 @@ $header-tech-cyan: rgba($header-primary, 0.5);
     &::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background:
         radial-gradient(circle at 25% 25%, rgba($header-primary, 0.15) 0%, transparent 50%),
         radial-gradient(circle at 75% 75%, rgba($header-secondary, 0.1) 0%, transparent 40%);
@@ -201,10 +186,7 @@ $header-tech-cyan: rgba($header-primary, 0.5);
     &::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background:
         repeating-linear-gradient(
           90deg,
@@ -264,8 +246,8 @@ $header-tech-cyan: rgba($header-primary, 0.5);
   &__avatar:hover .avatar-wrapper .avatar-image {
     transform: scale(1.08);
     box-shadow:
-      0 15px 35px rgba(0, 0, 0, 0.4),
-      0 8px 15px rgba(0, 0, 0, 0.2),
+      0 15px 35px rgb(0 0 0 / 40%),
+      0 8px 15px rgb(0 0 0 / 20%),
       inset 0 0 0 2px rgba($header-text-primary, 0.9);
   }
 
@@ -294,17 +276,14 @@ $header-tech-cyan: rgba($header-primary, 0.5);
       // 主要文字樣式：純白色，乾淨簡潔
       color: $header-text-primary;
       text-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.3),
+        0 1px 2px rgb(0 0 0 / 30%),
         0 0 20px rgba($header-primary, 0.2);
 
       // 科技感邊框效果
       &::before {
         content: '';
         position: absolute;
-        top: -4px;
-        left: -8px;
-        right: -8px;
-        bottom: -4px;
+        inset: -4px -8px;
         background: linear-gradient(
           90deg,
           transparent 0%,
@@ -350,7 +329,7 @@ $header-tech-cyan: rgba($header-primary, 0.5);
 }
 
 // 響應式設計
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .intro {
     min-height: 350px;
 
@@ -372,7 +351,7 @@ $header-tech-cyan: rgba($header-primary, 0.5);
   }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
   .intro {
     min-height: 320px;
 

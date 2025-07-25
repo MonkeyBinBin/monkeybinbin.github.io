@@ -106,13 +106,10 @@ useHead({
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background:
-      radial-gradient(circle at 20% 20%, rgba(29, 200, 205, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(29, 224, 153, 0.03) 0%, transparent 50%);
+      radial-gradient(circle at 20% 20%, rgb(29 200 205 / 3%) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgb(29 224 153 / 3%) 0%, transparent 50%);
     pointer-events: none;
   }
 
@@ -131,7 +128,7 @@ useHead({
     letter-spacing: -0.02em;
     line-height: 1.2;
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
       font-size: 2.4rem;
     }
   }
@@ -159,7 +156,7 @@ useHead({
       transform: translate(-50%, -50%);
       width: 120px;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(29, 200, 205, 0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgb(29 200 205 / 30%), transparent);
     }
   }
 
@@ -173,32 +170,29 @@ useHead({
   }
 
   .content-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgb(255 255 255 / 95%);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 3rem;
     position: relative;
 
     // 科技感邊框
-    border: 1px solid rgba(29, 200, 205, 0.2);
+    border: 1px solid rgb(29 200 205 / 20%);
 
     // 微妙陰影
     box-shadow:
-      0 20px 40px rgba(29, 200, 205, 0.08),
-      0 10px 20px rgba(29, 224, 153, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      0 20px 40px rgb(29 200 205 / 8%),
+      0 10px 20px rgb(29 224 153 / 5%),
+      inset 0 1px 0 rgb(255 255 255 / 80%);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
     // 內部光暈效果
     &::before {
       content: '';
       position: absolute;
-      top: 1px;
-      left: 1px;
-      right: 1px;
-      bottom: 1px;
+      inset: 1px;
       border-radius: 19px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+      background: linear-gradient(135deg, rgb(255 255 255 / 40%), rgb(255 255 255 / 10%));
       pointer-events: none;
       opacity: 0.5;
     }
@@ -206,10 +200,10 @@ useHead({
     &:hover {
       transform: translateY(-8px);
       box-shadow:
-        0 30px 60px rgba(29, 200, 205, 0.12),
-        0 15px 30px rgba(29, 224, 153, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      border-color: rgba(29, 200, 205, 0.3);
+        0 30px 60px rgb(29 200 205 / 12%),
+        0 15px 30px rgb(29 224 153 / 8%),
+        inset 0 1px 0 rgb(255 255 255 / 90%);
+      border-color: rgb(29 200 205 / 30%);
     }
 
     .intro-text {
@@ -227,7 +221,7 @@ useHead({
       color: #666;
       margin: 0;
       padding: 1.5rem;
-      background: linear-gradient(135deg, rgba(29, 200, 205, 0.04), rgba(29, 224, 153, 0.04));
+      background: linear-gradient(135deg, rgb(29 200 205 / 4%), rgb(29 224 153 / 4%));
       border-radius: 12px;
       border-left: 3px solid $primary-color;
       position: relative;
@@ -240,7 +234,7 @@ useHead({
         right: 0;
         width: 50px;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(29, 200, 205, 0.06));
+        background: linear-gradient(90deg, transparent, rgb(29 200 205 / 6%));
         border-radius: 0 12px 12px 0;
       }
     }
@@ -261,7 +255,7 @@ useHead({
 }
 
 // 響應式設計
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .about-section {
     padding: 3rem 0;
 
@@ -300,7 +294,7 @@ useHead({
   }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
   .about-section {
     .tech-archive-header {
       .tech-archive-title {

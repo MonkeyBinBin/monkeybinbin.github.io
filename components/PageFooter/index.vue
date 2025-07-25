@@ -18,7 +18,12 @@
       </div>
     </div>
     <div class="footer-particles">
-      <div v-for="n in 20" :key="n" class="particle" />
+      <div
+        v-for="(particle, idx) in particles"
+        :key="idx"
+        class="particle"
+        :style="particle.style"
+      />
     </div>
   </footer>
 </template>
@@ -26,6 +31,23 @@
 <script>
 export default {
   name: 'PageFooter',
+  data() {
+    return {
+      particles: Array.from({ length: 20 }, (_, i) => {
+        // 產生隨機屬性
+        const left = `${Math.random() * 100}%`;
+        const animationDelay = `${Math.random() * 6}s`;
+        const animationDuration = `${4 + Math.random() * 4}s`;
+        return {
+          style: {
+            left,
+            animationDelay,
+            animationDuration,
+          },
+        };
+      }),
+    };
+  },
 };
 </script>
 
@@ -33,19 +55,17 @@ export default {
 @use 'sass:math';
 @use '~/assets/sass/helpers/variables' as *;
 
-// 粒子樣式 mixin，產生 20 個不同狀態的粒子
+// 粒子樣式 mixin，僅針對顏色條件
 @mixin footer-particles($count: 20) {
   @for $i from 1 through $count {
     &:nth-child(#{$i}) {
-      left: math.random() * 100%;
-      animation-delay: math.random() * 6s;
-      animation-duration: (4 + math.random() * 4) * 1s;
-
       // 為粒子添加不同的顏色變化
       @if $i % 3 == 0 {
         background: rgba($footer-secondary, 0.8);
         box-shadow: 0 0 4px rgba($footer-secondary, 0.6);
-      } @else if $i % 5 == 0 {
+      }
+
+      @if $i % 3 != 0 and $i % 5 == 0 {
         background: rgba($footer-accent, 0.8);
         box-shadow: 0 0 4px rgba($footer-accent, 0.6);
       }
@@ -62,7 +82,7 @@ $footer-gradient-start: rgba($footer-primary, 0.9);
 $footer-gradient-middle: rgba($footer-accent, 0.8);
 $footer-gradient-end: rgba($footer-secondary, 0.9);
 $footer-text-primary: #fff;
-$footer-text-secondary: rgba(255, 255, 255, 0.9);
+$footer-text-secondary: rgb(255 255 255 / 90%);
 $footer-glow: rgba($footer-primary, 0.4);
 
 .footer {
@@ -86,10 +106,7 @@ $footer-glow: rgba($footer-primary, 0.4);
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: linear-gradient(
       45deg,
       rgba($footer-primary, 0.15) 0%,
@@ -212,6 +229,7 @@ $footer-glow: rgba($footer-primary, 0.4);
     border-radius: 50%;
     animation: particle-float 6s linear infinite;
     box-shadow: 0 0 4px rgba($footer-primary, 0.6);
+
     @include footer-particles(20);
   }
 }
@@ -291,7 +309,7 @@ $footer-glow: rgba($footer-primary, 0.4);
 }
 
 // 響應式設計
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .footer-brand .brand-text {
     font-size: 20px;
   }

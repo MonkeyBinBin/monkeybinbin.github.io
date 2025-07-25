@@ -162,7 +162,7 @@ export default {
 .tag-link {
   @include link-animation(transparent);
 
-  background: linear-gradient(135deg, rgba(29, 200, 205, 0.1), rgba(29, 224, 153, 0.1));
+  background: linear-gradient(135deg, rgb(29 200 205 / 10%), rgb(29 224 153 / 10%));
   color: $primary-color;
   font-weight: 500;
   font-size: 0.8rem;
@@ -170,7 +170,7 @@ export default {
   border-radius: 20px;
   text-decoration: none;
   transition: all 0.3s ease;
-  border: 1px solid rgba(29, 200, 205, 0.2);
+  border: 1px solid rgb(29 200 205 / 20%);
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -179,7 +179,7 @@ export default {
     background: linear-gradient(135deg, $primary-color, $tertiary-color);
     color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(29, 200, 205, 0.3);
+    box-shadow: 0 4px 12px rgb(29 200 205 / 30%);
     text-decoration: none;
   }
 }
@@ -202,7 +202,7 @@ export default {
     background: linear-gradient(135deg, $primary-color, $tertiary-color);
     color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(29, 200, 205, 0.3);
+    box-shadow: 0 6px 20px rgb(29 200 205 / 30%);
     text-decoration: none;
   }
 }
@@ -210,19 +210,19 @@ export default {
 .marked {
   @include link-animation(transparent);
 
-  background: linear-gradient(135deg, rgba(201, 20, 20, 0.1), rgba(201, 20, 20, 0.15));
+  background: linear-gradient(135deg, rgb(201 20 20 / 10%), rgb(201 20 20 / 15%));
   color: $marked-primary-color;
-  border-color: rgba(201, 20, 20, 0.3);
+  border-color: rgb(201 20 20 / 30%);
 
   &:hover {
     background: linear-gradient(135deg, $marked-primary-color, #e74c3c);
     color: #fff;
-    box-shadow: 0 4px 12px rgba(201, 20, 20, 0.3);
+    box-shadow: 0 4px 12px rgb(201 20 20 / 30%);
   }
 }
 
 // 響應式設計
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .article {
     :deep(h1 a) {
       font-size: 1.5rem;

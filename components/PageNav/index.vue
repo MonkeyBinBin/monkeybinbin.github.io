@@ -52,8 +52,8 @@ $darker: #070b1f;
   padding: 20px;
   overflow: hidden;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 8px 32px rgb(0 0 0 / 50%),
+    inset 0 1px 0 rgb(255 255 255 / 10%),
     0 0 40px rgba($primary, 0.2),
     0 0 80px rgba($accent, 0.1);
 
@@ -61,10 +61,7 @@ $darker: #070b1f;
   &::before {
     content: '';
     position: absolute;
-    top: -3px;
-    left: -3px;
-    right: -3px;
-    bottom: -3px;
+    inset: -3px;
     background: linear-gradient(
       45deg,
       transparent 25%,
@@ -81,10 +78,7 @@ $darker: #070b1f;
   &::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: linear-gradient(
       135deg,
       rgba($primary, 0.08) 0%,
@@ -123,7 +117,7 @@ $darker: #070b1f;
   padding: 20px 25px;
   text-decoration: none;
   color: #fff;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  background: linear-gradient(145deg, rgb(255 255 255 / 5%), rgb(255 255 255 / 2%));
   border: 1px solid rgba($primary, 0.2);
   border-radius: 12px;
   position: relative;
@@ -146,7 +140,7 @@ $darker: #070b1f;
     font-weight: 600;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgb(255 255 255 / 80%);
     transition: all 0.3s ease;
     text-align: center; // 確保文字置中
     white-space: nowrap; // 防止文字換行
@@ -159,7 +153,7 @@ $darker: #070b1f;
     border-color: rgba($primary, 0.5);
     box-shadow:
       0 8px 25px rgba($primary, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      inset 0 1px 0 rgb(255 255 255 / 20%);
 
     .icon {
       color: $accent;
@@ -177,7 +171,7 @@ $darker: #070b1f;
     border-color: rgba($accent, 0.6);
     box-shadow:
       0 4px 20px rgba($accent, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      inset 0 1px 0 rgb(255 255 255 / 15%);
 
     .icon {
       color: $accent;
@@ -230,7 +224,7 @@ $darker: #070b1f;
 }
 
 // 響應式設計
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .tech-nav {
     padding: 30px 15px;
   }
@@ -256,7 +250,7 @@ $darker: #070b1f;
   }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
   .nav-item {
     padding: 15px 20px;
 

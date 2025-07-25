@@ -112,13 +112,10 @@ onMounted(() => {
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background:
-      radial-gradient(circle at 20% 20%, rgba(29, 200, 205, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(29, 224, 153, 0.03) 0%, transparent 50%);
+      radial-gradient(circle at 20% 20%, rgb(29 200 205 / 3%) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgb(29 224 153 / 3%) 0%, transparent 50%);
     pointer-events: none;
   }
 }
@@ -132,16 +129,16 @@ onMounted(() => {
 }
 
 .tech-article-header {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgb(255 255 255 / 95%);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 40px;
   margin-bottom: 40px;
-  border: 1px solid rgba(29, 200, 205, 0.1);
+  border: 1px solid rgb(29 200 205 / 10%);
   box-shadow:
-    0 10px 30px rgba(29, 200, 205, 0.08),
-    0 4px 12px rgba(29, 224, 153, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    0 10px 30px rgb(29 200 205 / 8%),
+    0 4px 12px rgb(29 224 153 / 5%),
+    inset 0 1px 0 rgb(255 255 255 / 80%);
 
   // 科技感邊框效果
   &::before {
@@ -161,16 +158,16 @@ onMounted(() => {
 }
 
 .tech-article-content {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgb(255 255 255 / 95%);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 50px;
   margin-bottom: 40px;
-  border: 1px solid rgba(29, 200, 205, 0.1);
+  border: 1px solid rgb(29 200 205 / 10%);
   box-shadow:
-    0 10px 30px rgba(29, 200, 205, 0.08),
-    0 4px 12px rgba(29, 224, 153, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    0 10px 30px rgb(29 200 205 / 8%),
+    0 4px 12px rgb(29 224 153 / 5%),
+    inset 0 1px 0 rgb(255 255 255 / 80%);
 
   // 入場動畫
   opacity: 0;
@@ -256,7 +253,7 @@ onMounted(() => {
   // 程式碼區塊樣式
   :deep(pre) {
     background: #f8fafc;
-    border: 1px solid rgba(29, 200, 205, 0.1);
+    border: 1px solid rgb(29 200 205 / 10%);
     border-radius: 12px;
     padding: 24px;
     margin: 2rem 0;
@@ -286,18 +283,18 @@ onMounted(() => {
 
   // 行內程式碼樣式
   :deep(code:not(pre code)) {
-    background: rgba(29, 200, 205, 0.1);
+    background: rgb(29 200 205 / 10%);
     color: $primary-color;
     padding: 2px 8px;
     border-radius: 4px;
     font-family: 'Fira Code', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
     font-size: 0.9em;
-    border: 1px solid rgba(29, 200, 205, 0.2);
+    border: 1px solid rgb(29 200 205 / 20%);
   }
 
   // 引用區塊樣式
   :deep(blockquote) {
-    background: linear-gradient(135deg, rgba(29, 200, 205, 0.05), rgba(29, 224, 153, 0.05));
+    background: linear-gradient(135deg, rgb(29 200 205 / 5%), rgb(29 224 153 / 5%));
     border-left: 4px solid $primary-color;
     padding: 20px 30px;
     margin: 2rem 0;
@@ -310,7 +307,7 @@ onMounted(() => {
       top: 10px;
       left: 10px;
       font-size: 3rem;
-      color: rgba(29, 200, 205, 0.3);
+      color: rgb(29 200 205 / 30%);
       font-family: serif;
     }
 
@@ -342,7 +339,7 @@ onMounted(() => {
     height: auto;
     border-radius: 12px;
     margin: 2rem 0;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
     transition: transform 0.3s ease;
 
     &:hover {
@@ -358,7 +355,7 @@ onMounted(() => {
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
 
     th,
     td {
@@ -368,27 +365,27 @@ onMounted(() => {
     }
 
     th {
-      background: linear-gradient(135deg, rgba(29, 200, 205, 0.1), rgba(29, 224, 153, 0.1));
+      background: linear-gradient(135deg, rgb(29 200 205 / 10%), rgb(29 224 153 / 10%));
       color: $primary-color;
       font-weight: 600;
     }
 
     tr:hover {
-      background: rgba(29, 200, 205, 0.02);
+      background: rgb(29 200 205 / 2%);
     }
   }
 }
 
 .tech-comments-section {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgb(255 255 255 / 95%);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 40px;
-  border: 1px solid rgba(29, 200, 205, 0.1);
+  border: 1px solid rgb(29 200 205 / 10%);
   box-shadow:
-    0 10px 30px rgba(29, 200, 205, 0.08),
-    0 4px 12px rgba(29, 224, 153, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    0 10px 30px rgb(29 200 205 / 8%),
+    0 4px 12px rgb(29 224 153 / 5%),
+    inset 0 1px 0 rgb(255 255 255 / 80%);
 
   // 入場動畫
   opacity: 0;
@@ -431,7 +428,7 @@ onMounted(() => {
     transform: translate(-50%, -50%);
     width: 100px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(29, 200, 205, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgb(29 200 205 / 30%), transparent);
   }
 }
 
@@ -480,7 +477,7 @@ onMounted(() => {
 }
 
 // 響應式設計
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .tech-article-section {
     padding: 40px 0;
   }
@@ -528,7 +525,7 @@ onMounted(() => {
   }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
   .tech-article-header,
   .tech-article-content,
   .tech-comments-section {

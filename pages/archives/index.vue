@@ -346,7 +346,7 @@ useHead({
   letter-spacing: -0.02em;
   line-height: 1.2;
 
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     font-size: 2.4rem;
   }
 }
@@ -374,7 +374,7 @@ useHead({
     transform: translate(-50%, -50%);
     width: 120px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(29, 200, 205, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgb(29 200 205 / 30%), transparent);
   }
 }
 
@@ -396,8 +396,8 @@ useHead({
 }
 
 .tech-year-btn {
-  background: rgba(255, 255, 255, 0.8);
-  border: 2px solid rgba(29, 200, 205, 0.2);
+  background: rgb(255 255 255 / 80%);
+  border: 2px solid rgb(29 200 205 / 20%);
   border-radius: 25px;
   padding: 10px 20px;
   font-size: 0.9rem;
@@ -416,15 +416,15 @@ useHead({
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(29, 200, 205, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgb(29 200 205 / 10%), transparent);
     transition: left 0.3s ease;
   }
 
   &:hover {
-    border-color: rgba(29, 200, 205, 0.4);
+    border-color: rgb(29 200 205 / 40%);
     color: $primary-color;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(29, 200, 205, 0.15);
+    box-shadow: 0 8px 20px rgb(29 200 205 / 15%);
 
     &::before {
       left: 100%;
@@ -437,15 +437,15 @@ useHead({
     color: #fff;
     transform: translateY(-2px);
     box-shadow:
-      0 8px 25px rgba(29, 200, 205, 0.3),
-      0 0 20px rgba(29, 224, 153, 0.2);
+      0 8px 25px rgb(29 200 205 / 30%),
+      0 0 20px rgb(29 224 153 / 20%);
 
     &::before {
       display: none;
     }
   }
 
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     padding: 8px 16px;
     font-size: 0.85rem;
   }
@@ -482,8 +482,8 @@ useHead({
   align-items: center;
   justify-content: center;
   box-shadow:
-    0 8px 25px rgba(29, 200, 205, 0.3),
-    0 0 20px rgba(29, 224, 153, 0.2);
+    0 8px 25px rgb(29 200 205 / 30%),
+    0 0 20px rgb(29 224 153 / 20%);
   position: relative;
   z-index: 2;
   flex-shrink: 0; // 防止被壓縮
@@ -493,7 +493,7 @@ useHead({
     position: absolute;
     width: 60px;
     height: 60px;
-    border: 2px solid rgba(29, 200, 205, 0.2);
+    border: 2px solid rgb(29 200 205 / 20%);
     border-radius: 50%;
     animation: pulse 2s infinite;
   }
@@ -519,7 +519,7 @@ useHead({
 .tech-timeline-line {
   flex: 1;
   height: 2px;
-  background: linear-gradient(90deg, rgba(29, 200, 205, 0.3), transparent);
+  background: linear-gradient(90deg, rgb(29 200 205 / 30%), transparent);
   margin-left: 20px;
   border-radius: 1px;
 }
@@ -529,7 +529,7 @@ useHead({
   gap: 20px;
   padding-left: 70px;
 
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     padding-left: 0;
     gap: 16px;
   }
@@ -543,14 +543,14 @@ useHead({
 }
 
 .tech-article-card {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(29, 200, 205, 0.1);
+  background: rgb(255 255 255 / 80%);
+  border: 1px solid rgb(29 200 205 / 10%);
   border-radius: 12px;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.02),
-    0 0 0 1px rgba(255, 255, 255, 0.9);
+    0 4px 20px rgb(0 0 0 / 2%),
+    0 0 0 1px rgb(255 255 255 / 90%);
   position: relative;
   overflow: hidden;
 
@@ -567,13 +567,13 @@ useHead({
   }
 
   &:hover {
-    border-color: rgba(29, 200, 205, 0.3);
+    border-color: rgb(29 200 205 / 30%);
     box-shadow:
-      0 12px 30px rgba(29, 200, 205, 0.15),
-      0 0 25px rgba(29, 224, 153, 0.1),
-      inset 0 0 20px rgba(255, 255, 255, 0.1);
+      0 12px 30px rgb(29 200 205 / 15%),
+      0 0 25px rgb(29 224 153 / 10%),
+      inset 0 0 20px rgb(255 255 255 / 10%);
     transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.95);
+    background: rgb(255 255 255 / 95%);
 
     &::before {
       opacity: 1;
@@ -653,7 +653,7 @@ useHead({
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  box-shadow: 0 8px 25px rgba(29, 200, 205, 0.3);
+  box-shadow: 0 8px 25px rgb(29 200 205 / 30%);
 
   svg {
     color: #fff;
@@ -706,7 +706,7 @@ useHead({
 }
 
 // 響應式設計
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .tech-archive-section {
     padding: 60px 0;
   }
