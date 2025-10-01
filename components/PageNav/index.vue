@@ -21,6 +21,12 @@
             <span class="text">ABOUT</span>
           </nuxt-link>
         </li>
+        <li>
+          <a href="/feed.xml" class="nav-item" target="_blank" rel="noopener noreferrer">
+            <span class="icon">⚡</span>
+            <span class="text">RSS</span>
+          </a>
+        </li>
       </ul>
     </div>
   </nav>

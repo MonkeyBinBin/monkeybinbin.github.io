@@ -29,6 +29,7 @@
     "axios": "^1.12.1",
     "bootstrap": "^5.3.3",
     "contentful": "^11.7.3",
+    "feed": "^5.1.0",
     "glob-all": "^3.3.1",
     "highlight.js": "^11.9.0",
     "lodash": "^4.17.21",

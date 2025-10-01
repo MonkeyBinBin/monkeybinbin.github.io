@@ -41,6 +41,9 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'shortcut icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'canonical', href: `${config.domain}/` },
+        { rel: 'alternate', type: 'application/rss+xml', title: 'RSS Feed', href: '/feed.xml' },
+        { rel: 'alternate', type: 'application/atom+xml', title: 'Atom Feed', href: '/atom.xml' },
+        { rel: 'alternate', type: 'application/json', title: 'JSON Feed', href: '/feed.json' },
       ],
       script: [
         // Google Tag Manager
