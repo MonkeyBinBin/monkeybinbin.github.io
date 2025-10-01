@@ -144,4 +144,20 @@ export default defineNuxtConfig({
     '~/plugins/font-awesome.js',
     '~/plugins/motion.js',
   ],
+  hooks: {
+    close: async () => {
+      // 在 Nuxt 完全關閉前（prerender 完成後）生成 feeds
+      // 此時 dist/ 已存在但 prerender 已完成,可以安全覆寫
+      const distPath = path.resolve(__dirname, 'dist');
+      const { generateAllFeeds } = await import('./scripts/generateFeeds.mjs');
+
+      // 先刪除 Nuxt prerender 可能建立的目錄
+      const feedJsonDir = path.join(distPath, 'feed.json');
+      if (fs.existsSync(feedJsonDir) && fs.statSync(feedJsonDir).isDirectory()) {
+        fs.rmSync(feedJsonDir, { recursive: true, force: true });
+      }
+
+      await generateAllFeeds(distPath);
+    },
+  },
 });

@@ -5,7 +5,6 @@ import { createClient } from 'contentful';
 import map from 'lodash/map.js';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { Feed } from 'feed';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,7 +21,7 @@ async function getArticles() {
   return client
     .getEntries({
       content_type: config.CTF_BLOG_POST_TYPE_ID,
-      select: 'fields.id,fields.createDate,fields.title,fields.slug,fields.categoryList,fields.articleContent',
+      select: 'fields.id,fields.createDate,fields.title,fields.slug,fields.categoryList',
       order: '-fields.createDate',
     })
     .then((res) => {
@@ -34,49 +33,6 @@ async function getArticles() {
       console.error('錯誤詳情：', err);
       return Promise.resolve([]);
     });
-}
-
-function generateRSSFeed(articles) {
-  const feed = new Feed({
-    title: config.title,
-    description: config.description,
-    id: config.domain,
-    link: config.domain,
-    language: 'zh-TW',
-    favicon: `${config.domain}/favicon.ico`,
-    copyright: `All rights reserved ${new Date().getFullYear()}, MonkeyBinBin`,
-    feedLinks: {
-      rss2: `${config.domain}/feed.xml`,
-      atom: `${config.domain}/atom.xml`,
-      json: `${config.domain}/feed.json`,
-    },
-    author: {
-      name: 'MonkeyBinBin',
-      email: 'thisisbinbin@gmail.com',
-      link: config.domain,
-    },
-  });
-
-  // 只取最新 20 篇文章加入 RSS
-  articles.slice(0, 20).forEach((article) => {
-    if (!article.id || !article.title) return;
-
-    const articleUrl = `${config.domain}/article/${article.id}`;
-    const content = article.articleContent || '';
-    const description = content.substring(0, 200).replace(/<[^>]*>/g, '');
-
-    feed.addItem({
-      title: article.title,
-      id: articleUrl,
-      link: articleUrl,
-      description,
-      content,
-      date: new Date(article.createDate),
-      category: (article.categoryList || []).map((tag) => ({ name: tag })),
-    });
-  });
-
-  return feed;
 }
 
 async function main() {
@@ -150,48 +106,8 @@ async function main() {
     path.resolve(__dirname, 'generate-routes.json'),
     JSON.stringify(routesArr, null, 2)
   );
-  console.log('已產生 generate-routes.json');
-
-  // 產生 RSS Feed
-  console.log('開始產生 RSS Feed...');
-  const feed = generateRSSFeed(articles);
-  const publicDir = path.resolve(__dirname, '../public');
-
-  // 確保 public 目錄存在
-  if (!fs.existsSync(publicDir)) {
-    fs.mkdirSync(publicDir, { recursive: true });
-  }
-
-  // 輸出三種格式的 feed
-  fs.writeFileSync(path.join(publicDir, 'feed.xml'), feed.rss2());
-  fs.writeFileSync(path.join(publicDir, 'atom.xml'), feed.atom1());
-  fs.writeFileSync(path.join(publicDir, 'feed.json'), feed.json1());
-
-  console.log('✓ RSS Feed 已產生：feed.xml, atom.xml, feed.json');
-
-  // 產生搜尋索引
-  console.log('開始產生搜尋索引...');
-  const searchIndex = articles.map((article) => {
-    const content = article.articleContent || '';
-    const plainText = content.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-    const excerpt = plainText.substring(0, 200);
-
-    return {
-      id: article.id,
-      title: article.title,
-      slug: article.slug,
-      tags: article.categoryList || [],
-      excerpt,
-      date: article.createDate,
-    };
-  });
-
-  fs.writeFileSync(
-    path.join(publicDir, 'search-index.json'),
-    JSON.stringify(searchIndex, null, 2)
-  );
-
-  console.log(`✓ 搜尋索引已產生：search-index.json (${searchIndex.length} 篇文章)`);
+  console.log(`✓ 已產生 generate-routes.json (${routesArr.length} 個路由)`);
+  console.log('注意：RSS feeds 和搜尋索引將在 Nuxt build 完成後生成至 dist/ 目錄');
 }
 
 main().catch((e) => {

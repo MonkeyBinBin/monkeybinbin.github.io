@@ -11,3 +11,10 @@ npm-debug.log
 # Nuxt generate
 dist
 scripts/generate-routes.json
+
+# Generated files (now created directly in dist/ during build)
+# These should never exist in public/ anymore
+public/atom.xml
+public/feed.xml
+public/feed.json
+public/search-index.json

@@ -15,8 +15,8 @@
     "lint:css": "npm run lint:css:vue && npm run lint:css:scss",
     "lint": "npm run lint:js && npm run lint:css",
     "predeploy": "npm run generate",
-    "deploy": "npx del-cli -f 'public/sitemap.xml' 'public/sitemap.xml.gz' && gh-pages -d dist -b master",
-    "deploy:ci": "npx del-cli -f 'public/sitemap.xml' 'public/sitemap.xml.gz' && gh-pages -d dist -b master -r https://$GITHUB_TOKEN@github.com/MonkeyBinBin/monkeybinbin.github.io.git",
+    "deploy": "gh-pages -d dist -b master",
+    "deploy:ci": "gh-pages -d dist -b master -r https://$GITHUB_TOKEN@github.com/MonkeyBinBin/monkeybinbin.github.io.git",
     "prebuild": "node ./scripts/generateRoutes.mjs"
   },
   "dependencies": {
