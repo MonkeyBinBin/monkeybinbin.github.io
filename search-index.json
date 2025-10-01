@@ -1,0 +1,177 @@
+[
+  {
+    "id": "css-2025-new-features",
+    "title": "CSS 2025 新特性：現代網頁開發的革命性演進",
+    "slug": "隨著 2025 年的到來，CSS 已經發展成為一個功能強大且靈活的樣式語言，新增了許多革命性的特性，讓網頁開發者能夠創造出更複雜、更動態的使用者介面。本文將探討這些創新功能，並分析現代 CSS 框架的發展趨勢。",
+    "tags": [
+      "CSS"
+    ],
+    "excerpt": "## 主要新特性瀏覽器支援表 | 特性 | Chrome | Firefox | Safari | Edge | | :---------------- | :----: | :-----: | :----: | :--: | | 容器查詢 | 106+ | 110+ | 16.0+ | 106+ | | 層疊層（@layer） | 99+ | 97+ | 15.4+ | 99+ | | CSS ",
+    "date": "2025-06-29"
+  },
+  {
+    "id": "a-series-of-nuxtjs-07",
+    "title": "Nuxt 系列 - #7 啟用 ESLint 跟 stylelint 保持良好的 Coding Style",
+    "slug": "無論是一人開發或是多人協作，寫出來的程式碼可能會有一些差異。為了讓程式碼比較好維護、閱讀，可以利用 ESLint 與 stylelint 這兩個工具來幫助我們保持良好的 Coding Style。本篇主旨是要說明在 Nuxt.js 專案中使用的方式、設定與筆者選用的規則。",
+    "tags": [
+      "Nuxt.js"
+    ],
+    "excerpt": "#### 安裝 Visual Studio Code 擴充套件 * [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) - 整合 ESLint 到 VS Code，在開發過程中會馬上顯示不符合規範的 javascript 程式碼，並且提供自動修正程式碼功能。 ![eslint](/",
+    "date": "2020-07-01"
+  },
+  {
+    "id": "a-series-of-nuxtjs-06",
+    "title": "Nuxt 系列 - #6 整合 CMS 服務 contentful",
+    "slug": "contentful 是一個內容管理的服務，提供了 RESTful API、友善的編輯介面、排程發佈、Webhooks…等功能，並且提供了一個免費空間(有上限)。如有更進階的需要可付費購買，收費方式是每月依購買的方案收取指定的費用。",
+    "tags": [
+      "Nuxt.js"
+    ],
+    "excerpt": "#### 註冊/登入 contentful contentful 網站 [https://www.contentful.com/](https://www.contentful.com/) ![contentful website](//images.ctfassets.net/64scck6nxm6l/26a2exirWOGmwk30A7Y9BH/d5e4cd4d457c477af7f86e6b",
+    "date": "2020-06-04"
+  },
+  {
+    "id": "a-series-of-nuxtjs-05",
+    "title": "Nuxt 系列 - #5 Pages 開發大小事",
+    "slug": "詳細說明 Nuxt Pages 開發的細節，包含 api 資料取得、資源檔案位置如何引用、樣式配置與設定。",
+    "tags": [
+      "Nuxt.js"
+    ],
+    "excerpt": "#### Async Data Nuxt.js 增加了一個 asyncData 的方法，在 Vue 組件初始化前執行，用來取得 api 資料，因此在這個方法內無法使用 this 來引用組件的實體對象，僅能使用傳入的 [context](https://nuxtjs.org/api/context) 來獲得相關的資訊與方法。官方建議呼叫 api 使用 axios 套件，因此接下來的程式碼範例將會使用",
+    "date": "2020-05-19"
+  },
+  {
+    "id": "a-series-of-nuxtjs-04",
+    "title": "Nuxt 系列 - #4 自訂 HTML 模板、Header、佈局與 Pages",
+    "slug": "了解如何調整畫面顯示相關的設定來滿足需求，除了基本的 Pages 與 Layout vue 組件的開發之外，也可以調整 HTML 模板還有 Head 可達到不同頁面使用不同的 meta 設定，優化 SEO。",
+    "tags": [
+      "Nuxt.js"
+    ],
+    "excerpt": "#### Nuxt 視圖架構 了解 Nuxt 的構成為何，理解各層可使用的方法與設定，幫助在開發時能夠製作出更符合需求的設計，並且能夠適當分配排版佈局與組件切分。 ![nuxt views schema](//images.ctfassets.net/64scck6nxm6l/5hDSofDCIxrzOhz3fwVp5u/c7e787138bf8ffafa2784094ec91db98/nuxt-",
+    "date": "2020-05-01"
+  },
+  {
+    "id": "a-series-of-nuxtjs-03",
+    "title": "Nuxt 系列 - #3 搞懂路由怎麼搞",
+    "slug": "此篇文章要來說明路由生成的種類與規則，了解如何在路由中傳遞參數還有一些和路由相關的功能。",
+    "tags": [
+      "Nuxt.js"
+    ],
+    "excerpt": "#### 關於路由 Nuxt.js 會依據在 **pages** 目錄內的 vue 檔案自動生成路由配置。目前有提供4種路由，分別為基礎路由、動態路由、嵌套路由與動態嵌套路由，接下來會分別說明4種路由的配置方式與規則。還有關於自訂換頁的特效與 middleware 的用途說明。 另外在頁面之間要切換路由時，建議使用 \\。目前 \\ 與 \\ 用法一致，可至 [Vue Router documentat",
+    "date": "2020-04-14"
+  },
+  {
+    "id": "a-series-of-nuxtjs-02",
+    "title": "Nuxt 系列 - #2 關於 nuxt.config.js 的設定",
+    "slug": "官方提供了很多可設定的項目，不會講到全部的項目，主要是說明我在開發 blog 時用到的一些設定，提供給大家參考。透過一些實例來理解為何要設定與如何設定。",
+    "tags": [
+      "Nuxt.js"
+    ],
+    "excerpt": "#### build 在建立網頁應用程式時，依據需要自定義 Webpack 配置。以下為目前有使用到的設定屬性。 **analyze** - 用來啟用 [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer) 套件設定，分析打包後的 js 檔案內各個 module 佔的大小。當需要調校",
+    "date": "2020-04-10"
+  },
+  {
+    "id": "a-series-of-nuxtjs-01",
+    "title": "Nuxt 系列 - #1 介紹、建專案與資料夾配置",
+    "slug": "前端框架(vue、react、angular)是一種 Client Side Rendering(CSR)的技術，由於網頁是到用戶端才會進行 render，這樣的方式不利於搜尋引擎爬蟲抓取網頁。為了解決這樣的問題，就必需做到 Server Side Rendering(SSR)。而 Nuxt.js 就是一個基於 vue 的 SSR 應用框架。這一系列的文章用來記錄使用 Nuxt.js 開發個人 blog 的重點與過程，先從介紹什麼是 Nuxt.js開始。",
+    "tags": [
+      "Nuxt.js"
+    ],
+    "excerpt": "#### 什麼是 Nuxt.js? 一個基於 vue 的應用框架，支援不同的渲染方式(SSR、CSR 或靜態)，可輕鬆串接 REST API 或 GraphQL，並且也容易整合常用的 CMS 與 CSS 框架。此外，也定義了基本的專案目錄結、支援各種套件、可調改 webpack 的設定，保持一定的規範並且也有擴充的可能。 目前我的 blog 網站透過 Nuxt.js 靜態化打包後(npm run ",
+    "date": "2020-04-05"
+  },
+  {
+    "id": "sass-with-bem",
+    "title": "使用 BEM 與 SCSS 讓 css 不再眼花撩亂",
+    "slug": "命名規則一直是寫程式的重點，當然網站樣式也是有一樣的問題。最近看到幾個方式覺得可以參考，就在某個專案中實作了這部份。的確在樣式的調整上變的快速而且容易許多。配合客戶東改西調不再是問題！？(笑)",
+    "tags": [
+      "BEM",
+      "SCSS"
+    ],
+    "excerpt": "程式開發的「命名」一直是大家討論與關注的重點。透過命名我們可以獲得那些訊息？什麼樣的命名是好的？透過一致性的命名規則讓程式碼易讀、易懂並且可重用，讓開發和維護更有效率。我認為要使用什麼樣的命名規則應該要依照需要與團隊習慣來決定。沒有什麼命名方式一定是好的，只要符合需要就是好的。當我們在開發網站時，整個網站做下來會有非常多的樣式設定，如何達到樣式的共用與結構化，一眼就能看出樣式的用途與義意是非常重要",
+    "date": "2019-09-02"
+  },
+  {
+    "id": "sh-build-frontend-and-zip",
+    "title": "利用 shell script 快速產出前端專案交付上版檔案 ",
+    "slug": "近期專案進入測試階段，經常需要包版與加密壓縮交付給客戶，每次手動都要花費不少時間(又怕出錯)。為了可以準時下班，就想說來寫一個 shell script 來做這段重覆又花時間的事情。咻一下就可以把檔案準備好了，快又爽!",
+    "tags": [
+      "Shell script"
+    ],
+    "excerpt": "當專案開發進入測試階段之後，每天都會上演的戲碼就是包版做程式的更新。為了每天可以準時下班，就必需讓包版自動化。一方面可以省時，也可以減少犯錯的可能。接下來，我使用 React 專案來做範例，此專案已設定好不同環境(uat、prod)的 scripts 透過 npm、webpack 打包程式，說明在 Mac OS 如何使用 shell script 來進行打包、壓縮加密、更新版本，產出應交付的檔案。",
+    "date": "2019-08-15"
+  },
+  {
+    "id": "mac-reform-itermapp",
+    "title": "Mac 端終機大改造， iTerm2 + Oh my zsh 好看也好用",
+    "slug": "Mac 內建的端終機一向都是黑底白字，讓人覺得很無趣，不夠酷炫。為了讓工作的心情更加愉快，必需要有一個好看好用的介面。改用 iTerm2 並且搭配 Oh my zsh 就可以讓你平常使用的終端機大變身。此篇文章用來紀錄本猴的開發環境設定，以後萬一不幸電腦重灌還可以回的去。",
+    "tags": [
+      "iTerm2",
+      "Oh my zsh"
+    ],
+    "excerpt": "近來因為工作的關係接觸前端開發，需要大量的使用 command line 。又不想天天看著黑底白字的畫面工作，後來就找到了這個 iTerm2 ，可以自訂介面的顏色，當然還有很多其他的設定像是快速鍵…等等。過一陣子之後又發現 Oh my zsh 可以更強化終端機的功能。裝了之後就再也回不去了。 #### 安裝 iTerm2 官方介紹：iTerm2 is a replacement for Termi",
+    "date": "2018-11-26"
+  },
+  {
+    "id": "mac-gs-compress-pdf",
+    "title": "Mac OS 利用 Automator 搭配 Ghostscript 壓縮 PDF",
+    "slug": "Mac 作業系統提供一個自動化的應用程式 Automator ，可以將一系列動作組合成一個工作流程。搭配 Ghostscript 來進行 pdf 檔案的壓縮，設定完成後不需要再記住複雜的指令。又可免費壓縮 pdf 檔案。",
+    "tags": [
+      "Automator",
+      "Ghostscript",
+      "PDF"
+    ],
+    "excerpt": "### 什麼是Ghostscript？ 是一套建基於Adobe、PostScript及可移植文件格式（PDF）的頁面描述語言等而編譯成的自由軟體。 ### 如何安裝Ghostscript？ 1. 開啟\"終端機\" 2. 安裝(更新)Homebrew ``` sh ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/inst",
+    "date": "2018-09-25"
+  },
+  {
+    "id": "set-sass-dev-environment",
+    "title": "建立 Sass 開發與轉譯產出 CSS 環境配置",
+    "slug": "Sass 是一種 CSS 的開發工具，提供便利的寫法，讓 CSS 的開發變得簡單可維護，建立個人的 CSS 函式庫。本篇文章主要介紹如何利用 npm 建立一個 Sass 開發( live reload )與產出 CSS 檔案。並且說明如何將 compass 載入使用，但是由於 compass 目前已沒有在維護，如果可以建議不要再使用，此處介紹的目的是因為可能過去有使用 compass 的習慣或需要，也是可以將 compass 整合進專案內",
+    "tags": [
+      "Sass",
+      "compass"
+    ],
+    "excerpt": "![sass logo](//images.ctfassets.net/64scck6nxm6l/5XprZe5a3HCsw7TjJFyQvd/91dee0cfc7660050db640237b0d57417/_01.png) #### Sass是一種CSS擴展的語言。允許使用變數、嵌套(nesting)、混合(mixin)、導入(import)...等功能。並且可以完全兼容CSS語法。 ####",
+    "date": "2018-09-08"
+  },
+  {
+    "id": "csharp-oo-notes-day3",
+    "title": "物件導向實作課程筆記 Day 3",
+    "slug": "記錄去上\"物件導向實作課程\"的筆記，一共3天。本篇為第3天課程的筆記",
+    "tags": [
+      "CSharp"
+    ],
+    "excerpt": "### 索引子 關鍵字 this 用來定義索引子 不需要以整數值來索引,可以自行決定如何定義特定的查詢機制 可以多載 sample code：Xamarin.Android Listview使用的Adapter ``` c public class ParkAdapter: BaseAdapter { private List _classA; public override ClassA thi",
+    "date": "2017-06-24"
+  },
+  {
+    "id": "csharp-oo-notes-day2",
+    "title": "物件導向實作課程筆記 Day 2",
+    "slug": "記錄去上\"物件導向實作課程\"的筆記，一共3天。本篇為第2天課程的筆記",
+    "tags": [
+      "CSharp"
+    ],
+    "excerpt": "### override 可被覆寫的修飾詞 abstract、virtual與override 若加上修飾詞 sealed後，該方法將不可再被覆寫 ### new 遮蔽的宣告方式 盡量不要使用,違反[里氏替換原則（Liskov Substitution principle)](https://zh.wikipedia.org/wiki/%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%",
+    "date": "2017-06-17"
+  },
+  {
+    "id": "csharp-oo-notes-day1",
+    "title": "物件導向實作課程筆記 Day 1",
+    "slug": "記錄去上\"物件導向實作課程\"的筆記，一共3天。本篇為第1天課程的筆記",
+    "tags": [
+      "CSharp"
+    ],
+    "excerpt": "抽象很重要，是在找出關鍵性特徵(與需求有關) 為什麼要依賴抽象？ 如果依賴具體時，面對需求變更會導致要改的東西很多而且程式碼愈改愈複雜 所以如果依賴抽象，就可以**準時下班**(重點) 人的思考方式其實就是一種抽象的概念 例如平常看到柯基、博美…等，我們都會知道這些生物叫做狗 ## 物件導向三大特性 繼承 - C#只能繼承「一個」上層類別, 但可以繼承多個介面 封裝 - 隱藏不必要被外界所知的資訊",
+    "date": "2017-06-10"
+  },
+  {
+    "id": "jenkins-set-npm-script-task",
+    "title": "Jenkins 安裝 nodejs 設定執行 npm script 任務",
+    "slug": "記錄如何在 Jenkins 建立透過 node js 與 npm ,執行 webpack 進行程式碼打包",
+    "tags": [
+      "Jenkins"
+    ],
+    "excerpt": "1.登入Jenkins,開啟「管理外掛程式」功能。 ![01.png](http://user-image.logdown.io/user/11661/blog/11120/post/1870651/JcwyD5R5QWmZbpXm4VYO_01.png) 2.搜尋Nodejs,直接安裝NodeJS Plugin。 ![02.png](http://user-image.logdown.io/us",
+    "date": "2017-05-25"
+  }
+]
