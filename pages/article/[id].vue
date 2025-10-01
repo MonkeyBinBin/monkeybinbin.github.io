@@ -1,5 +1,8 @@
 <template>
   <section class="tech-article-section">
+    <!-- 閱讀進度條 -->
+    <div class="reading-progress-bar" :style="{ width: `${readingProgress}%` }" />
+
     <div ref="container" class="tech-article-container">
       <!-- 文章標題與資訊區域 -->
       <div class="tech-article-header">
@@ -89,6 +92,7 @@ marked.setOptions({
 const container = ref(null);
 const route = useRoute();
 const id = route.params.id;
+const readingProgress = ref(0);
 
 const { data } = await useAsyncData('article', async () => {
   const post = await api().getArticleById(id);
@@ -127,6 +131,17 @@ const formatDate = (dateString) => {
   });
 };
 
+const updateReadingProgress = () => {
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  const scrollTop = window.scrollY || window.pageYOffset;
+
+  const totalDocumentHeight = documentHeight - windowHeight;
+  const progress = (scrollTop / totalDocumentHeight) * 100;
+
+  readingProgress.value = Math.min(Math.max(progress, 0), 100);
+};
+
 onMounted(() => {
   inView(container.value, () => {
     animate(
@@ -135,12 +150,46 @@ onMounted(() => {
       { duration: 0.8, easing: 'ease-out' }
     );
   });
+
+  // 監聽滾動事件
+  window.addEventListener('scroll', updateReadingProgress);
+  updateReadingProgress(); // 初始化進度
+
+  // 在組件卸載時移除監聽
+  return () => {
+    window.removeEventListener('scroll', updateReadingProgress);
+  };
 });
 </script>
 
 <style lang="scss" scoped>
 @use '~/assets/sass/helpers/variables' as *;
 @use '~/assets/sass/helpers/mixins' as *;
+
+.reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, $primary-color, $tertiary-color);
+  z-index: 9999;
+  transition: width 0.1s ease-out;
+  box-shadow:
+    0 2px 8px rgba($primary-color, 0.4),
+    0 0 20px rgba($tertiary-color, 0.3);
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2px;
+    width: 8px;
+    height: 8px;
+    background: $tertiary-color;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba($tertiary-color, 0.8);
+  }
+}
 
 .tech-article-section {
   position: relative;
