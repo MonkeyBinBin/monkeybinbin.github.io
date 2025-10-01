@@ -178,5 +178,46 @@ export default () => {
         .catch(() => Promise.resolve(null));
       return Promise.all([prevArticle, nextArticle]);
     },
+    getRelatedArticles: async (tags, currentId, limit = 5) => {
+      if (!tags || tags.length === 0) {
+        return Promise.resolve([]);
+      }
+
+      try {
+        // 取得所有文章（包含 tags）
+        const allArticles = await client.getEntries({
+          content_type: process.env.CTF_BLOG_POST_TYPE_ID,
+          select: 'fields.id,fields.createDate,fields.title,fields.slug,fields.categoryList',
+          order: '-fields.createDate',
+        });
+
+        // 計算每篇文章與當前文章的 tag 重疊數
+        const articlesWithScore = allArticles.items
+          .filter((item) => item.fields.id !== currentId)
+          .map((item) => {
+            const articleTags = item.fields.categoryList || [];
+            const matchCount = articleTags.filter((tag) => tags.includes(tag)).length;
+            return {
+              ...item.fields,
+              matchCount,
+            };
+          })
+          .filter((article) => article.matchCount > 0) // 只保留有共同 tag 的文章
+          .sort((a, b) => {
+            // 先按 matchCount 降序，再按時間降序
+            if (b.matchCount !== a.matchCount) {
+              return b.matchCount - a.matchCount;
+            }
+            return new Date(b.createDate) - new Date(a.createDate);
+          })
+          .slice(0, limit)
+          .map(({ matchCount, ...article }) => article); // 移除 matchCount 欄位
+
+        return articlesWithScore;
+      } catch (error) {
+        console.error('Failed to get related articles:', error);
+        return [];
+      }
+    },
   };
 };

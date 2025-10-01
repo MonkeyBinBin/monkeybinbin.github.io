@@ -11,6 +11,33 @@
         <div v-if="post && post.articleContent" class="markdown-content" v-html="parsedContent" />
       </div>
 
+      <!-- 相關文章推薦 -->
+      <div v-if="relatedPosts.length > 0" class="tech-related-section">
+        <div class="tech-related-header">
+          <h2 class="tech-related-title"><span class="tech-accent">相關</span> 文章推薦</h2>
+          <div class="tech-divider" />
+        </div>
+        <div class="tech-related-grid">
+          <nuxt-link
+            v-for="related in relatedPosts"
+            :key="related.id"
+            :to="`/article/${related.id}`"
+            class="tech-related-card"
+          >
+            <h3 class="related-card-title">{{ related.title }}</h3>
+            <div class="related-card-meta">
+              <span class="related-card-date">{{ formatDate(related.createDate) }}</span>
+              <span
+                v-if="related.categoryList && related.categoryList.length"
+                class="related-card-tags"
+              >
+                {{ related.categoryList.join(', ') }}
+              </span>
+            </div>
+          </nuxt-link>
+        </div>
+      </div>
+
       <!-- 留言區域 -->
       <div class="tech-comments-section">
         <div class="tech-comments-header">
@@ -68,10 +95,15 @@ const { data } = await useAsyncData('article', async () => {
   if (!post || post.message) {
     throw useError({ statusCode: 404, message: post?.message || 'Not found' });
   }
-  return { post };
+
+  // 取得相關文章
+  const relatedPosts = await api().getRelatedArticles(post.categoryList || [], id, 5);
+
+  return { post, relatedPosts };
 });
 
 const post = data.value?.post;
+const relatedPosts = ref(data.value?.relatedPosts || []);
 
 // 計算處理後的 Markdown 內容
 const parsedContent = computed(() => {
@@ -85,6 +117,15 @@ const pageConfig = computed(() => ({
   identifier: `article-${id}`,
   title: post?.articleTitle || 'MonkeyBinBin Blog',
 }));
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('zh-TW', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+};
 
 onMounted(() => {
   inView(container.value, () => {
@@ -376,6 +417,90 @@ onMounted(() => {
   }
 }
 
+.tech-related-section {
+  background: rgb(255 255 255 / 95%);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 40px;
+  border: 1px solid rgb(29 200 205 / 10%);
+  box-shadow:
+    0 10px 30px rgb(29 200 205 / 8%),
+    0 4px 12px rgb(29 224 153 / 5%),
+    inset 0 1px 0 rgb(255 255 255 / 80%);
+
+  // 入場動畫
+  opacity: 0;
+  animation: slide-in-from-bottom 0.8s ease-out 0.3s forwards;
+}
+
+.tech-related-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.tech-related-title {
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.tech-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.tech-related-card {
+  background: linear-gradient(135deg, rgb(255 255 255 / 90%), rgb(29 200 205 / 3%));
+  border: 1px solid rgb(29 200 205 / 15%);
+  border-radius: 12px;
+  padding: 24px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: block;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 12px 30px rgb(29 200 205 / 15%),
+      0 6px 15px rgb(29 224 153 / 10%);
+    border-color: rgba($primary-color, 0.4);
+  }
+}
+
+.related-card-title {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.related-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+.related-card-date {
+  color: #a0aec0;
+}
+
+.related-card-tags {
+  color: $tertiary-color;
+  font-weight: 500;
+}
+
 .tech-comments-section {
   background: rgb(255 255 255 / 95%);
   backdrop-filter: blur(10px);
@@ -476,6 +601,18 @@ onMounted(() => {
   }
 }
 
+@keyframes slide-in-from-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 // 響應式設計
 @media (width <= 768px) {
   .tech-article-section {
@@ -488,10 +625,16 @@ onMounted(() => {
 
   .tech-article-header,
   .tech-article-content,
+  .tech-related-section,
   .tech-comments-section {
     padding: 24px;
     border-radius: 16px;
     margin-bottom: 24px;
+  }
+
+  .tech-related-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .markdown-content {
@@ -528,6 +671,7 @@ onMounted(() => {
 @media (width <= 480px) {
   .tech-article-header,
   .tech-article-content,
+  .tech-related-section,
   .tech-comments-section {
     padding: 20px;
     margin-bottom: 20px;
