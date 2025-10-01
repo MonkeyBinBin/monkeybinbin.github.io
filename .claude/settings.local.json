@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: implement client-side search with Fuse.js\n\nAdd fuzzy search functionality to improve content discoverability without backend dependencies.\n\n- Install fuse.js (v7.1.0) for client-side fuzzy search\n- Generate search-index.json during build with article metadata\n- Create Search component with floating button and slide-in panel\n- Implement real-time search with 10-result limit\n- Search across title, tags, and excerpt fields\n- Add responsive design with mobile optimization\n- Integrate search component in default layout\n- Display search results with title, date, tags, and excerpt\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

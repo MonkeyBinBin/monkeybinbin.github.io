@@ -13,16 +13,19 @@
       </button>
     </div>
     <page-footer />
+    <search v-if="hydrated" />
   </div>
 </template>
 
 <script>
 import PageHeader from '~/components/PageHeader';
 import PageFooter from '~/components/PageFooter';
+import Search from '~/components/Search';
 export default {
   components: {
     PageHeader,
     PageFooter,
+    Search,
   },
   data() {
     return {

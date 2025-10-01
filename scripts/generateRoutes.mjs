@@ -161,6 +161,30 @@ async function main() {
   fs.writeFileSync(path.join(publicDir, 'feed.json'), feed.json1());
 
   console.log('✓ RSS Feed 已產生：feed.xml, atom.xml, feed.json');
+
+  // 產生搜尋索引
+  console.log('開始產生搜尋索引...');
+  const searchIndex = articles.map((article) => {
+    const content = article.content || '';
+    const plainText = content.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+    const excerpt = plainText.substring(0, 200);
+
+    return {
+      id: article.id,
+      title: article.title,
+      slug: article.slug,
+      tags: article.categoryList || [],
+      excerpt,
+      date: article.createDate,
+    };
+  });
+
+  fs.writeFileSync(
+    path.join(publicDir, 'search-index.json'),
+    JSON.stringify(searchIndex, null, 2)
+  );
+
+  console.log(`✓ 搜尋索引已產生：search-index.json (${searchIndex.length} 篇文章)`);
 }
 
 main().catch((e) => {
