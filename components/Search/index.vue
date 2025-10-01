@@ -1,51 +1,45 @@
 <template>
-  <div class="search-wrapper">
-    <div class="search-container" :class="{ active: isSearchOpen }">
-      <button class="search-trigger" aria-label="Toggle search" @click="toggleSearch">
-        <span class="icon">🔍</span>
-      </button>
+  <div class="search-wrapper" :class="{ active: isSearchOpen }">
+    <transition name="search-fade">
+      <div v-if="isSearchOpen" class="search-panel">
+        <div class="search-header">
+          <input
+            ref="searchInput"
+            v-model="searchQuery"
+            type="text"
+            class="search-input"
+            placeholder="搜尋文章..."
+            @input="handleSearch"
+          />
+          <button class="close-btn" @click="closeSearch">✕</button>
+        </div>
 
-      <transition name="search-fade">
-        <div v-if="isSearchOpen" class="search-panel">
-          <div class="search-header">
-            <input
-              ref="searchInput"
-              v-model="searchQuery"
-              type="text"
-              class="search-input"
-              placeholder="搜尋文章..."
-              @input="handleSearch"
-            />
-            <button class="close-btn" @click="closeSearch">✕</button>
-          </div>
-
-          <div v-if="searchQuery" class="search-results">
-            <div v-if="isLoading" class="loading">搜尋中...</div>
-            <div v-else-if="searchResults.length === 0" class="no-results">找不到相關文章</div>
-            <div v-else class="results-list">
-              <nuxt-link
-                v-for="result in searchResults"
-                :key="result.item.id"
-                :to="`/article/${result.item.id}`"
-                class="result-item"
-                @click="closeSearch"
-              >
-                <div class="result-title">{{ result.item.title }}</div>
-                <div class="result-meta">
-                  <span class="result-date">{{ formatDate(result.item.date) }}</span>
-                  <span v-if="result.item.tags.length" class="result-tags">
-                    {{ result.item.tags.join(', ') }}
-                  </span>
-                </div>
-                <div class="result-excerpt">{{ result.item.excerpt }}</div>
-              </nuxt-link>
-            </div>
+        <div v-if="searchQuery" class="search-results">
+          <div v-if="isLoading" class="loading">搜尋中...</div>
+          <div v-else-if="searchResults.length === 0" class="no-results">找不到相關文章</div>
+          <div v-else class="results-list">
+            <nuxt-link
+              v-for="result in searchResults"
+              :key="result.item.id"
+              :to="`/article/${result.item.id}`"
+              class="result-item"
+              @click="closeSearch"
+            >
+              <div class="result-title">{{ result.item.title }}</div>
+              <div class="result-meta">
+                <span class="result-date">{{ formatDate(result.item.date) }}</span>
+                <span v-if="result.item.tags.length" class="result-tags">
+                  {{ result.item.tags.join(', ') }}
+                </span>
+              </div>
+              <div class="result-excerpt">{{ result.item.excerpt }}</div>
+            </nuxt-link>
           </div>
         </div>
-      </transition>
+      </div>
+    </transition>
 
-      <div v-if="isSearchOpen" class="search-backdrop" @click="closeSearch" />
-    </div>
+    <div v-if="isSearchOpen" class="search-backdrop" @click="closeSearch" />
   </div>
 </template>
 
@@ -54,15 +48,37 @@ import Fuse from 'fuse.js';
 
 export default {
   name: 'Search',
+  props: {
+    isOpen: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
-      isSearchOpen: false,
       searchQuery: '',
       searchResults: [],
       searchIndex: [],
       fuse: null,
       isLoading: false,
     };
+  },
+  computed: {
+    isSearchOpen() {
+      return this.isOpen;
+    },
+  },
+  watch: {
+    isOpen(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          this.$refs.searchInput?.focus();
+        });
+      } else {
+        this.searchQuery = '';
+        this.searchResults = [];
+      }
+    },
   },
   mounted() {
     this.loadSearchIndex();
@@ -82,21 +98,8 @@ export default {
         console.error('Failed to load search index:', error);
       }
     },
-    toggleSearch() {
-      this.isSearchOpen = !this.isSearchOpen;
-      if (this.isSearchOpen) {
-        this.$nextTick(() => {
-          this.$refs.searchInput?.focus();
-        });
-      } else {
-        this.searchQuery = '';
-        this.searchResults = [];
-      }
-    },
     closeSearch() {
-      this.isSearchOpen = false;
-      this.searchQuery = '';
-      this.searchResults = [];
+      this.$emit('close');
     },
     handleSearch() {
       if (!this.searchQuery.trim() || !this.fuse) {
@@ -132,32 +135,12 @@ $search-overlay: rgba(0, 0, 0, 0.7);
 
 .search-wrapper {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  inset: 0;
   z-index: 1000;
-}
+  pointer-events: none;
 
-.search-trigger {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba($search-primary, 0.9), rgba($search-secondary, 0.8));
-  border: 2px solid rgba($search-primary, 0.5);
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba($search-primary, 0.3);
-
-  .icon {
-    font-size: 20px;
-  }
-
-  &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba($search-primary, 0.5);
+  &.active {
+    pointer-events: auto;
   }
 }
 
@@ -319,20 +302,6 @@ $search-overlay: rgba(0, 0, 0, 0.7);
 @media (width <= 768px) {
   .search-panel {
     max-width: 100%;
-  }
-
-  .search-wrapper {
-    top: 15px;
-    right: 15px;
-  }
-
-  .search-trigger {
-    width: 45px;
-    height: 45px;
-
-    .icon {
-      font-size: 18px;
-    }
   }
 }
 </style>

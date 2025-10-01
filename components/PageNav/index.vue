@@ -23,14 +23,47 @@
         </li>
         <li>
           <a href="/feed.xml" class="nav-item" target="_blank" rel="noopener noreferrer">
-            <span class="icon">⚡</span>
+            <svg
+              class="icon-svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"
+                fill="currentColor"
+              />
+            </svg>
             <span class="text">RSS</span>
           </a>
+        </li>
+        <li>
+          <button class="nav-item search-trigger" @click="$emit('toggle-search')">
+            <svg
+              class="icon-svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                fill="currentColor"
+              />
+            </svg>
+            <span class="text">SEARCH</span>
+          </button>
         </li>
       </ul>
     </div>
   </nav>
 </template>
+
+<script>
+export default {
+  name: 'PageNav',
+  emits: ['toggle-search'],
+};
+</script>
 
 <style lang="scss" scoped>
 // 科技感顏色
@@ -132,9 +165,24 @@ $darker: #070b1f;
   width: 100%; // 讓導航項目填滿父容器的寬度
   height: 80px; // 設定固定高度以確保一致性
   box-sizing: border-box; // 確保 padding 包含在寬度內
+  cursor: pointer;
+
+  &.search-trigger {
+    // 按鈕樣式重置
+    appearance: none;
+    font-family: inherit;
+  }
 
   .icon {
     font-size: 24px;
+    margin-bottom: 8px;
+    color: $primary;
+    transition: all 0.3s ease;
+  }
+
+  .icon-svg {
+    width: 24px;
+    height: 24px;
     margin-bottom: 8px;
     color: $primary;
     transition: all 0.3s ease;
@@ -161,7 +209,8 @@ $darker: #070b1f;
       0 8px 25px rgba($primary, 0.3),
       inset 0 1px 0 rgb(255 255 255 / 20%);
 
-    .icon {
+    .icon,
+    .icon-svg {
       color: $accent;
       transform: scale(1.1);
     }
@@ -179,7 +228,8 @@ $darker: #070b1f;
       0 4px 20px rgba($accent, 0.3),
       inset 0 1px 0 rgb(255 255 255 / 15%);
 
-    .icon {
+    .icon,
+    .icon-svg {
       color: $accent;
     }
 
@@ -249,7 +299,8 @@ $darker: #070b1f;
     justify-content: flex-start;
     width: 100%;
 
-    .icon {
+    .icon,
+    .icon-svg {
       margin-bottom: 0;
       margin-right: 15px;
     }
@@ -262,6 +313,12 @@ $darker: #070b1f;
 
     .icon {
       font-size: 20px;
+      margin-right: 12px;
+    }
+
+    .icon-svg {
+      width: 20px;
+      height: 20px;
       margin-right: 12px;
     }
 

@@ -1,6 +1,6 @@
 <template>
   <div :key="hydrated ? 'hydrated' : 'ssr'" class="layout-inner">
-    <page-header />
+    <page-header @toggle-search="toggleSearch" />
     <div class="container">
       <NuxtPage />
       <button
@@ -13,7 +13,7 @@
       </button>
     </div>
     <page-footer />
-    <search v-if="hydrated" />
+    <search v-if="hydrated" :is-open="isSearchOpen" @close="closeSearch" />
   </div>
 </template>
 
@@ -31,6 +31,7 @@ export default {
     return {
       scrollPos: 0, // SSR/CSR 一致
       hydrated: false, // 標記是否已 client hydration
+      isSearchOpen: false, // 搜尋面板開啟狀態
     };
   },
   computed: {
@@ -68,6 +69,12 @@ export default {
     },
     handleScroll: function () {
       this.scrollPos = window.scrollY;
+    },
+    toggleSearch: function () {
+      this.isSearchOpen = !this.isSearchOpen;
+    },
+    closeSearch: function () {
+      this.isSearchOpen = false;
     },
   },
 };

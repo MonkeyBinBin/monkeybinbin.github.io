@@ -15,7 +15,7 @@
           {{ title }}
         </h1>
       </div>
-      <page-nav />
+      <page-nav @toggle-search="$emit('toggle-search')" />
     </div>
   </header>
 </template>
@@ -28,6 +28,7 @@ export default {
   components: {
     PageNav,
   },
+  emits: ['toggle-search'],
   data() {
     return {
       title: constant.title,
