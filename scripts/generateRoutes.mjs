@@ -22,11 +22,18 @@ async function getArticles() {
   return client
     .getEntries({
       content_type: config.CTF_BLOG_POST_TYPE_ID,
-      select: 'fields.id,fields.createDate,fields.title,fields.slug,fields.categoryList,fields.content',
+      select: 'fields.id,fields.createDate,fields.title,fields.slug,fields.categoryList,fields.articleContent',
       order: '-fields.createDate',
     })
-    .then((res) => map(res.items, (item) => item.fields))
-    .catch(() => Promise.resolve([]));
+    .then((res) => {
+      console.log(`成功取得 ${res.total} 篇文章`);
+      return map(res.items, (item) => item.fields);
+    })
+    .catch((err) => {
+      console.error('取得文章時發生錯誤：', err.message);
+      console.error('錯誤詳情：', err);
+      return Promise.resolve([]);
+    });
 }
 
 function generateRSSFeed(articles) {
@@ -55,7 +62,7 @@ function generateRSSFeed(articles) {
     if (!article.id || !article.title) return;
 
     const articleUrl = `${config.domain}/article/${article.id}`;
-    const content = article.content || '';
+    const content = article.articleContent || '';
     const description = content.substring(0, 200).replace(/<[^>]*>/g, '');
 
     feed.addItem({
@@ -165,7 +172,7 @@ async function main() {
   // 產生搜尋索引
   console.log('開始產生搜尋索引...');
   const searchIndex = articles.map((article) => {
-    const content = article.content || '';
+    const content = article.articleContent || '';
     const plainText = content.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
     const excerpt = plainText.substring(0, 200);
 
