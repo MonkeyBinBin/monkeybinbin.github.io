@@ -101,10 +101,17 @@ npm run deploy:ci        # CI deployment (requires GITHUB_TOKEN env var)
 
 ### Deployment Architecture
 
-1. `npm run generate` creates static files in `dist/`
-2. `gh-pages` package deploys `dist/` to `master` branch
-3. GitHub Pages serves from `master` branch
-4. Sitemap files are deleted before deployment (handled in predeploy script)
+Deployments run on GitHub Actions via `.github/workflows/deploy.yml`. The workflow uses GitHub Pages' official Actions (`upload-pages-artifact` + `deploy-pages`), so Pages source must be set to **"GitHub Actions"** in repo Settings → Pages.
+
+Trigger sources:
+
+1. `push` to `develop` — fires on merge or direct push
+2. `repository_dispatch` with `event_type: contentful-publish` — Contentful webhook calls GitHub dispatches API with a fine-grained PAT (scoped to `Actions: write`)
+3. `workflow_dispatch` — manual trigger via Actions UI
+
+Build steps: checkout → setup Node (reads `.nvmrc`) → `npm ci` → `npm run generate` (requires `CTF_CDA_ACCESS_TOKEN` from repo secret) → upload artifact → deploy.
+
+The `master` branch is legacy from the previous `gh-pages` package flow and is no longer used for serving content. `.travis.yml` has been removed; Travis CI is no longer part of the pipeline.
 
 ## Important Notes
 
