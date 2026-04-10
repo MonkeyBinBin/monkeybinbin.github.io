@@ -109,3 +109,135 @@ npm run generate
 - 不要加入未被要求的重構或 refactor
 - 不要加入防禦性錯誤處理程式碼，除非實際會發生
 - 不要為假設性的未來需求預留擴充點
+
+## Path-specific 指引
+
+針對不同目錄補充碰該類檔案時的注意事項，與白名單 / 黑名單互相補充。
+
+### `components/**/*.vue`
+
+- 沿用既有 `<template> → <script setup> → <style scoped lang="scss">` 的結構順序
+- 元件檔案組織為「PascalCase 資料夾 + `index.vue`」（參考 `components/Search/index.vue`）
+- 不要在 `<style>` 中使用未經 stylelint 驗證的新語法
+- 新增 component 時，如果 issue 有指定放置位置就照指定；否則放在 `components/<功能名>/index.vue`
+
+### `pages/**/*.vue`
+
+- 每個 page 都必須呼叫 `useHead()` 設定 `title`、`description`、`og:*` meta
+- 引用 `~/constant` 取得 `domain`、`baseUrl`，**不要**寫死 URL 或 domain 字串
+- 頁面層級的資料擷取必須經由 `services/api.js`，**不得**直接在 page 內建 Contentful client
+
+### `services/api.js`
+
+- **只准新增 method**，不得修改既有 method 的查詢參數、欄位選擇或 error handling
+- 新 method 必須沿用現有三段 pattern：
+  1. 建立 `queryOptions` 物件，`content_type` 使用 `process.env.CTF_BLOG_POST_TYPE_ID`
+  2. 呼叫 `client.getEntries(queryOptions)`
+  3. `.then()` 轉換結果為統一 shape、`.catch()` 回傳 fallback 空值而非 throw
+- 不得引入新 Contentful SDK、wrapper 或改用其他 API client library
+
+### `helpers/**/*.js`
+
+- 此目錄僅收純函式：無 side effects、無 Nuxt runtime 依賴、無 `useNuxtApp()` 呼叫
+- 新增 helper 前先檢查是否已有類似邏輯可重用
+- 每個 helper 應能被 vitest 直接 unit test，不需 mock Nuxt
+
+### `scripts/**/*.mjs`、`server/**/*.ts`、`nuxt.config.ts`
+
+- **黑名單**。不要動。如果 issue 描述的任務必須動這類檔案，Copilot 應在 PR 中明確
+  說明「此任務超出自動修復範圍、需要人工處理」而非擅自修改
+
+### `.github/**`
+
+- **黑名單**。不要動 workflow、issue / PR template、CODEOWNERS、copilot-instructions
+  等設定檔
+- 若真有需求修改，須在 PR description 明確說明並保持 Draft 狀態等待人工確認
+
+## Good / Bad 範例
+
+具體範例比抽象規則更有效。以下是常見任務類型的正反例，請對齊「Good」的模式。
+
+### SCSS color notation
+
+```scss
+// ✅ Good：現代 color notation，符合 stylelint-config-standard-scss
+background: rgb(0 0 0 / 50%);
+color: rgb(255 255 255 / 70%);
+
+// ❌ Bad：legacy rgba 語法，會被 stylelint 擋下
+background: rgba(0, 0, 0, 0.5);
+color: rgba(255, 255, 255, 0.7);
+```
+
+注意：使用 SCSS 變數時，`rgba($var, 0.3)` 形式是 **SCSS 函式**不是 CSS 原生 rgba，
+stylelint 不會擋，可以繼續使用。
+
+### Commit message 結構
+
+```text
+# ✅ Good
+docs(readme): 更新部署章節反映 GitHub Actions 流程
+
+移除已不存在的 npm run deploy 範例，加入 workflow 觸發條件說明。
+
+# ❌ Bad（違反 trailer 禁令）
+docs: update readme
+
+Agent-Logs-Url: https://github.com/.../sessions/xxx
+Co-authored-by: MonkeyBinBin <...@users.noreply.github.com>
+```
+
+### 抽 function 的時機
+
+```text
+✅ 抽：同一段純邏輯在 2+ 個地方出現、沒有內部狀態、測試容易
+❌ 不抽：只用一次的 helper、為了「以後可能會再用」預先抽
+```
+
+### 新增 `services/api.js` method 的 pattern
+
+```js
+// ✅ Good：沿用既有 queryOptions + .catch() fallback pattern
+getArticlesByAuthor: (authorId, limit, skip = 0) => {
+  const queryOptions = {
+    content_type: process.env.CTF_BLOG_POST_TYPE_ID,
+    'fields.author': authorId,
+    order: '-fields.createDate',
+  };
+  if (limit && !isNaN(limit)) queryOptions.limit = limit;
+  if (skip && !isNaN(skip)) queryOptions.skip = skip;
+
+  return client
+    .getEntries(queryOptions)
+    .then((res) => ({
+      items: map(res.items, (item) => item.fields),
+      total: res.total,
+      skip: res.skip,
+      limit: res.limit,
+    }))
+    .catch(() => Promise.resolve({ items: [], total: 0, skip: 0, limit: 0 }));
+},
+
+// ❌ Bad：自建 client、async/await 風格不一致、錯誤時 throw
+async getArticlesByAuthor(authorId) {
+  const client = createClient({ space: '...', accessToken: '...' }); // 不得自建
+  const res = await client.getEntries({ content_type: 'post' });
+  return res.items; // 錯誤時應 fallback 而非 throw
+}
+```
+
+### 多檔案變更的邏輯內聚
+
+```text
+✅ Good（3 個檔案都圍繞同一個改動，邏輯高度相關）：
+- components/Search/index.vue（UI 調整）
+- components/Search/index.scss（對應樣式）
+- tests/search.test.mjs（對應測試）
+
+❌ Bad（混雜 bug fix 與 refactor，跨越多個無關模組）：
+- pages/index.vue（修一個 typo）
+- services/api.js（抽一個新 helper）
+- plugins/filters.js（改 date format）
+
+→ 這三個變更屬於三個獨立的邏輯改動，應該拆成三個 issue / PR 分別處理
+```
