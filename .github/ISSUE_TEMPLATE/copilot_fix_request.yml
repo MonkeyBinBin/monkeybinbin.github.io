@@ -48,7 +48,7 @@ body:
     attributes:
       label: 提交前確認
       options:
-        - label: 任務範圍在 `copilot-instructions.md` 的白名單內
+        - label: 任務範圍在 `.github/copilot-instructions.md` 的白名單內
           required: true
         - label: 不需要升級或新增 dependency
           required: true
