@@ -131,7 +131,7 @@ export default {
 $search-primary: $primary-color;
 $search-secondary: $tertiary-color;
 $search-dark: #0f172a;
-$search-overlay: rgba(0, 0, 0, 0.7);
+$search-overlay: rgb(0 0 0 / 70%);
 
 .search-wrapper {
   position: fixed;
@@ -162,7 +162,7 @@ $search-overlay: rgba(0, 0, 0, 0.7);
   background: linear-gradient(135deg, rgba($search-dark, 0.98), rgba($search-dark, 0.95));
   backdrop-filter: blur(10px);
   border-left: 1px solid rgba($search-primary, 0.3);
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+  box-shadow: -4px 0 20px rgb(0 0 0 / 50%);
   z-index: 999;
   display: flex;
   flex-direction: column;
@@ -179,7 +179,7 @@ $search-overlay: rgba(0, 0, 0, 0.7);
 .search-input {
   flex: 1;
   padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgb(255 255 255 / 10%);
   border: 1px solid rgba($search-primary, 0.3);
   border-radius: 8px;
   color: white;
@@ -187,13 +187,13 @@ $search-overlay: rgba(0, 0, 0, 0.7);
   transition: all 0.3s ease;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgb(255 255 255 / 50%);
   }
 
   &:focus {
     outline: none;
     border-color: rgba($search-primary, 0.6);
-    background: rgba(255, 255, 255, 0.15);
+    background: rgb(255 255 255 / 15%);
     box-shadow: 0 0 0 3px rgba($search-primary, 0.1);
   }
 }
@@ -202,8 +202,8 @@ $search-overlay: rgba(0, 0, 0, 0.7);
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgb(255 255 255 / 10%);
+  border: 1px solid rgb(255 255 255 / 20%);
   color: white;
   cursor: pointer;
   display: flex;
@@ -213,7 +213,7 @@ $search-overlay: rgba(0, 0, 0, 0.7);
   font-size: 20px;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgb(255 255 255 / 20%);
     transform: rotate(90deg);
   }
 }
@@ -228,7 +228,7 @@ $search-overlay: rgba(0, 0, 0, 0.7);
 .no-results {
   text-align: center;
   padding: 40px 20px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgb(255 255 255 / 60%);
   font-size: 14px;
 }
 
@@ -240,7 +240,7 @@ $search-overlay: rgba(0, 0, 0, 0.7);
 
 .result-item {
   padding: 16px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(255 255 255 / 5%);
   border: 1px solid rgba($search-primary, 0.2);
   border-radius: 8px;
   text-decoration: none;
@@ -266,7 +266,7 @@ $search-overlay: rgba(0, 0, 0, 0.7);
   gap: 12px;
   margin-bottom: 8px;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(255 255 255 / 50%);
 }
 
 .result-tags {
@@ -274,7 +274,7 @@ $search-overlay: rgba(0, 0, 0, 0.7);
 }
 
 .result-excerpt {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgb(255 255 255 / 70%);
   font-size: 14px;
   line-height: 1.5;
   overflow: hidden;
