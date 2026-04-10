@@ -11,12 +11,14 @@ body:
 
         - ESLint / Stylelint / Prettier 違規修正
         - 文案、typo、metadata 修正
-        - 單一 component 內的小型 bug fix
-        - 單檔 SCSS 樣式微調
+        - Vue component 內的 bug fix、SCSS 樣式調整
         - 補或改善註解、補純函式測試
+        - 多檔案變更（2–5 個邏輯相關檔案）、小型重構（rename、抽 function）
+        - 新增 Vue component / page、在 `services/api.js` 新增查詢 method
 
         **黑名單**（不要用此模板提交）：build 腳本、`nuxt.config.ts`、
-        workflows、`services/api.js` 查詢邏輯、dependency 升級、跨多檔案重構。
+        workflows、修改 `services/api.js` 既有 method 的查詢邏輯、dependency 升級、
+        跨越 5 個以上檔案的大規模重構。
 
   - type: input
     id: file
@@ -52,5 +54,5 @@ body:
           required: true
         - label: 不需要升級或新增 dependency
           required: true
-        - label: 不涉及跨檔案的重構
+        - label: 變更範圍不超過 5 個檔案
           required: true

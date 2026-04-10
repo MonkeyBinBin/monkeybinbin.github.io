@@ -32,14 +32,31 @@ npm run generate
 
 `npm run generate` 需要環境變數 `CTF_CDA_ACCESS_TOKEN`，已由 Copilot 的 `copilot` environment 自動注入，不需手動設定或硬編碼。若變數遺失，`scripts/generateRoutes.mjs` 會 fail fast 並印出明確錯誤。
 
-## 可以動的範圍（低風險白名單）
+## 可以動的範圍（白名單）
+
+### 基礎任務
 
 - ESLint / Stylelint / Prettier 違規修正
 - 文案、typo、metadata 修正（`pages/`、`README.md` 等使用者可見文字）
-- 單一 Vue component 內的小型 bug fix
-- 單檔 SCSS 樣式微調（維持現有 design token、不引入新色票）
+- Vue component 內的 bug fix
+- SCSS 樣式調整（維持現有 design token、不引入新色票）
 - 補測試檔：針對既有純函式（`helpers/`、`constant/`、`config/`）
 - 補或改善中文註解
+
+### 進階任務
+
+- **多檔案變更**：允許同時修改 2–5 個邏輯相關的檔案（例：一個 component 搭配其 scoped style 與對應測試）
+- **小型重構**：rename、抽 function、抽 component、移動純函式到 `helpers/`
+- **新增 Vue component 或 page**：當 issue 明確描述 layout / 功能需求時，可從零建立新的 `.vue` 檔
+- **`services/api.js` 新增查詢方法**：可新增 method 以滿足新需求，但**不得修改**任何既有 method 的查詢邏輯或欄位假設
+
+## 多檔案變更的硬限制
+
+放寬「多檔案」不代表放任跨模組亂改，必須遵守：
+
+- 單次 PR 的變更檔數**不超過 5 個**
+- 每個 PR 只處理**一個邏輯變更**，不要把 bug fix 跟 refactor 綁在同一個 PR
+- 跨越 5 個以上檔案的重構 → 拒絕任務，或在 PR 描述中說明需要拆分後再處理
 
 ## 不要動的範圍（黑名單）
 
@@ -49,10 +66,10 @@ npm run generate
 - `nuxt.config.ts`
 - `config/index.mjs` 的結構調整
 - `.github/workflows/*.yml`（含本檔所在的 workflow 設定）
-- `services/api.js` 內的 Contentful 查詢邏輯或欄位假設
+- `services/api.js` 內**既有** method 的 Contentful 查詢邏輯或欄位假設（允許新增 method，見白名單）
 - 升級 / 新增 / 移除 dependency（dependency 調整交由 Dependabot 處理）
 - Contentful schema 假設的任何變動
-- 跨多檔案的重構
+- 跨越 5 個以上檔案的大規模重構
 - 任何會影響 `dist/` 輸出結構或 GitHub Pages 部署設定的改動
 - `tests/smoke.test.mjs`（這是安全退檔測試，除非是為了新增測試、否則不得修改）
 
