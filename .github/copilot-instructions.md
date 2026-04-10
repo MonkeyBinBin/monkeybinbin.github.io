@@ -40,6 +40,26 @@ commit 結尾**不得**出現任何以 `<Key>:` 或 `<Key>-<Key>:` 格式的 met
 或等效手段避免自動插入，必要時先產出 commit 再用 `git commit --amend` 清除 body
 中的 trailer 行。
 
+## 範圍判斷責任
+
+**接下任務前，agent 必須自行依本文件判斷**：
+
+- 任務是否落在「可以動的範圍（白名單）」內
+- 預計變更的檔案數是否在 5 個以內
+- 是否會碰到任何黑名單檔案（含 `nuxt.config.ts`、`scripts/`、`server/`、
+  `.github/`、既有 `services/api.js` method 等）
+- 是否需要升級或新增 dependency（交由 Dependabot 處理）
+
+若任務**超出允許範圍**，agent 應：
+
+1. 在 PR description 明確說明「此任務超出自動修復範圍」並指出具體原因
+2. **保持 Draft 狀態**等待人工決定
+3. **不要**擅自縮小範圍強行執行（例如：放棄修改 N 個檔案只改 1 個）
+4. **不要**強行繞過黑名單（例如：為了完成 refactor 而修改 build script）
+
+issue 作者在提交時**不需要**也**不會**事先勾選任何範圍確認；責任完全由 agent 承擔。
+這項責任歸屬是為了避免把專業判斷外包給人類 issue 作者，也讓 issue 創建流程保持低摩擦。
+
 ## 必要驗證
 
 提交 PR 前必須確認以下指令全數通過：
