@@ -111,7 +111,7 @@ npm run generate
 - Contentful schema 假設的任何變動
 - 跨越 5 個以上檔案的大規模重構
 - 任何會影響 `dist/` 輸出結構或 GitHub Pages 部署設定的改動
-- `tests/smoke.test.mjs`（這是安全退檔測試，除非是為了新增測試、否則不得修改）
+- `tests/smoke.test.mjs` 內的 `CTF_CDA_ACCESS_TOKEN` regression 斷言：**不得刪除、停用或弱化此 test case**（這是防止硬編碼 token 被意外寫回 `config/index.mjs` 的安全退檔）；此檔案內**其他 test case** 可配合 rename / refactor 同步更新 method 引用，不受此條限制
 
 ## Contentful 注意事項
 
