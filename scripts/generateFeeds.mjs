@@ -5,11 +5,27 @@ import fs from 'fs';
 import { Feed } from 'feed';
 import { createClient } from 'contentful';
 import map from 'lodash/map.js';
+import { fileURLToPath } from 'url';
 import config from '../config/index.mjs';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 本機開發時從 .env 讀取環境變數；CI 環境由 GitHub Secrets 直接注入，沒有 .env 檔案屬正常
+try {
+  process.loadEnvFile(path.resolve(__dirname, '../.env'));
+} catch {
+  // 檔案不存在或無法讀取時忽略，改由 process.env 既有值決定
+}
+
+if (!process.env.CTF_CDA_ACCESS_TOKEN) {
+  console.error('缺少環境變數 CTF_CDA_ACCESS_TOKEN，無法向 Contentful 取得資料');
+  process.exit(1);
+}
 
 const client = createClient({
   space: config.CTF_SPACE_ID,
-  accessToken: config.CTF_CDA_ACCESS_TOKEN,
+  accessToken: process.env.CTF_CDA_ACCESS_TOKEN,
 });
 
 async function getArticles() {
