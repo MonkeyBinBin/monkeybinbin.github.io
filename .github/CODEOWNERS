@@ -1,0 +1,5 @@
+# CODEOWNERS
+# 每個 PR 會自動 request 本人 review，無論變更範圍為何
+# 語法參考：https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+* @MonkeyBinBin
