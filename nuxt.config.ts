@@ -72,12 +72,12 @@ export default defineNuxtConfig({
       description: config.description,
       domain: config.domain,
       CTF_SPACE_ID: config.CTF_SPACE_ID,
-      CTF_CDA_ACCESS_TOKEN: config.CTF_CDA_ACCESS_TOKEN,
+      CTF_CDA_ACCESS_TOKEN: process.env.CTF_CDA_ACCESS_TOKEN,
       CTF_BLOG_POST_TYPE_ID: config.CTF_BLOG_POST_TYPE_ID,
       fbId: config.fbId,
-      // 若未設定環境變數則 fallback 至 config 內的值
+      // CDA token 僅透過環境變數注入，避免敏感資訊寫入 repo
       ctfSpaceId: process.env.CTF_SPACE_ID || config.CTF_SPACE_ID,
-      ctfCdaAccessToken: process.env.CTF_CDA_ACCESS_TOKEN || config.CTF_CDA_ACCESS_TOKEN,
+      ctfCdaAccessToken: process.env.CTF_CDA_ACCESS_TOKEN,
     },
   },
   vite: {
@@ -97,7 +97,7 @@ export default defineNuxtConfig({
         description: config.description,
         domain: config.domain,
         CTF_SPACE_ID: process.env.CTF_SPACE_ID || config.CTF_SPACE_ID,
-        CTF_CDA_ACCESS_TOKEN: process.env.CTF_CDA_ACCESS_TOKEN || config.CTF_CDA_ACCESS_TOKEN,
+        CTF_CDA_ACCESS_TOKEN: process.env.CTF_CDA_ACCESS_TOKEN,
         CTF_BLOG_POST_TYPE_ID: process.env.CTF_BLOG_POST_TYPE_ID || config.CTF_BLOG_POST_TYPE_ID,
       },
     },

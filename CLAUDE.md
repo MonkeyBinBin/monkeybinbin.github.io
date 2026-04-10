@@ -85,12 +85,15 @@ npm run deploy:ci        # CI deployment (requires GITHUB_TOKEN env var)
 
 - `config/index.mjs` - Centralized configuration
   - Site metadata (title, description, domain)
-  - Contentful credentials (CTF_SPACE_ID, CTF_CDA_ACCESS_TOKEN, CTF_BLOG_POST_TYPE_ID)
+  - Contentful public identifiers (`CTF_SPACE_ID`, `CTF_BLOG_POST_TYPE_ID`)
   - Pagination limit (`articleListMaxLimit: 20`)
+  - Sensitive values are NOT stored here — see Environment Variables below
 
 ### Configuration Points
 
-- **Environment Variables**: Can override Contentful config via `CTF_SPACE_ID`, `CTF_CDA_ACCESS_TOKEN`, `CTF_BLOG_POST_TYPE_ID` env vars
+- **Environment Variables**:
+  - `CTF_CDA_ACCESS_TOKEN` (**required**): Contentful Content Delivery API token. Must be provided via env var or `.env`; build scripts will fail fast if missing.
+  - `CTF_SPACE_ID`, `CTF_BLOG_POST_TYPE_ID` (optional): Override the defaults in `config/index.mjs`.
 - **Runtime Config**: Exposed to client via `useRuntimeConfig().public`
 - **SCSS**: Global SCSS variables/mixins/functions auto-imported in all components via Vite config
 - **Code Highlighting**: highlight.js with VS theme

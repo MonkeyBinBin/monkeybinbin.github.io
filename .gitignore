@@ -1,6 +1,11 @@
 # dependencies
 node_modules
 
+# environment variables (never commit secrets)
+.env
+.env.*
+!.env.example
+
 # logs
 npm-debug.log
 
