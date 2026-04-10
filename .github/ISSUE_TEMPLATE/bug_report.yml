@@ -1,0 +1,67 @@
+name: Bug Report
+description: 回報站台或專案程式碼的 bug
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感謝你花時間回報問題。請填完下列欄位，有助於快速定位與修復。
+        若問題範圍夠小且無需設計判斷，可同時考慮走 Copilot 自動修復流程。
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 問題描述
+      description: 發生什麼事？用一段話概述。
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 重現步驟
+      description: 請依序列出能重現問題的操作。
+      placeholder: |
+        1. 打開 /article/xxx
+        2. 點擊右上角搜尋
+        3. 輸入 "yyy"
+        4. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 預期結果
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 實際結果
+      description: 可附上錯誤訊息、console log 或截圖連結。
+    validations:
+      required: true
+
+  - type: input
+    id: files
+    attributes:
+      label: 相關檔案或路徑
+      description: 若知道問題大概在哪，列出檔案路徑或 URL。
+      placeholder: 例：components/Search/index.vue 或 /archives
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 修復範圍判斷
+      description: 你認為這個 bug 屬於哪一類？（會影響是否適合交給 Copilot 自動修復）
+      options:
+        - 小範圍（單檔案、文案、lint、typo、樣式微調）
+        - 中範圍（跨檔案但邏輯明確）
+        - 大範圍（跨模組、需架構判斷）
+        - 不確定
+      default: 3
+    validations:
+      required: true

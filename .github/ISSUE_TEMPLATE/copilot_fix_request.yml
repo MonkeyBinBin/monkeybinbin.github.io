@@ -1,0 +1,56 @@
+name: Copilot 自動修復請求
+description: 提交一個適合 GitHub Copilot cloud agent 自動修復的低風險 issue
+title: "[Copilot] "
+labels: ["copilot-fix"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        此模板用於提交**可直接 assign 給 Copilot** 嘗試自動修復的 issue。
+        請先確認任務範圍符合 `.github/copilot-instructions.md` 的白名單，例如：
+
+        - ESLint / Stylelint / Prettier 違規修正
+        - 文案、typo、metadata 修正
+        - 單一 component 內的小型 bug fix
+        - 單檔 SCSS 樣式微調
+        - 補或改善註解、補純函式測試
+
+        **黑名單**（不要用此模板提交）：build 腳本、`nuxt.config.ts`、
+        workflows、`services/api.js` 查詢邏輯、dependency 升級、跨多檔案重構。
+
+  - type: input
+    id: file
+    attributes:
+      label: 目標檔案
+      description: 明確指出要修改的單一檔案路徑。
+      placeholder: 例：pages/about/index.vue
+    validations:
+      required: true
+
+  - type: textarea
+    id: task
+    attributes:
+      label: 要做什麼
+      description: 一句話描述任務，越具體越好。
+      placeholder: |
+        例：pages/about/index.vue 第 42 行的 "abou" 改成 "about"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 額外 context（可選）
+      description: 如有特殊需求、限制或參考連結可補充。
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: 提交前確認
+      options:
+        - label: 任務範圍在 `.github/copilot-instructions.md` 的白名單內
+          required: true
+        - label: 不需要升級或新增 dependency
+          required: true
+        - label: 不涉及跨檔案的重構
+          required: true
