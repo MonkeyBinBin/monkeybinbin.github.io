@@ -81,7 +81,7 @@ renderer.link = (token) => {
 
 marked.setOptions({
   renderer,
-  baseUrl: pathHelper.getBaseUrl(),
+  baseUrl: pathHelper.resolveBaseUrl(),
   highlight: function (code, language) {
     const validLang = !!(language && highlightjs.getLanguage(language));
     const highlighted = validLang ? highlightjs.highlight(language, code).value : code;
