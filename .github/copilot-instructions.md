@@ -40,6 +40,26 @@ commit 結尾**不得**出現任何以 `<Key>:` 或 `<Key>-<Key>:` 格式的 met
 或等效手段避免自動插入，必要時先產出 commit 再用 `git commit --amend` 清除 body
 中的 trailer 行。
 
+## 範圍判斷責任
+
+**接下任務前，agent 必須自行依本文件判斷**：
+
+- 任務是否落在「可以動的範圍（白名單）」內
+- 預計變更的檔案數是否在 5 個以內
+- 是否會碰到任何黑名單檔案（含 `nuxt.config.ts`、`scripts/`、`server/`、
+  `.github/`、既有 `services/api.js` method 等）
+- 是否需要升級或新增 dependency（交由 Dependabot 處理）
+
+若任務**超出允許範圍**，agent 應：
+
+1. 在 PR description 明確說明「此任務超出自動修復範圍」並指出具體原因
+2. **保持 Draft 狀態**等待人工決定
+3. **不要**擅自縮小範圍強行執行（例如：放棄修改 N 個檔案只改 1 個）
+4. **不要**強行繞過黑名單（例如：為了完成 refactor 而修改 build script）
+
+issue 作者在提交時**不需要**也**不會**事先勾選任何範圍確認；責任完全由 agent 承擔。
+這項責任歸屬是為了避免把專業判斷外包給人類 issue 作者，也讓 issue 創建流程保持低摩擦。
+
 ## 必要驗證
 
 提交 PR 前必須確認以下指令全數通過：
@@ -91,7 +111,7 @@ npm run generate
 - Contentful schema 假設的任何變動
 - 跨越 5 個以上檔案的大規模重構
 - 任何會影響 `dist/` 輸出結構或 GitHub Pages 部署設定的改動
-- `tests/smoke.test.mjs`（這是安全退檔測試，除非是為了新增測試、否則不得修改）
+- `tests/smoke.test.mjs` 內的 `CTF_CDA_ACCESS_TOKEN` regression 斷言：**不得刪除、停用或弱化此 test case**（這是防止硬編碼 token 被意外寫回 `config/index.mjs` 的安全退檔）；此檔案內**其他 test case** 可配合 rename / refactor 同步更新 method 引用，不受此條限制
 
 ## Contentful 注意事項
 
@@ -109,6 +129,48 @@ npm run generate
 - 不要加入未被要求的重構或 refactor
 - 不要加入防禦性錯誤處理程式碼，除非實際會發生
 - 不要為假設性的未來需求預留擴充點
+
+## 品質自檢清單（commit 前必跑）
+
+在每個 commit 定稿前，agent 必須對自己即將提交的改動跑一輪三維度自檢。
+發現問題就修掉再 commit；只有在確認是 false positive 時才跳過某一項。
+
+### 1. 重用檢查
+
+- 新寫的程式碼是否與既有的 helper / util 重複？優先掃描 `helpers/`、`constant/`、
+  `services/api.js`、`plugins/filters.js` 以及與變更檔案相鄰的目錄
+- 若存在功能相同的既有 function，一律改用既有的，不要重寫
+- inline 的字串處理、路徑處理、環境變數判斷、型別守衛若有對應的既有 utility，
+  應改用 utility
+
+### 2. 品質檢查
+
+- **冗餘 state**：重複既有 state、可以用 `computed` 從現有 state 推導的值、
+  可以直接呼叫取代的 watcher / reactive effect
+- **參數爆炸**：往既有 function 塞新參數堆疊，而不是重新設計 signature
+- **微差 copy-paste**：近乎相同的程式碼區塊，應抽成共用 abstraction（但同時
+  遵守「修改風格」的「同段邏輯出現 2+ 次才抽」原則）
+- **漏抽象**：洩漏內部細節、打破既有抽象邊界
+- **字串硬編碼**：用 raw string 當 key 或 enum 值，忽略既有 constant（例如
+  應引用 `constant/index.js` 的 `months` 而非自己寫一份）
+- **不必要的 template 嵌套**：純粹包一層 `<div>`、`<span>` 但無實際 layout、
+  樣式或語意作用
+- **不必要的註解**：說明「做什麼」、敘述本次變更、引用 issue / task 名稱的
+  註解**一律刪除**。只保留說明「為什麼」的非直觀原因（隱藏約束、微妙不變量、
+  特定 bug workaround）
+
+### 3. 效率檢查
+
+- **多餘工作**：重複運算、重複讀檔、重複對 Contentful 或其他 API 的呼叫、
+  N+1 pattern
+- **錯失的並行**：彼此獨立的 async 操作卻串行 `await`，應改用 `Promise.all`
+- **hot path 膨脹**：往 startup、每次 render 或每次 route 切換的熱路徑塞
+  阻塞式工作
+- **TOCTOU 反模式**：先 `fs.existsSync()` / 先查後用再操作——應直接操作並
+  處理錯誤
+- **記憶體**：無界資料結構、漏掉的 cleanup、event listener leak
+- **過寬操作**：讀整個檔案但只需要一段、`getEntries` 無 filter 拉全部後才
+  在 JS 端過濾（應讓 Contentful 的 query 直接篩）
 
 ## Path-specific 指引
 
