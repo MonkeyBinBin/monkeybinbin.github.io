@@ -11,8 +11,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # PR 事件可 cancel 舊 run 節省 runner；部署類事件不 cancel，避免 Pages 部署殘破
 concurrency:
@@ -62,6 +60,10 @@ jobs:
     needs: verify
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
 
     environment:
       name: github-pages
