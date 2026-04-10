@@ -14,7 +14,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   // Set the renderer to marked.
   marked.setOptions({
     renderer,
-    baseUrl: pathHelper.getBaseUrl(),
+    baseUrl: pathHelper.resolveBaseUrl(),
     highlight: function (code, language) {
       // Check whether the given language is valid for highlight.js.
       const validLang = !!(language && highlightjs.getLanguage(language));

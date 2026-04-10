@@ -43,11 +43,11 @@ describe('helpers/path.js', () => {
 
   it('未設定 baseUrl 環境變數時回傳根路徑', () => {
     delete process.env.baseUrl;
-    expect(pathHelper.getBaseUrl()).toBe('/');
+    expect(pathHelper.resolveBaseUrl()).toBe('/');
   });
 
   it('設定 baseUrl 環境變數時回傳對應值', () => {
     process.env.baseUrl = '/blog/';
-    expect(pathHelper.getBaseUrl()).toBe('/blog/');
+    expect(pathHelper.resolveBaseUrl()).toBe('/blog/');
   });
 });
