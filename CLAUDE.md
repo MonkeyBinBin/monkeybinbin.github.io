@@ -113,6 +113,11 @@ Build steps: checkout → setup Node (reads `.nvmrc`) → `npm ci` → `npm run 
 
 The `master` branch is legacy from the previous `gh-pages` package flow and is no longer used for serving content. `.travis.yml` has been removed; Travis CI is no longer part of the pipeline.
 
+## Git Workflow
+
+- **`develop` 分支受保護**：不可直接 push commit 到 `develop`，所有功能修改必須先建立新分支（例如 `feature/xxx`、`fix/xxx`），再透過 Pull Request 合併
+- 分支命名慣例：`feature/<功能名稱>`、`fix/<問題描述>`、`refactor/<重構範圍>`
+
 ## Important Notes
 
 - **SSR is disabled**: This is a purely static site for GitHub Pages
