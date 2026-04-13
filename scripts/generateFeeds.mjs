@@ -1,5 +1,5 @@
-// 此腳本負責生成 RSS/Atom feeds 和搜尋索引
-// 會在 Nuxt build 完成後由 nitro:build:public-assets hook 呼叫
+// 此腳本負責生成 RSS/Atom feeds、搜尋索引和 sitemap
+// 會在 Nuxt build 完成後由 close hook 呼叫
 import path from 'path';
 import fs from 'fs';
 import { Feed } from 'feed';
@@ -7,6 +7,7 @@ import { createClient } from 'contentful';
 import map from 'lodash/map.js';
 import { fileURLToPath } from 'url';
 import config from '../config/index.mjs';
+import { generateSitemap } from './generateSitemap.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -145,8 +146,9 @@ export async function generateSearchIndex(outputDir, articles = null) {
   console.log(`✓ 搜尋索引已產生至 dist/：search-index.json (${searchIndex.length} 篇文章)`);
 }
 
-// 主函數：同時生成 feeds 和搜尋索引
+// 主函數：同時生成 feeds、搜尋索引和 sitemap
 export async function generateAllFeeds(outputDir) {
   const articles = await generateFeeds(outputDir);
   await generateSearchIndex(outputDir, articles);
+  generateSitemap(outputDir, articles);
 }
