@@ -51,7 +51,16 @@ export function generateSitemap(outputDir, articles = []) {
   const routesPath = path.resolve(outputDir, '../scripts/generate-routes.json');
   try {
     if (fs.existsSync(routesPath)) {
-      dynamicRoutes = JSON.parse(fs.readFileSync(routesPath, 'utf-8'));
+      const parsed = JSON.parse(fs.readFileSync(routesPath, 'utf-8'));
+      dynamicRoutes = Array.isArray(parsed)
+        ? parsed.filter(
+            (route) =>
+              typeof route === 'string' &&
+              route.length > 0 &&
+              !route.includes('[object Object]') &&
+              !route.includes('undefined')
+          )
+        : [];
     }
   } catch (err) {
     console.warn('無法載入 generate-routes.json，僅產生靜態頁面的 sitemap：', err.message);
