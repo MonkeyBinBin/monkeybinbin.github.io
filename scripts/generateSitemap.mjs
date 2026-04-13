@@ -54,6 +54,8 @@ export function generateSitemap(outputDir, articles = []) {
       const parsed = JSON.parse(fs.readFileSync(routesPath, 'utf-8'));
       dynamicRoutes = Array.isArray(parsed)
         ? parsed.filter(
+            // 此過濾條件與 nuxt.config.ts Nitro prerender routes（第 123–129 行）相同，
+            // 若需調整規則請同步更新兩處以維持 sitemap 與 prerender 一致
             (route) =>
               typeof route === 'string' &&
               route.length > 0 &&
