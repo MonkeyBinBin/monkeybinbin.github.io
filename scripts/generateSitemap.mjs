@@ -54,7 +54,11 @@ export function generateSitemap(outputDir, articles = []) {
     const parsed = JSON.parse(fs.readFileSync(routesPath, 'utf-8'));
     dynamicRoutes = filterValidRoutes(parsed);
   } catch (err) {
-    if (err.code !== 'ENOENT') {
+    if (err.code === 'ENOENT') {
+      console.warn(
+        '找不到 generate-routes.json，將只產生靜態頁面的 sitemap。請先執行 scripts/generateRoutes.mjs 以生成動態路由。'
+      );
+    } else {
       console.warn('無法載入 generate-routes.json，僅產生靜態頁面的 sitemap：', err.message);
     }
   }
