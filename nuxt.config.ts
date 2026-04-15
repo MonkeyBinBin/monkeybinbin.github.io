@@ -1,5 +1,6 @@
 import { defineNuxtConfig } from 'nuxt/config';
 import config from './config/index.mjs';
+import { filterValidRoutes } from './scripts/routeFilters.mjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -114,24 +115,22 @@ export default defineNuxtConfig({
     },
     prerender: {
       routes: (() => {
+        const routesPath = path.resolve(__dirname, 'scripts/generate-routes.json');
         try {
-          const routesPath = path.resolve(__dirname, 'scripts/generate-routes.json');
-
-          if (fs.existsSync(routesPath)) {
-            const routes = JSON.parse(fs.readFileSync(routesPath, 'utf-8'));
-            // 過濾掉無效的路徑
-            return routes.filter(
-              (route) =>
-                typeof route === 'string' &&
-                route.length > 0 &&
-                !route.includes('[object Object]') &&
-                !route.includes('undefined')
-            );
-          }
+          const routes = JSON.parse(fs.readFileSync(routesPath, 'utf-8'));
+          return filterValidRoutes(routes);
         } catch (error) {
-          console.warn('無法載入 generate-routes.json:', error.message);
+          const errorWithCode = error as NodeJS.ErrnoException;
+
+          if (errorWithCode.code === 'ENOENT') {
+            console.warn(
+              `找不到 generate-routes.json: ${routesPath}。這通常代表 prebuild/generateRoutes 未成功執行，prerender routes 將退回空陣列，動態頁面可能不會被 prerender。`,
+            );
+          } else {
+            console.warn('無法載入 generate-routes.json:', errorWithCode.message);
+          }
+          return [];
         }
-        return [];
       })(),
       failOnError: false,
     },

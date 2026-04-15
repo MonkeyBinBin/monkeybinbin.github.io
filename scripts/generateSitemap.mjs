@@ -3,6 +3,7 @@
 import path from 'path';
 import fs from 'fs';
 import config from '../config/index.mjs';
+import { filterValidRoutes } from './routeFilters.mjs';
 
 const DOMAIN = config.domain;
 
@@ -50,22 +51,16 @@ export function generateSitemap(outputDir, articles = []) {
   let dynamicRoutes = [];
   const routesPath = path.resolve(outputDir, '../scripts/generate-routes.json');
   try {
-    if (fs.existsSync(routesPath)) {
-      const parsed = JSON.parse(fs.readFileSync(routesPath, 'utf-8'));
-      dynamicRoutes = Array.isArray(parsed)
-        ? parsed.filter(
-            // 此過濾條件與 nuxt.config.ts Nitro prerender routes（第 123–129 行）相同，
-            // 若需調整規則請同步更新兩處以維持 sitemap 與 prerender 一致
-            (route) =>
-              typeof route === 'string' &&
-              route.length > 0 &&
-              !route.includes('[object Object]') &&
-              !route.includes('undefined')
-          )
-        : [];
-    }
+    const parsed = JSON.parse(fs.readFileSync(routesPath, 'utf-8'));
+    dynamicRoutes = filterValidRoutes(parsed);
   } catch (err) {
-    console.warn('無法載入 generate-routes.json，僅產生靜態頁面的 sitemap：', err.message);
+    if (err.code === 'ENOENT') {
+      console.warn(
+        '找不到 generate-routes.json，將只產生靜態頁面的 sitemap。請先執行 scripts/generateRoutes.mjs 以生成動態路由。'
+      );
+    } else {
+      console.warn('無法載入 generate-routes.json，僅產生靜態頁面的 sitemap：', err.message);
+    }
   }
 
   // 合併所有路由並去重
