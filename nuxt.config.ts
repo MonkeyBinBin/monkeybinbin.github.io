@@ -120,8 +120,14 @@ export default defineNuxtConfig({
           const routes = JSON.parse(fs.readFileSync(routesPath, 'utf-8'));
           return filterValidRoutes(routes);
         } catch (error) {
-          if (error.code !== 'ENOENT') {
-            console.warn('無法載入 generate-routes.json:', error.message);
+          const errorWithCode = error as NodeJS.ErrnoException;
+
+          if (errorWithCode.code === 'ENOENT') {
+            console.warn(
+              `找不到 generate-routes.json: ${routesPath}。這通常代表 prebuild/generateRoutes 未成功執行，prerender routes 將退回空陣列，動態頁面可能不會被 prerender。`,
+            );
+          } else {
+            console.warn('無法載入 generate-routes.json:', errorWithCode.message);
           }
           return [];
         }
