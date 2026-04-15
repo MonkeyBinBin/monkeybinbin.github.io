@@ -10,6 +10,10 @@
 - Contentful CMS 作為內容唯一來源
 - 透過 `.github/workflows/deploy.yml` 部署至 GitHub Pages（Pages source 為 GitHub Actions）
 
+## 自動化開發流程
+
+本專案允許 Copilot / Claude Code agent 從 GitHub Issue 觸發自動開發。agent 可自由修改任何檔案，包含 `nuxt.config.ts`、`scripts/`、`.github/workflows/` 等工程設定，但必須遵守下列安全底線與流程要求。
+
 ## 分支與提交規範
 
 - 所有變更必須基於 `develop` 分支，透過 Pull Request 合併
@@ -17,8 +21,6 @@
 - Commit message 使用 Conventional Commits 格式，例：`type(scope): 簡短描述`
 - 回應與註解一律使用正體中文，技術專有名詞可保留英文
 - 註解說明「為什麼」而非「做了什麼」
-- **禁止**在程式碼或 commit message 中寫死敏感資訊（API key、token、連線字串）
-- **禁止**在 commit message 或 PR description 中加入任何 AI 署名或生成標記
 
 ## Commit message 禁止項目（嚴格）
 
@@ -40,25 +42,28 @@ commit 結尾**不得**出現任何以 `<Key>:` 或 `<Key>-<Key>:` 格式的 met
 或等效手段避免自動插入，必要時先產出 commit 再用 `git commit --amend` 清除 body
 中的 trailer 行。
 
-## 範圍判斷責任
+## 安全底線（不得違反）
 
-**接下任務前，agent 必須自行依本文件判斷**：
+以下為無法自動放寬的硬底線，違反時 PR 不得 merge：
 
-- 任務是否落在「可以動的範圍（白名單）」內
-- 預計變更的檔案數是否在 5 個以內
-- 是否會碰到任何黑名單檔案（含 `nuxt.config.ts`、`scripts/`、`server/`、
-  `.github/`、既有 `services/api.js` method 等）
-- 是否需要升級或新增 dependency（交由 Dependabot 處理）
+1. **敏感資訊禁止寫死**：`CTF_CDA_ACCESS_TOKEN` 等敏感資訊一律透過環境變數注入，不得出現在程式碼、設定檔或 commit 中
+2. **regression 測試不得弱化**：`tests/smoke.test.mjs` 內的 `CTF_CDA_ACCESS_TOKEN` regression 斷言**不得刪除、停用或弱化**，這是防止硬編碼 token 被意外寫回 `config/index.mjs` 的最後防線
+3. **Contentful schema 假設**：`content_type: post` 與既有欄位（`id, createDate, title, slug, categoryList, articleContent`）的 schema 假設若需變動，必須同步確認 Contentful 後台設定並在 PR 說明
+4. **dependency 調整**：新增 / 升級 / 移除 npm dependency 建議優先交由 Dependabot 處理；agent 自行調整時需在 PR 列出理由與相容性檢查結果
 
-若任務**超出允許範圍**，agent 應：
+## 高風險檔案（PR 需附影響說明）
 
-1. 在 PR description 明確說明「此任務超出自動修復範圍」並指出具體原因
-2. **保持 Draft 狀態**等待人工決定
-3. **不要**擅自縮小範圍強行執行（例如：放棄修改 N 個檔案只改 1 個）
-4. **不要**強行繞過黑名單（例如：為了完成 refactor 而修改 build script）
+修改以下檔案不禁止，但 PR description 必須額外列出「影響範圍」與「本地驗證結果」，並**保持 Draft 狀態**等待人工 review：
 
-issue 作者在提交時**不需要**也**不會**事先勾選任何範圍確認；責任完全由 agent 承擔。
-這項責任歸屬是為了避免把專業判斷外包給人類 issue 作者，也讓 issue 創建流程保持低摩擦。
+- `.github/workflows/*.yml`（部署 / CI pipeline）
+- `nuxt.config.ts`（build 與 prerender 設定）
+- `scripts/generateRoutes.mjs`、`scripts/generateFeeds.mjs`、`scripts/generateSitemap.mjs`（build 關鍵路徑）
+- `server/utils/feeds.ts`
+- `config/index.mjs` 的結構調整
+- `services/api.js` 既有 method 的 Contentful 查詢邏輯（**新增** method 不受此限）
+- 任何會影響 `dist/` 輸出結構或 GitHub Pages 部署設定的改動
+
+「影響範圍」至少需回答：此變更是否影響 build 產物、是否改變對外路由、是否改變 Contentful 查詢結果。
 
 ## 必要驗證
 
@@ -72,56 +77,30 @@ npm run generate
 
 `npm run generate` 需要環境變數 `CTF_CDA_ACCESS_TOKEN`，已由 Copilot 的 `copilot` environment 自動注入，不需手動設定或硬編碼。若變數遺失，`scripts/generateRoutes.mjs` 會 fail fast 並印出明確錯誤。
 
-## 可以動的範圍（白名單）
+## 變更規模原則
 
-### 基礎任務
+- 單一 PR 以處理**一個邏輯變更**為原則，不要把 bug fix 跟 refactor 綁在一起
+- 跨越多個模組的大規模重構，建議在 PR description 拆解為多階段說明，或直接拆成多個 PR
+- 沒有絕對的檔案數量上限，但變更檔案越多，review 成本越高，應主動評估是否可拆
 
-- ESLint / Stylelint / Prettier 違規修正
-- 文案、typo、metadata 修正（`pages/`、`README.md` 等使用者可見文字）
-- Vue component 內的 bug fix
-- SCSS 樣式調整（維持現有 design token、不引入新色票）
-- 補測試檔：針對既有純函式（`helpers/`、`constant/`、`config/`）
-- 補或改善中文註解
+## UI 變更流程
 
-### 進階任務
+處理 `components/`、`pages/`、`assets/sass/` 等視覺相關變更時，agent 必須遵守：
 
-- **多檔案變更**：允許同時修改 2–5 個邏輯相關的檔案（例：一個 component 搭配其 scoped style 與對應測試）
-- **小型重構**：rename、抽 function、抽 component、移動純函式到 `helpers/`
-- **新增 Vue component 或 page**：當 issue 明確描述 layout / 功能需求時，可從零建立新的 `.vue` 檔
-- **`services/api.js` 新增查詢方法**：可新增 method 以滿足新需求，但**不得修改**任何既有 method 的查詢邏輯或欄位假設
+1. **讀設計文件**：開始前先讀 `docs/design/design-tokens.md` 與 `docs/design/component-inventory.md`，確認改動範圍與既有 token
+2. **禁止自創 token**：不得引入未列於 design tokens 的新色碼、字體、間距、斷點；若 issue 的設計參考明確要求新增，需在 PR 說明並同步更新 `docs/design/design-tokens.md`
+3. **視覺驗收截圖**：改動完成後本機啟動 `npm run dev`，透過 Chrome DevTools MCP 或 Playwright MCP：
+   - 針對受影響頁面於 desktop（1440×900）與 mobile（375×667）兩種視窗尺寸截圖
+   - 將截圖附在 PR description，命名為「變更後 - desktop / mobile」
+4. **設計參考對照**：若 issue 附有 Figma 連結或參考圖，PR description 需列出「設計參考 vs 實作截圖」對照表，逐項說明差異或一致
 
-## 多檔案變更的硬限制
-
-放寬「多檔案」不代表放任跨模組亂改，必須遵守：
-
-- 單次 PR 的變更檔數**不超過 5 個**
-- 每個 PR 只處理**一個邏輯變更**，不要把 bug fix 跟 refactor 綁在同一個 PR
-- 跨越 5 個以上檔案的重構 → 拒絕任務，或在 PR 描述中說明需要拆分後再處理
-
-## 不要動的範圍（黑名單）
-
-以下需人類決策，Copilot 應拒絕 issue 或在 PR 中說明無法自動修復：
-
-- `scripts/generateRoutes.mjs`、`scripts/generateFeeds.mjs`、`server/utils/feeds.ts` 等 build 關鍵路徑
-- `nuxt.config.ts`
-- `config/index.mjs` 的結構調整
-- `.github/workflows/*.yml`（含本檔所在的 workflow 設定）
-- `services/api.js` 內**既有** method 的 Contentful 查詢邏輯或欄位假設（允許新增 method，見白名單）
-- 升級 / 新增 / 移除 dependency（dependency 調整交由 Dependabot 處理）
-- Contentful schema 假設的任何變動
-- 跨越 5 個以上檔案的大規模重構
-- 任何會影響 `dist/` 輸出結構或 GitHub Pages 部署設定的改動
-- `tests/smoke.test.mjs` 內的 `CTF_CDA_ACCESS_TOKEN` regression 斷言：**不得刪除、停用或弱化此 test case**（這是防止硬編碼 token 被意外寫回 `config/index.mjs` 的安全退檔）；此檔案內**其他 test case** 可配合 rename / refactor 同步更新 method 引用，不受此條限制
+若 issue 未附任何設計參考（Figma / 截圖 / 參考網站 URL），agent 應在 issue 下留言要求補件，不自行猜測設計意圖。
 
 ## Contentful 注意事項
 
 - 文章內容唯一來源是 Contentful，本機不保存任何文章原始檔
 - `content_type: post` 為唯一固定內容型別，主要欄位：`id, createDate, title, slug, categoryList, articleContent`
 - 若需要對 Contentful 發出新查詢，**優先使用 `services/api.js` 已存在的方法**，不要在新檔案裡重新建立 Contentful client
-
-## 安全退檔
-
-`config/index.mjs` **不得**再出現 `CTF_CDA_ACCESS_TOKEN` 欄位。這項規則由 `tests/smoke.test.mjs` 的 regression test 強制驗證，違反時 `npm test` 會失敗、PR 無法 merge。
 
 ## 修改風格
 
@@ -138,7 +117,7 @@ npm run generate
 ### 1. 重用檢查
 
 - 新寫的程式碼是否與既有的 helper / util 重複？優先掃描 `helpers/`、`constant/`、
-  `services/api.js`、`plugins/filters.js` 以及與變更檔案相鄰的目錄
+  `services/api.js`、`plugins/filters.js`、`scripts/` 以及與變更檔案相鄰的目錄
 - 若存在功能相同的既有 function，一律改用既有的，不要重寫
 - inline 的字串處理、路徑處理、環境變數判斷、型別守衛若有對應的既有 utility，
   應改用 utility
@@ -174,7 +153,7 @@ npm run generate
 
 ## Path-specific 指引
 
-針對不同目錄補充碰該類檔案時的注意事項，與白名單 / 黑名單互相補充。
+針對不同目錄補充注意事項。
 
 ### `components/**/*.vue`
 
@@ -182,6 +161,7 @@ npm run generate
 - 元件檔案組織為「PascalCase 資料夾 + `index.vue`」（參考 `components/Search/index.vue`）
 - 不要在 `<style>` 中使用未經 stylelint 驗證的新語法
 - 新增 component 時，如果 issue 有指定放置位置就照指定；否則放在 `components/<功能名>/index.vue`
+- 改動或新增時必須對照 `docs/design/component-inventory.md` 與 `design-tokens.md`
 
 ### `pages/**/*.vue`
 
@@ -191,12 +171,12 @@ npm run generate
 
 ### `services/api.js`
 
-- **只准新增 method**，不得修改既有 method 的查詢參數、欄位選擇或 error handling
-- 新 method 必須沿用現有三段 pattern：
+- **新 method 必須沿用現有三段 pattern**：
   1. 建立 `queryOptions` 物件，`content_type` 使用 `process.env.CTF_BLOG_POST_TYPE_ID`
   2. 呼叫 `client.getEntries(queryOptions)`
   3. `.then()` 轉換結果為統一 shape、`.catch()` 回傳 fallback 空值而非 throw
 - 不得引入新 Contentful SDK、wrapper 或改用其他 API client library
+- 修改既有 method 的查詢參數、欄位選擇或 error handling 屬於高風險變更，PR 需附影響說明並保持 Draft
 
 ### `helpers/**/*.js`
 
@@ -206,14 +186,15 @@ npm run generate
 
 ### `scripts/**/*.mjs`、`server/**/*.ts`、`nuxt.config.ts`
 
-- **黑名單**。不要動。如果 issue 描述的任務必須動這類檔案，Copilot 應在 PR 中明確
-  說明「此任務超出自動修復範圍、需要人工處理」而非擅自修改
+- 屬於 build 與部署關鍵路徑，列為高風險檔案
+- 修改時 PR 必須附「影響範圍」與「本地驗證結果」並保持 Draft 等待人工 review
+- 純函式若被 `nuxt.config.ts` 與 `scripts/` 同時需要，放 `scripts/` 下並以 `.mjs` export，兩處 import 共用（範例：`scripts/routeFilters.mjs`）
 
 ### `.github/**`
 
-- **黑名單**。不要動 workflow、issue / PR template、CODEOWNERS、copilot-instructions
-  等設定檔
-- 若真有需求修改，須在 PR description 明確說明並保持 Draft 狀態等待人工確認
+- workflow、issue / PR template、CODEOWNERS、copilot-instructions 等屬於流程關鍵設定
+- 修改時 PR 必須附「影響範圍」與「本地驗證結果」並保持 Draft 等待人工 review
+- workflow 變更需在本機用 `act` 或 dry-run 驗證後才提交（若無法本機驗證，需在 PR 說明）
 
 ## Good / Bad 範例
 
@@ -288,18 +269,26 @@ async getArticlesByAuthor(authorId) {
 }
 ```
 
-### 多檔案變更的邏輯內聚
+### UI 變更 PR description 建議格式
 
-```text
-✅ Good（3 個檔案都圍繞同一個改動，邏輯高度相關）：
-- components/Search/index.vue（UI 調整）
-- components/Search/index.scss（對應樣式）
-- tests/search.test.mjs（對應測試）
+```markdown
+## 影響範圍
 
-❌ Bad（混雜 bug fix 與 refactor，跨越多個無關模組）：
-- pages/index.vue（修一個 typo）
-- services/api.js（抽一個新 helper）
-- plugins/filters.js（改 date format）
+- 受影響頁面：`/`、`/article/:id`
+- 受影響元件：`components/ArticleList/index.vue`
+- 是否新增 design token：否
 
-→ 這三個變更屬於三個獨立的邏輯改動，應該拆成三個 issue / PR 分別處理
+## 視覺驗收
+
+| 視窗 | 變更前 | 變更後 |
+|---|---|---|
+| Desktop 1440 | (screenshot) | (screenshot) |
+| Mobile 375 | (screenshot) | (screenshot) |
+
+## 設計參考對照
+
+| 項目 | Figma | 實作 | 備註 |
+|---|---|---|---|
+| 主色 | #0066cc | #0066cc | 一致 |
+| 卡片間距 | 24px | 24px | 一致 |
 ```
