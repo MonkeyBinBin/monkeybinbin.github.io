@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 設計規範文件
+    url: https://github.com/MonkeyBinBin/monkeybinbin.github.io/blob/develop/docs/design/README.md
+    about: 提交 UI issue 前建議先查看既有 design tokens 與元件清單

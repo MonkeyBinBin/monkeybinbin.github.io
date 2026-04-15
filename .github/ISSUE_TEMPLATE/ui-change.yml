@@ -1,0 +1,84 @@
+name: UI 變更請求
+description: 提交視覺 / UX 相關的 issue（元件、頁面版型、樣式）
+title: "[UI] "
+labels: ["ui-change", "needs-design-ref"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        此模板用於 UI / UX 變更。為了讓 agent 或接手者有明確的設計依據，**設計參考欄位為必填**。
+
+        在撰寫前建議先瀏覽 [`docs/design/`](https://github.com/MonkeyBinBin/monkeybinbin.github.io/blob/develop/docs/design/README.md) 了解既有 design tokens 與元件清單，
+        避免重複造輪子或引入不一致的視覺風格。
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 受影響頁面 / 元件
+      description: 可複選。若不確定請先查 `docs/design/component-inventory.md`。
+      multiple: true
+      options:
+        - 首頁（pages/index.vue）
+        - 分頁（pages/page/）
+        - 文章詳情（pages/article/）
+        - Tag 列表（pages/tag/）
+        - Archives（pages/archives/）
+        - About（pages/about/）
+        - ArticleOutline（文章卡片）
+        - PageHeader
+        - PageFooter
+        - PageNav（含 ScrollTop）
+        - Search
+        - 全站共用樣式（assets/sass/）
+        - 其他（請在「現況描述」說明）
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: 現況描述
+      description: 目前的視覺 / 行為是什麼？問題在哪？建議附上目前畫面的截圖。
+      placeholder: |
+        例：首頁文章卡片在手機版（≤480px）時標題會被截斷，無法看到完整文章標題。
+    validations:
+      required: true
+
+  - type: textarea
+    id: design-ref
+    attributes:
+      label: 設計參考（必填）
+      description: |
+        **必須**提供以下至少一項具體參考，純文字描述無法作為設計依據：
+
+        - Figma / Zeplin / Sketch 設計稿連結
+        - 參考截圖（直接貼在此處）
+        - 參考網站或元件的 URL（例：shadcn/ui 某個元件）
+        - 手繪 mockup 的照片
+
+        若缺少設計參考，agent 將在 issue 下留言要求補件，不會開始實作。
+      placeholder: |
+        例：
+        - Figma 連結：https://figma.com/...
+        - 參考網站：https://tailwindui.com/components/marketing/elements/article-cards
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 驗收條件
+      description: 列出「改完後要滿足哪些具體條件」，條列越明確越容易驗收。
+      placeholder: |
+        例：
+        - [ ] 手機版（≤480px）標題完整顯示，最多 2 行，多餘以 `…` 省略
+        - [ ] 桌面版（≥769px）維持既有排版
+        - [ ] 標題 hover 時仍套用既有 link-animation mixin
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 額外 context（可選）
+      description: 相關 issue / PR 連結、無障礙需求、瀏覽器相容性等補充。
