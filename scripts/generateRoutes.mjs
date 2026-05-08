@@ -20,8 +20,15 @@ try {
 const POSTS_PER_PAGE = config.articleListMaxLimit;
 
 if (!process.env.CTF_CDA_ACCESS_TOKEN) {
-  console.error('缺少環境變數 CTF_CDA_ACCESS_TOKEN，無法向 Contentful 取得資料');
-  process.exit(1);
+  console.warn('缺少環境變數 CTF_CDA_ACCESS_TOKEN，改用 fallback 路由（僅包含基本頁面，文章路由將不會被預渲染）');
+
+  const fallbackRoutes = ['/archives'];
+  fs.writeFileSync(
+    path.resolve(__dirname, 'generate-routes.json'),
+    JSON.stringify(fallbackRoutes, null, 2)
+  );
+  console.log(`✓ 已產生 fallback generate-routes.json (${fallbackRoutes.length} 個路由)`);
+  process.exit(0);
 }
 
 const client = createClient({
