@@ -5,6 +5,7 @@ import {
   faUser,
   faHome,
   faSearch,
+  faRss,
   faTag,
   faArrowUp,
   faCalendarAlt,
@@ -12,7 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 // 註冊常用 icon
-library.add(faUser, faHome, faSearch, faTag, faArrowUp, faCalendarAlt, faArrowRight);
+library.add(faUser, faHome, faSearch, faRss, faTag, faArrowUp, faCalendarAlt, faArrowRight);
 
 export default defineNuxtPlugin((nuxtApp) => {
   // 全域註冊 FontAwesomeIcon 元件
