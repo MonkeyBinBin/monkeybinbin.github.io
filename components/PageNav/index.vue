@@ -175,6 +175,12 @@ $darker: #070b1f;
 
   .icon {
     font-size: 24px;
+    line-height: 1;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 8px;
     color: $primary;
     transition: all 0.3s ease;
@@ -313,6 +319,8 @@ $darker: #070b1f;
 
     .icon {
       font-size: 20px;
+      width: 20px;
+      height: 20px;
       margin-right: 12px;
     }
 
