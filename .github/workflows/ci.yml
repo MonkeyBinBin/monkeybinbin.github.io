@@ -43,7 +43,12 @@ jobs:
 
       # 驗證 prebuild（Contentful 路由產出）與 Nuxt generate 都能跑通
       # token 只在此步驟注入，避免 lint/test 誤用
+      - name: Skip generate for Dependabot PRs
+        if: github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]'
+        run: echo "Skipping static generate because Dependabot PRs cannot access Contentful secrets."
+
       - name: Build (generate static site)
+        if: github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]'
         run: npm run generate
         env:
           CTF_CDA_ACCESS_TOKEN: ${{ secrets.CTF_CDA_ACCESS_TOKEN }}
